@@ -1,0 +1,170 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Project Dashboard{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+{% block body %}
+    <div class="row">
+        ####### display in twig ######### <br /> 
+        {% for item in pro1 %} 
+            {{ item.productDescription }} <br />
+        {% endfor %} 
+        ### results ### <br />
+        {% for item_r in pro2 %} 
+            {{ item_r.productDescription }} <br />
+        {% endfor %}  
+    </div>
+    <div class="row">
+        <div class="col-sm-5 col-md-5">
+            <h1>Dashboard</h1>
+            <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+        </div>
+        <div class="col-sm-7 col-md-7">
+            <h2 class="sub-header">Project Progress</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ชิ้นงาน</th>
+                            <th>ลูกค้า</th>
+                            <th>สถานะงาน</th>
+                            <th>ผู้รับผิดชอบ</th>
+                            <th>เวลาทั้งหมด</th>
+                            <th>ประเภทชิ้นงาน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1,001</td>
+                            <td>Lorem</td>
+                            <td>ipsum</td>
+                            <td>In Progress</td>
+                            <td>sit</td>
+                            <td>1</td>
+                            <td>ผลิต</td>
+                        </tr>
+                        <tr>
+                            <td>1,002</td>
+                            <td>amet</td>
+                            <td>consectetur</td>
+                            <td>In Progress</td>
+                            <td>elit</td>
+                            <td>1</td>
+                            <td>ผลิต</td>
+                        </tr>
+                        <tr>
+                            <td>1,003</td>
+                            <td>Integer</td>
+                            <td>nec</td>
+                            <td>In Progress</td>
+                            <td>Praesent</td>
+                            <td>2</td>
+                            <td>สต็อก</td>
+                        </tr>
+                        <tr>
+                            <td>1,003</td>
+                            <td>libero</td>
+                            <td>Sed</td>
+                            <td>In Progress</td>
+                            <td>ante</td>
+                            <td>1</td>
+                            <td>ผลิต</td>
+                        </tr>
+                        <tr>
+                            <td>1,004</td>
+                            <td>dapibus</td>
+                            <td>diam</td>
+                            <td>Hold</td>
+                            <td>nisi</td>
+                            <td>1</td>
+                            <td>สต็อก</td>
+                        </tr>
+                        <tr>
+                            <td>1,005</td>
+                            <td>Nulla</td>
+                            <td>quis</td>
+                            <td>Finish</td>
+                            <td>at</td>
+                            <td>2</td>
+                            <td>ผลิต</td>
+                        </tr>
+                        <tr>
+                            <td>1,006</td>
+                            <td>nibh</td>
+                            <td>elementum</td>
+                            <td>Wait Assign</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>1,007</td>
+                            <td>sagittis</td>
+                            <td>ipsum</td>
+                            <td>Hold</td>
+                            <td>mauris</td>
+                            <td>1</td>
+                            <td>ผลิต</td>
+                        </tr>
+                        <tr>
+                            <td>1,008</td>
+                            <td>Fusce</td>
+                            <td>nec</td>
+                            <td>Wait Assign</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ asset('bundles/tsprojproduct/js/highcharts.js') }}"></script>
+    <script>
+        $(function () {
+            $('#container').highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Project Overview Progress,May 2015'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                        type: 'pie',
+                        name: 'Job Precentage',
+                        data: [
+                            ['Finish', 20],
+                            ['In Process', 50],
+                            ['Wait Assign', 20],
+                            ['Hold', 10]
+                        ]
+                    }]
+            });
+        });
+    </script>
+
+{% endblock %}

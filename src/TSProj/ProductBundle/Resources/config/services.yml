@@ -1,0 +1,20 @@
+services:
+    ts_proj_product.admin.project:
+        class: TSProj\ProductBundle\Admin\ProjectAdmin
+        arguments: [~, TSProj\ProductBundle\Entity\Project, TSProjProductBundle:ProjectAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Project}
+        calls:
+            - [ setTranslationDomain, [TSProjProductBundle]]
+
+    ts_proj_product.admin.product:
+        class: TSProj\ProductBundle\Admin\ProductAdmin
+        arguments: [~, TSProj\ProductBundle\Entity\Product, TSProjProductBundle:ProductAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Product}
+
+    ts_proj_product.admin.process:
+        class: TSProj\ProductBundle\Admin\ProcessAdmin
+        arguments: [~, TSProj\ProductBundle\Entity\Process, TSProjProductBundle:ProcessAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Process}

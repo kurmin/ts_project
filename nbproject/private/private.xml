@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/Acme/DemoBundle/Controller/DemoController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/ProductBundle/Entity/Project.php</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/ProductBundle/Resources/config/routing.yml</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/app/Resources/views/base.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/PeopleBundle/Entity/Employee.php</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/app/AppKernel.php</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/ProductBundle/Entity/Product.php</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/app/config/parameters.yml</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/ProductBundle/Resources/config/services.yml</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/ProductBundle/Controller/ProjectController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/TS_Project/src/TSProj/PeopleBundle/Admin/EmployeeAdmin.php</file>
+        </group>
+    </open-files>
+</project-private>

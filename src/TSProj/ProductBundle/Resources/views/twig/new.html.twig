@@ -1,0 +1,220 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}mainTSBundle:NewProgress:new{% endblock %}
+{% block stylesheets %}
+    <style>
+        .wizard-progress {
+            list-style: none;
+            list-style-image: none;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        .wizard-progress li {
+            float: left;
+            text-align: center;
+            position: relative;
+        }
+
+        .wizard-progress .step-name {
+            display: table-cell;
+            height: 32px;
+            vertical-align: bottom;
+            text-align: center;
+            width: 100%;
+        }
+
+        .wizard-progress .step-num {
+            font-size: 14px;
+            font-weight: bold;
+            border: 3px solid darkgray;
+            background-color: darkgray;
+            border-radius: 50%;
+            width: 24px;
+            display: inline-block;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        .wizard-progress .step-num:after {
+            content: "";
+            display: block;
+            background: darkgray;
+            height: 1px;
+            width: 130%; /* 130px; */
+            position: absolute;
+            bottom: 45px;
+        }
+
+        .wizard-progress li:last-of-type .step-num:after {
+            display: none;
+        }
+
+        .wizard-progress .step-done .step-num,
+        .wizard-progress .step-active .step-num {
+            border-color: #5A7FD0;
+            background-color: #5A7FD0;
+        }
+
+        .wizard-progress .step-active .step-name {
+            font-weight: bold;
+        }
+
+
+        /* wizard with 5 steps */
+
+        .wizard-5-steps {
+            width: 900px;
+        }
+
+        .wizard-5-steps li {
+            margin-right: 6.9%; /* 6.6687%; 50px */
+            width: 13%;  
+        }
+
+        .wizard-5-steps .step-num:after {
+            left: 62%;
+        }
+
+        /* wizard with 6 steps */
+        .wizard-6-steps {
+            width: 750px;
+        }
+
+        .wizard-6-steps li {
+            float: left;
+            margin-right: 5.5%; /* 6.6687%; 50px */
+            width: 11%;
+        }
+
+        .wizard-6-steps .step-num:after {
+            left: 64%;
+        }
+
+
+
+
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h2 class="sub-header">New Process</h2>
+            <ol class="wizard-progress wizard-5-steps clearfix center-block">
+                <li class="step-active" id="pg1" >
+                    <span class="step-num">1</span>
+                    <span class="step-name">Scan Project Barcode</span>
+                </li>
+                <li class="" id="pg2" >
+                    <span class="step-num">2</span>
+                    <span class="step-name">Scan Employee Barcode</span>
+                </li>
+                <li class=""  id="pg3" >
+                    <span class="step-num">3</span>
+                    <span class="step-name">Scan Process Barcode</span>
+                </li>
+                <li class=""  id="pg4" >
+                    <span class="step-num">4</span>
+                    <span class="step-name">Revise Data</span>
+                </li>
+                <li class=""  id="pg5" >
+                    <span class="step-num">5</span>
+                    <span class="step-name">Complete!</span>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-sm-2 col-md-2"></div>
+
+        <div class="col-sm-3 col-md-3">
+            <span style="font-weight: bold;">Project ID:</span>
+            <input type="text" name="project_barcode" id="project_barcode" maxlength="11" class="form-control"  placeholder="Product ID" />
+        </div>
+        <div class="col-sm-2 col-md-2">
+        </div>
+
+        <div class="col-sm-3 col-md-3">
+            <span style="text-align:right;font-weight: bold;">Date:</span>
+            <input type="text" name="date" id="date_picker" class="form-control"  placeholder="Date" />
+
+        </div>
+        <div class="col-sm-2 col-md-2">
+        </div>
+    </div>
+
+    <br/>
+    <div class="row">
+        <div class="col-sm-2 col-md-2" style="text-align:right;">
+        </div>
+        <div class="col-sm-3 col-md-3">
+
+            <span style="text-align:right;font-weight: bold;">Employee ID:</span>
+            <input type="text" name="emp_barcode" id="emp_barcode"  class="form-control"  placeholder="Employee ID" />
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-sm-2 col-md-2" style="text-align:right;">
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <span style="text-align:right;font-weight: bold;">Process ID:</span>
+            <input type="text" name="pro_barcode" class="form-control"  placeholder="Process ID" />
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+
+            $("#date_picker").datepicker();
+        });
+        $(document).on("change","#project_barcode",function(){
+            if($(this).val().length=="11")
+            {
+                $("#pg1").removeClass("step-active").addClass("step-done");
+                $("#pg2").addClass("step-active");
+            }
+            else
+            {
+                alert("กรุณาระบุรหัสโปรเจกให้ครบ 11 หลัก");
+                $("#pg1").removeClass("step-done").addClass("step-active");
+                $("#pg2").removeClass("step-active");
+                $(this).focus();
+                return;
+            }
+          
+        });
+        
+        $(document).on("change","#emp_barcode",function(){
+            if(("#project_barcode").val().length=="11")
+            {
+                if($(this).val().length=="2")
+                {
+                    $("#pg2").removeClass("step-active").addClass("step-done");
+                    $("#pg3").addClass("step-active");
+                }
+                else
+                {
+                    alert("กรุณาระบุรหัสหนักงานให้ครบ 2 ตำแหน่ง");
+                    $("#pg2").removeClass("step-done").addClass("step-active");
+                    $("#pg3").removeClass("step-active");
+                    $(this).focus();
+                    return;
+                }
+            }
+            else
+            {
+                $("#pg1").removeClass("step-done").addClass("step-active");
+                $("#pg2").removeClass("step-active");
+                alert("กรุณาระบุรหัสโปรเจกก่อน");
+                $("#project_barcode").focus();
+                return;
+            }
+          
+        });
+    </script>
+
+{% endblock %}

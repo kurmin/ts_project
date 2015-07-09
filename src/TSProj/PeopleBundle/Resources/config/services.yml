@@ -1,0 +1,12 @@
+services:
+    ts_proj_people.admin.client:
+        class: TSProj\PeopleBundle\Admin\ClientAdmin
+        arguments: [~, TSProj\PeopleBundle\Entity\Client, TSProjPeopleBundle:ClientAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Client}
+
+    ts_proj_people.admin.employee:
+        class: TSProj\PeopleBundle\Admin\EmployeeAdmin
+        arguments: [~, TSProj\PeopleBundle\Entity\Employee, TSProjPeopleBundle:EmployeeAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Employee}
