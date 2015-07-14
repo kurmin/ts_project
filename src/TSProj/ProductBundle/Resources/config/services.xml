@@ -27,6 +27,7 @@
           <tag name="sonata.admin" manager_type="orm" group="Content" label="Project"/>
           <argument />
           <argument>TSProj\ProductBundle\Entity\Project</argument>
+          <argument>TSProjProductBundle:ProjectAdmin</argument>
           <argument />
           <call method="setTranslationDomain">
               <argument>TSProjProductBundle</argument>
@@ -36,6 +37,7 @@
           <tag name="sonata.admin" manager_type="orm" group="Content" label="Product"/>
           <argument />
           <argument>TSProj\ProductBundle\Entity\Product</argument>
+          <argument>TSProjProductBundle:ProductAdmin</argument>
           <argument />
           <call method="setTranslationDomain">
               <argument>TSProjProductBundle</argument>

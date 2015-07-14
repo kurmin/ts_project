@@ -64,6 +64,13 @@ class Product
     private $productTimeConsuming;
     
     /**
+     * @var id
+     * 
+     * @ORM\Column(name="prev_project",type="integer",nullable=true)
+     */
+    private $prevProject = 0;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Project",inversedBy="product")
      **/
     private $project;
@@ -117,6 +124,10 @@ class Product
     {
         $this->process = new \Doctrine\Common\Collections\ArrayCollection();
         $this->productProcessTime = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    public function __toString() {
+        return $this->productName;
     }
 
     /**
@@ -474,5 +485,28 @@ class Product
     public function getPercentFinished()
     {
         return $this->percentFinished;
+    }
+
+    /**
+     * Set prevProject
+     *
+     * @param integer $prevProject
+     * @return Product
+     */
+    public function setPrevProject($prevProject)
+    {
+        $this->prevProject = $prevProject;
+
+        return $this;
+    }
+
+    /**
+     * Get prevProject
+     *
+     * @return integer 
+     */
+    public function getPrevProject()
+    {
+        return $this->prevProject;
     }
 }
