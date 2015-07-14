@@ -67,7 +67,7 @@ class ProjectAdmin extends Admin
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    'delete' => array('template' => 'TSProjProductBundle:CRUD:list__action_deleteRow.html.twig',),
+                    'delete' => array('template' => 'TSProjProductBundle:CRUD:list__action_projectDeleteRow.html.twig',),
                 )
             ))
         ;
@@ -136,6 +136,11 @@ class ProjectAdmin extends Admin
             ->add('projectStartDate')
             ->add('projectEndDate')
             ->add('projectTimeConsuming')
+//            ->with('Product', array('collapsed' => true))
+//                ->add('child.name',null,array('label'=>'Name'))
+//                ->add('child.school',null,array('label'=>'School'))
+//                ->add('child.age',null,array('label'=>'Age')) 
+//            ->end()    
             ->add('product')    
         ;
     }
@@ -146,6 +151,6 @@ class ProjectAdmin extends Admin
 //    }
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow');
+        $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow');
     }
 }

@@ -3,6 +3,7 @@
 namespace TSProj\ProductBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProjectAdminController extends CRUDController
 {
@@ -16,4 +17,36 @@ class ProjectAdminController extends CRUDController
 // 
 //	return parent::render($view, $parameters);
 //    }
+    public function projectDeleteRowAction()
+    {
+        $object = $this->admin->getSubject();
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $project = $em->getRepository("TSProjProductBundle:Project")->find($object->getId());
+        $project->setDeleteFlag(1);
+        $curr = new \DateTime();
+        $project->setLastMaintDateTime($curr);
+        
+        //delete product
+        $products = $em->getRepository("TSProjProductBundle:Product")->findBy(array('project'=>$project->getId()));
+        foreach ($products as $product){
+            $product->setDeleteFlag(1);
+            $product->setLastMaintDateTime($curr);
+            $product->setProject(null);
+            $product->setPrevProject($project->getId());
+            $em->persist($product);
+        }
+        
+        $em->persist($project);
+        $em->flush();
+        
+        $this->addFlash('sonata_flash_success', 'Delete successfully');
+
+        return new RedirectResponse($this->admin->generateUrl('list'));
+    }
+
 }
