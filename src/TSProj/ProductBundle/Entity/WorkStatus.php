@@ -12,10 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class WorkStatus
 {
-    const status_havent = "HAVEN'T STARTED YET";
-    const status_hold = "HOLD";
-    const status_in_progress = "IN PROGRESS";
-    const status_complete = "COMPLETE";
+    const status_havent = "ยังไม่เริ่มดำเนินงาน";
+    const status_hold = "พักชั่วคราว";
+    const status_in_progress = "กำลังดำเนินการ";
+    const status_complete = "เสร็จสิ้น";
     
     public static $status_list = array(self::status_havent=>self::status_havent,
                                     self::status_hold=>self::status_hold,
@@ -32,6 +32,13 @@ class WorkStatus
      */
     private $id;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status_name", type="string", length=255)
+     */
+    private $statusName;
+    
     /**
      * @var string
      *
@@ -160,5 +167,28 @@ class WorkStatus
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set statusName
+     *
+     * @param string $statusName
+     * @return WorkStatus
+     */
+    public function setStatusName($statusName)
+    {
+        $this->statusName = $statusName;
+
+        return $this;
+    }
+
+    /**
+     * Get statusName
+     *
+     * @return string 
+     */
+    public function getStatusName()
+    {
+        return $this->statusName;
     }
 }
