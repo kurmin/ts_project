@@ -99,7 +99,24 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <h2 class="sub-header">New Process</h2>
+            <h4 class="sub-header">สแกนชิ้นงาน</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1 col-md-1"></div>
+        <div class="col-sm-10 col-md-10">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar"  id="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                  0%
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md-1"></div>
+    </div>
+          
+    {#<div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h4 class="sub-header">สแกนชิ้นงาน</h4>
             <ol class="wizard-progress wizard-5-steps clearfix center-block">
                 <li class="step-active" id="pg1" >
                     <span class="step-num">1</span>
@@ -123,70 +140,147 @@
                 </li>
             </ol>
         </div>
-    </div>
-    <div class="row">
+    </div>#}
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">ข้อมูลชิ้นงาน</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="font-weight: bold;">รหัสชิ้นงาน : </span>
+                    <input type="text" name="projectid" id="projectid" maxlength="11" class="form-control"  placeholder="รหัสชิ้นงาน" />
+                </div>
+                <div class="col-sm-1 col-md-1">
+                </div>
 
-        <div class="col-sm-2 col-md-2"></div>
+                <div class="col-sm-3 col-md-3">   
+                    <span style="font-weight: bold;">หมายเลขงาน : </span>
+                    <input type="text" readonly name="jobid" id="jobid" maxlength="11" class="form-control"  placeholder="หมายเลขงาน" />
+                
+                </div>
+                
+                <div class="col-sm-1 col-md-1"></div>
+                
+                <div class="col-sm-3 col-md-3">
 
-        <div class="col-sm-3 col-md-3">
-            <span style="font-weight: bold;">รหัสชิ้นงาน : </span>
-            <input type="text" name="project_barcode" id="project_barcode" maxlength="11" class="form-control"  placeholder="Product ID" />
-        </div>
-        <div class="col-sm-2 col-md-2">
-        </div>
-        
-        <div class="col-sm-2 col-md-2">
-        </div>
-    </div>
-
-    <br/>
-    <div class="row">
-        <div class="col-sm-2 col-md-2" style="text-align:right;">
-        </div>
-        <div class="col-sm-3 col-md-3">
-            <span style="text-align:right;font-weight: bold;">วันที่:</span>
-            <input type="text" name="date" id="date_picker" class="form-control"  placeholder="วันที่ทำชิ้นงาน" />
-        </div>
-    </div>
-    <br/>
-    <div class="row">
-        <div class="col-sm-2 col-md-2" style="text-align:right;">
-        </div>
-        <div class="col-sm-3 col-md-3">
-
-            <span style="text-align:right;font-weight: bold;">หมายเลขงาน : </span>
-            <input type="text" readonly name="emp_barcode" id="job_id"  class="form-control"  placeholder="หมายเลขงาน" />
+                    <span style="text-align:right;font-weight: bold;">ชื่อโปรเจค : </span>
+                    <input type="text" name="projectname" id="projectname"  class="form-control"  placeholder="ชื่อโปรเจค" />
+                </div>
+            </div>
+            <div class="row">                
+                
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">ชื่อลูกค้า:</span>
+                    <input type="text" name="customername" id="customername" class="form-control"  placeholder="ชื่อลูกค้า" />
+                </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">วันที่:</span>
+                    <input type="text" name="createdate" id="createdate" class="form-control"  placeholder="วันที่ทำชิ้นงาน" />
+                </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">กำหนดส่งมอบ:</span>
+                    <input type="text" name="deliverdate" id="deliverdate" class="form-control"  placeholder="กำหนดส่งมอบ" />
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">สถานะปัจจุบัน:</span>
+                    <input type="text" name="projectpercent" id="projectpercent" class="form-control"  placeholder="เสร็จสิ้น XX %" />
+                </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">จำนวนชิ้นงาน:</span>
+                    <input type="text" name="itemcount" id="itemcount" class="form-control"  placeholder="จำนวนชิ้นงาน" />
+                </div>
+            </div>
         </div>
     </div>
     
-    <br/>
-    <div class="row">
-        <div class="col-sm-2 col-md-2" style="text-align:right;">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">ข้อมูลพนักงาน</h3>
         </div>
-        <div class="col-sm-3 col-md-3">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">รหัสพนักงาน:</span>
+                    <input type="text" name="empid" id="empid"  class="form-control"  placeholder="รหัสพนักงาน" />
+                </div>
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
 
-            <span style="text-align:right;font-weight: bold;">รหัสพนักงาน:</span>
-            <input type="text" name="emp_barcode" id="emp_barcode"  class="form-control"  placeholder="รหัสพนักงาน" />
+                    <span style="text-align:right;font-weight: bold;">ชื่อพนักงาน:</span>
+                    <input type="text" name="empname" id="empname"  class="form-control"  placeholder="ขื่อพนักงาน" />
+                </div>
+            </div>
         </div>
     </div>
-    <br/>
-    <div class="row">
-        <div class="col-sm-2 col-md-2" style="text-align:right;">
+   
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">ข้อมูลกระบวนการ</h3>
         </div>
-        <div class="col-sm-3 col-md-3">
-            <span style="text-align:right;font-weight: bold;">รหัสกระบวนการ:</span>
-            <input type="text" name="pro_barcode" class="form-control"  placeholder="รหัสกระบวนการ" />
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">รหัสกระบวนการ:</span>
+                    <input type="text" name="processid" id="processid" class="form-control"  placeholder="รหัสกระบวนการ" />
+                </div>
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">ชื่อกระบวนการ:</span>
+                    <input type="text" name="processname" id="processname" class="form-control"  placeholder="ชื่อกระบวนการ" />
+                </div>
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">ระยะเวลาการผลิต:</span>
+                    <input type="text" name="pro_barcode" class="form-control"  placeholder="ระยะเวลาการผลิต" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">วันที่เริ่มกระบวนการ:</span>
+                    <input type="text" name="processstartdate" id="processstartdate" class="form-control"  placeholder="วันที่เริ่มกระบวนการ" />
+                </div>
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">วันที่สิ้นสุดกระบวนการ:</span>
+                    <input type="text" name="processenddate" id="processenddate"  class="form-control"  placeholder="วันที่สิ้นสุดกระบวนการ" />
+                </div>
+            </div>
         </div>
     </div>
+        
 {% endblock %}
 
 {% block javascripts %}
     <script>
         $(document).ready(function () {
 
-            $("#date_picker").datepicker();
+            $("#createdate").datepicker();
+            $("#processstartdate").datepicker();
+            $("#processedate").datepicker();
         });
-        $(document).on("change","#project_barcode",function(){
+        $(document).on("change","#projectid",function(){
             if($(this).val().length=="11")
             {
                 $("#pg1").removeClass("step-active").addClass("step-done");
@@ -203,8 +297,8 @@
           
         });
         
-        $(document).on("change","#emp_barcode",function(){
-            if(("#project_barcode").val().length=="11")
+        $(document).on("change","#empid",function(){
+            if(("#projectid").val().length=="11")
             {
                 if($(this).val().length=="2")
                 {
@@ -225,7 +319,7 @@
                 $("#pg1").removeClass("step-done").addClass("step-active");
                 $("#pg2").removeClass("step-active");
                 alert("กรุณาระบุรหัสโปรเจกก่อน");
-                $("#project_barcode").focus();
+                $("#projectid").focus();
                 return;
             }
           
