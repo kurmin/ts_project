@@ -15,8 +15,7 @@ class NewProjectController extends Controller
     public function newAction()
     {
         //return new Response();
-        //test git add comment
-        return $this->render('TSProjProductBundle:twig:new.html.twig',array()
+        return $this->render('TSProjProductBundle:twig:newproject.html.twig',array()
         );
         
     }
