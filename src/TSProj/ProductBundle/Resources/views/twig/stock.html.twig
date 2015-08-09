@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}mainTSBundle:NewProgress:new{% endblock %}
+{% block title %}Stock Management{% endblock %}
 {% block stylesheets %}
     <style>
         .wizard-progress {
@@ -99,27 +99,23 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-12 col-md-12">
-            <h2 class="sub-header">New Process</h2>
+            <h2 class="sub-header">Stock Management</h2>
             <ol class="wizard-progress wizard-5-steps clearfix center-block">
                 <li class="step-active" id="pg1" >
                     <span class="step-num">1</span>
-                    <span class="step-name">Scan Project Barcode</span>
+                    <span class="step-name">สแกนรหัสชิ้นงาน</span>
                 </li>
                 <li class="" id="pg2" >
                     <span class="step-num">2</span>
-                    <span class="step-name">Scan Employee Barcode</span>
+                    <span class="step-name">เลือกชิ้นงาน</span>
                 </li>
                 <li class=""  id="pg3" >
                     <span class="step-num">3</span>
-                    <span class="step-name">Scan Process Barcode</span>
+                    <span class="step-name">ตรวจสอบข้อมูล</span>
                 </li>
                 <li class=""  id="pg4" >
                     <span class="step-num">4</span>
-                    <span class="step-name">Revise Data</span>
-                </li>
-                <li class=""  id="pg5" >
-                    <span class="step-num">5</span>
-                    <span class="step-name">Complete!</span>
+                    <span class="step-name">เสร็จสิ้น</span>
                 </li>
             </ol>
         </div>
@@ -129,14 +125,14 @@
         <div class="col-sm-2 col-md-2"></div>
 
         <div class="col-sm-3 col-md-3">
-            <span style="font-weight: bold;">Project ID:</span>
+            <span style="font-weight: bold;">หมายเลขชิ้นงาน:</span>
             <input type="text" name="project_barcode" id="project_barcode" maxlength="11" class="form-control"  placeholder="Product ID" />
         </div>
         <div class="col-sm-2 col-md-2">
         </div>
 
         <div class="col-sm-3 col-md-3">
-            <span style="text-align:right;font-weight: bold;">Date:</span>
+            <span style="text-align:right;font-weight: bold;">เลือกชิ้นงาน:</span>
             <input type="text" name="date" id="date_picker" class="form-control"  placeholder="Date" />
 
         </div>
