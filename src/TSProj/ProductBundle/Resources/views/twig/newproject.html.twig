@@ -151,14 +151,14 @@
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
                     <span style="font-weight: bold;">รหัสชิ้นงาน : </span>
-                    <input type="text" name="projectid" id="projectid" maxlength="11" class="form-control"  placeholder="รหัสชิ้นงาน" />
+                    <input type="text" name="productid" id="productid" maxlength="11" class="form-control"  placeholder="รหัสชิ้นงาน" />
                 </div>
                 <div class="col-sm-1 col-md-1">
                 </div>
 
                 <div class="col-sm-3 col-md-3">   
                     <span style="font-weight: bold;">หมายเลขงาน : </span>
-                    <input type="text" readonly name="jobid" id="jobid" maxlength="11" class="form-control"  placeholder="หมายเลขงาน" />
+                    <input type="text"  name="projectid" id="projectid" maxlength="11" class="form-control"  placeholder="หมายเลขงาน" />
                 
                 </div>
                 
@@ -280,37 +280,27 @@
             $("#processstartdate").datepicker();
             $("#processedate").datepicker();
         });
-        $(document).on("change","#projectid",function(){
-            if($(this).val().length=="11")
+        $(document).on("change","#productid",function(){
+            if($(this).val().length!=0)
             {
-                $("#pg1").removeClass("step-active").addClass("step-done");
-                $("#pg2").addClass("step-active");
+                get_productdetail($(this).val());
             }
-            else
-            {
-                alert("กรุณาระบุรหัสโปรเจกให้ครบ 11 หลัก");
-                $("#pg1").removeClass("step-done").addClass("step-active");
-                $("#pg2").removeClass("step-active");
-                $(this).focus();
-                return;
-            }
-          
         });
         
         $(document).on("change","#empid",function(){
            {# if($("#projectid").val().length=="11")
             {#}
-                if($(this).val().length=="4")
+                if($(this).val().length==4)
                 {
-                    $("#pg2").removeClass("step-active").addClass("step-done");
-                    $("#pg3").addClass("step-active");
+                   {# $("#pg2").removeClass("step-active").addClass("step-done");
+                    $("#pg3").addClass("step-active");#}
                     get_employeedeatail($("#empid").val());
                 }
                 else
                 {
                     alert("กรุณาระบุรหัสหนักงานให้ครบ 4 ตำแหน่ง");
-                    $("#pg2").removeClass("step-done").addClass("step-active");
-                    $("#pg3").removeClass("step-active");
+                    {#$("#pg2").removeClass("step-done").addClass("step-active");
+                    $("#pg3").removeClass("step-active");#}
                     $(this).focus();
                     return;
                 }
@@ -324,6 +314,24 @@
                 return;
             }#}
           
+        });
+        {#$(document).on("change","#empid",function(){
+             if($(this).val().length=="4")
+                {
+                    get_employeedeatail($("#empid").val());
+                }
+                else
+                {
+                    alert("กรุณาระบุรหัสหนักงานให้ครบ 4 ตำแหน่ง");
+                    $(this).focus();
+                    return;
+                }
+        });#}
+        $(document).on("change","#processid",function(){
+             if($(this).val().length!=0)
+                {
+                    get_processid($(this).val());
+                }
         });
         
         function get_employeedeatail(empid)
@@ -340,14 +348,17 @@
                     }
                 }, "json");  
         }
-        function get_projectdeatail(projectid)
+        function get_productdetail(productBarcode)
         {
             
-             $.post('{{path('ajax_get_project_detail')}}',
-                    {'projectid': projectid}, 
+             $.post('{{path('ajax_get_product_detail')}}',
+                    {'productBarcode': productBarcode}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
-                      $("#empname").val(response.name);
+                      $("#projectid").val(response.projectid);
+                      $("#projectname").val(response.projectname);
+                      $("#deliverdate").val(response.expectdate.date);
+                      $("#customername").val(response.clientname);
                     }else if(response.code == 300)
                     {
                         alert(response.message);
@@ -361,7 +372,7 @@
                     {'processid': processid}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
-                      $("#empname").val(response.name);
+                      $("#processname").val(response.name);
                     }else if(response.code == 300)
                     {
                         alert(response.message);
