@@ -31,6 +31,13 @@ class Employee
     /**
      * @var string
      *
+     * @ORM\Column(name="employee_barcode", type="string", length=40)
+     */
+    private $employeeBarcode;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="employee_national_identity_id", type="string", length=20)
      */
     private $employeeNationalIdentityId;
@@ -516,5 +523,28 @@ class Employee
     public function getEmployeeImage()
     {
         return $this->EmployeeImage;
+    }
+
+    /**
+     * Set employeeBarcode
+     *
+     * @param string $employeeBarcode
+     * @return Employee
+     */
+    public function setEmployeeBarcode($employeeBarcode)
+    {
+        $this->employeeBarcode = $employeeBarcode;
+
+        return $this;
+    }
+
+    /**
+     * Get employeeBarcode
+     *
+     * @return string 
+     */
+    public function getEmployeeBarcode()
+    {
+        return $this->employeeBarcode;
     }
 }
