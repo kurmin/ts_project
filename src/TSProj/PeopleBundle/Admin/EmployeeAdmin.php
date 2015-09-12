@@ -85,8 +85,7 @@ class EmployeeAdmin extends Admin
             ->add('employeeStartWorkingDate')
             ->add('employeelastWorkingDate')
             ->add('employeeRole')
-            ->add('EmployeeImage')
-            ->add('Photo', 'String', array('template' => 'PeopleBundle:Admin:EmployeeImage.html.twig'))
+            ->add('EmployeeImage','string', array('template' => 'PeopleBundle:Admin:Employee.html.twig'))
         ;
     }
 }
