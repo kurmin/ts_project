@@ -1,10 +1,10 @@
-main_ts_homepage:
-    path:     /
-    defaults: { _controller: ProductBundle:Project:main }
-#_controller : path+path
-new_project:
-    path:     /new
-    defaults: { _controller: ProductBundle:NewProject:new }
+#main_ts_homepage:
+#    path:     /
+#    defaults: { _controller: ProductBundle:Project:main }
+##_controller : path+path
+#new_project:
+#    path:     /new
+#    defaults: { _controller: ProductBundle:NewProject:new }
 #test_index:
 #    path:     /test/{name}
 #    defaults: { _controller: mainTSBundle:Default:index }
