@@ -14,7 +14,7 @@ class Employee
 {
     /**
      * @var \Application\Sonata\MediaBundle\Entity\Media
-     * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"}, fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"}, fetch="LAZY")
      */
     protected $EmployeeImage;
 
@@ -503,29 +503,6 @@ class Employee
     }
 
     /**
-     * Set photoLocation
-     *
-     * @param string $photoLocation
-     * @return Employee
-     */
-    public function setEmployeeImage(MediaInterface $EmployeeImage)
-    {
-        $this->EmployeeImage = $EmployeeImage;
-
-        return $this;
-    }
-
-    /**
-     * Get photoLocation
-     *
-     * @return string 
-     */
-    public function getEmployeeImage()
-    {
-        return $this->EmployeeImage;
-    }
-
-    /**
      * Set employeeBarcode
      *
      * @param string $employeeBarcode
@@ -546,5 +523,28 @@ class Employee
     public function getEmployeeBarcode()
     {
         return $this->employeeBarcode;
+    }
+
+    /**
+     * Set EmployeeImage
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $employeeImage
+     * @return Employee
+     */
+    public function setEmployeeImage(\Application\Sonata\MediaBundle\Entity\Media $employeeImage = null)
+    {
+        $this->EmployeeImage = $employeeImage;
+
+        return $this;
+    }
+
+    /**
+     * Get EmployeeImage
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getEmployeeImage()
+    {
+        return $this->EmployeeImage;
     }
 }

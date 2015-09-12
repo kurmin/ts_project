@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new TSProj\ProductBundle\TSProjProductBundle(),
             new TSProj\PeopleBundle\TSProjPeopleBundle(),
             new Sonata\MediaBundle\SonataMediaBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle(),
 
             // Add your dependencies
             new Sonata\CoreBundle\SonataCoreBundle(),

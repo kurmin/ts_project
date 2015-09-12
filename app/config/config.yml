@@ -149,15 +149,15 @@ sonata_media:
                 - sonata.media.provider.file
 
             formats:
-                small: { width: 100 , quality: 70}
-                big:   { width: 500 , quality: 70}
+                Preview: { width: 100 , quality: 100}
+                small: { width: 100 , quality: 100}
+                big:   { width: 500 , quality: 100}
 
     cdn:
         server:
-            path: /uploads/media # http://media.sonata-project.org/
+            path: http://localhost/projects/TS_Project/web/uploads/media/
 
     filesystem:
         local:
-            directory:  %kernel.root_dir%/../web/uploads/media
+            directory:  %kernel.root_dir%/../web/uploads/media/
             create:     false
-        
