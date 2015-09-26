@@ -18,3 +18,9 @@ services:
         arguments: [~, TSProj\ProductBundle\Entity\Process, TSProjProductBundle:ProcessAdmin]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, label: Process}
+
+    ts_proj_product.admin.stock:
+        class: TSProj\ProductBundle\Admin\StockAdmin
+        arguments: [~, TSProj\ProductBundle\Entity\Stock, TSProjProductBundle:StockAdmin]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: admin, label: Stock}

@@ -179,7 +179,7 @@ class Stock
     }
     
     public function __toString() {
-        return $this->stockProductName;
+        return $this->id." - ".$this->stockProductName." | Time: ".$this->estimateTime." (in hour)";
     }
 
     /**
