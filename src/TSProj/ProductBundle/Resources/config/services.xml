@@ -43,5 +43,15 @@
               <argument>TSProjProductBundle</argument>
           </call>
         </service>
+        <service id="sonata.admin.stock" class="TSProj\ProductBundle\Admin\StockAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Content" label="Stock"/>
+          <argument />
+          <argument>TSProj\ProductBundle\Entity\Stock</argument>
+          <argument>TSProjProductBundle:StockAdmin</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>TSProjProductBundle</argument>
+          </call>
+        </service>
     </services>
 </container>

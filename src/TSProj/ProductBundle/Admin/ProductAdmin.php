@@ -21,10 +21,67 @@ class ProductAdmin extends Admin
         return $query;
     }
     
+    public function update($object)
+    {
+        $this->preUpdate($object);
+        
+        $em = $this->getModelManager()->getEntityManager($this->getClass());
+        $original = $em->getUnitOfWork()->getOriginalEntityData($object);
+        
+        foreach ($this->extensions as $extension) {
+            $extension->preUpdate($this, $object);
+        }
+
+        $result = $this->getModelManager()->update($object);
+        // BC compatibility
+        if (null !== $result) {
+            $object = $result;
+        }
+           
+        $this->postUpdate($object);
+        foreach ($this->extensions as $extension) {
+            $extension->postUpdate($this, $object);
+        }
+        
+        if($object->getStock() !== $original['stock']) {
+           //get stock id
+           $stockId = "";
+           $pos = 0;
+           while(!ctype_space(substr($original['stock'], $pos, 1))){
+               $stockId .= substr($original['stock'], $pos, 1);
+               $pos++;
+           } 
+           $old = $em->getRepository("TSProjProductBundle:Stock")->find($stockId);
+           $this->updateStock($object,$old);
+        }
+        
+        return $object;
+    }
+    
+    private function updateStock($object,$original){
+        /* @var $object \TSProj\ProductBundle\Entity\Product  */
+        /* @var $original \TSProj\ProductBundle\Entity\Product */
+        $em = $this->getModelManager()->getEntityManager($this->getClass());
+        $original->setStockProductQuantity($original->getStockProductQuantity() + 1);
+        $new_stock = $object->getStock();
+        if($new_stock){
+            $new_stock->setStockProductQuantity($new_stock->getStockProductQuantity() - 1);
+            $object->setProductTimeConsuming($new_stock->getEstimateTime());
+            $em->persist($new_stock);
+        }else{
+            $object->setProductTimeConsuming(0);
+        }
+        $em->persist($object);
+        $em->persist($original);
+        
+        $em->flush();
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function 
+            configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('id')
@@ -91,7 +148,7 @@ class ProductAdmin extends Admin
             ->with('Performance',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))
-                     ->add('stock')
+                     ->add('stock',null,array('required'=>false,'empty_value'=>'------ ไม่ผูกกับ Stock ------'))
                      ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true))
                      ->add('percentFinished') 
             ->end()    
