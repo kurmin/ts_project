@@ -16,8 +16,9 @@ class EmployeeAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
+            ->add('employeeId')
             ->add('employeeNationalIdentityId')
+            ->add('employee_title', 'doctrine_orm_choice', array(), 'choice' , array('choices' => \TSProj\PeopleBundle\Entity\Employee::$titleList))
             ->add('employeeName')
             ->add('employeeSurname')
             ->add('employeeRole')
@@ -30,8 +31,8 @@ class EmployeeAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('employeeNationalIdentityId')
+            ->add('employeeId')
+            ->add('employee_title')
             ->add('employeeName')
             ->add('employeeSurname')
             ->add('employeeTelMobile')
@@ -52,8 +53,9 @@ class EmployeeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
+            ->add('employeeId')
             ->add('employeeNationalIdentityId')
+            ->add('employee_title','choice',array('choices'=>  \TSProj\PeopleBundle\Entity\Employee::$titleList))
             ->add('employeeName')
             ->add('employeeSurname')
             ->add('employeeAddress')
@@ -75,7 +77,7 @@ class EmployeeAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
+            ->add('employeeId')
             ->add('employeeNationalIdentityId')
             ->add('employeeName')
             ->add('employeeSurname')

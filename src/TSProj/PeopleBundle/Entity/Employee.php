@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="TSProj\PeopleBundle\Entity\EmployeeRepository")
  */
 class Employee
-{
+{   
+    public static $titleList = array('นาย'=>'นาย','นาง'=>'นาง','นางสาว'=>'นางสาว');
     /**
      * @var \Application\Sonata\MediaBundle\Entity\Media
      * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media", cascade={"persist"}, fetch="LAZY")
@@ -29,10 +30,18 @@ class Employee
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="employeeID", type="integer")
+     */       
+    private $employeeId;
+    
+     /**
      * @var string
      *
      * @ORM\Column(name="employee_barcode", type="string", length=40)
-     */
+     */        
+    
     private $employeeBarcode;
     
     /**
@@ -42,11 +51,20 @@ class Employee
      */
     private $employeeNationalIdentityId;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="employee_title", type="string", length=20)
+     */
+    
+    private $employee_title;
+    
     /**
      * @var string
      *
      * @ORM\Column(name="employee_name", type="string", length=255)
      */
+    
     private $employeeName;
 
     /**
@@ -134,6 +152,8 @@ class Employee
      *
      * @return integer 
      */
+    
+    
     public function getId()
     {
         return $this->id;
@@ -546,5 +566,51 @@ class Employee
     public function getEmployeeImage()
     {
         return $this->EmployeeImage;
+    }
+
+    /**
+     * Set employeeId
+     *
+     * @param integer $employeeId
+     * @return Employee
+     */
+    public function setEmployeeId($employeeId)
+    {
+        $this->employeeId = $employeeId;
+
+        return $this;
+    }
+
+    /**
+     * Get employeeId
+     *
+     * @return integer 
+     */
+    public function getEmployeeId()
+    {
+        return $this->employeeId;
+    }
+
+    /**
+     * Set employee_title
+     *
+     * @param string $employeeTitle
+     * @return Employee
+     */
+    public function setEmployeeTitle($employeeTitle)
+    {
+        $this->employee_title = $employeeTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get employee_title
+     *
+     * @return string 
+     */
+    public function getEmployeeTitle()
+    {
+        return $this->employee_title;
     }
 }
