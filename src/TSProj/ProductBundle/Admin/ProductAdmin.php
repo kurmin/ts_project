@@ -45,6 +45,7 @@ class ProductAdmin extends Admin
         
         if($object->getStock() !== $original['stock']) {
            //get stock id
+           //stock layout -> [id] - [stockProductName] | Time: [estimateTime (in hour)]
            $stockId = "";
            $pos = 0;
            while(!ctype_space(substr($original['stock'], $pos, 1))){
@@ -90,7 +91,7 @@ class ProductAdmin extends Admin
             ->add('productDescription')
             ->add('productTimeConsuming')
             ->add('drawingId')
-            ->add('drawingLocation')    
+            ->add('drawingImage')    
         ;
     }
 
@@ -106,7 +107,7 @@ class ProductAdmin extends Admin
             ->add('productDescription')
             ->add('productTimeConsuming')
             ->add('drawingId')
-            ->add('drawingLocation')     
+            //->add('drawingImage')     
             ->add('process') 
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))    
             ->add('_action', 'actions', array(
@@ -129,13 +130,12 @@ class ProductAdmin extends Admin
             ->with('General',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))   
-                    ->add('project')     
+                    ->add('project',null,array('empty_value'=>"--------- กรุณาเลือกโปรเจ็ค ---------"))     
                     ->add('productBarcode')
                     ->add('productName')
-                    ->add('productDescription')
-                    ->add('drawingId')
-                    ->add('drawingLocation')     
-                    ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,))    
+                    ->add('productDescription')     
+                    ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,))
+                    ->add('stock',null,array('required'=>false,'empty_value'=>'------ ไม่ผูกกับ Stock ------'))
             ->end()
             ->with('Process List',
                    array('class'       =>  'col-md-6',
@@ -144,13 +144,22 @@ class ProductAdmin extends Admin
                    array(  'expanded'  =>  true,
                            'multiple'  =>  true,
                         ))   
-            ->end()
+            ->end()   
             ->with('Performance',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))
-                     ->add('stock',null,array('required'=>false,'empty_value'=>'------ ไม่ผูกกับ Stock ------'))
                      ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true))
-                     ->add('percentFinished') 
+                     ->add('percentFinished',null,array('required'=>false,'read_only'=>true)) 
+            ->end()    
+            ->with('Drawing',
+                   array('class'       =>  'col-md-6',
+                         'box_class'   =>  'box'))    
+                    ->add('drawingId')
+                    ->add('drawingImage','sonata_media_type', array(
+                          'provider' => 'sonata.media.provider.image',
+                          'context'  => 'product',
+                          'required' => false,
+                         ))
             ->end()    
         ;
     }
@@ -180,7 +189,7 @@ class ProductAdmin extends Admin
             ->add('productDescription')
             ->add('productTimeConsuming')
             ->add('drawingId')
-            ->add('drawingLocation') 
+            ->add('drawingImage', 'string', array('template' => 'TSProjProductBundle:Admin:showImage.html.twig'))
             ->add('process')       
         ;
     }
