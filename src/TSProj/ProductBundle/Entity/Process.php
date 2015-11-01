@@ -62,11 +62,17 @@ class Process
      * @ORM\ManyToMany(targetEntity="Product",mappedBy="process",cascade={"PERSIST"})
      */
     private $product;
+    
+    /**
+     * 
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="currentPhase")
+     **/
+    private $project;
 
     public function __toString() {
         return $this->processName;
     }
-    
+  
     /**
      * Get id
      *
@@ -81,7 +87,7 @@ class Process
      * Set processBarcode
      *
      * @param string $processBarcode
-     * @return Process
+     * @return process
      */
     public function setProcessBarcode($processBarcode)
     {
@@ -104,7 +110,7 @@ class Process
      * Set processName
      *
      * @param string $processName
-     * @return Process
+     * @return process
      */
     public function setProcessName($processName)
     {
@@ -122,24 +128,63 @@ class Process
     {
         return $this->processName;
     }
+
     /**
-     * Constructor
+     * Set deleteFlag
+     *
+     * @param boolean $deleteFlag
+     * @return process
      */
-    public function __construct()
+    public function setDeleteFlag($deleteFlag)
     {
-        $this->productProcessTime = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->deleteFlag = $deleteFlag;
+
+        return $this;
+    }
+
+    /**
+     * Get deleteFlag
+     *
+     * @return boolean 
+     */
+    public function getDeleteFlag()
+    {
+        return $this->deleteFlag;
+    }
+
+    /**
+     * Set lastMaintDateTime
+     *
+     * @param \DateTime $lastMaintDateTime
+     * @return process
+     */
+    public function setLastMaintDateTime($lastMaintDateTime)
+    {
+        $this->lastMaintDateTime = $lastMaintDateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastMaintDateTime
+     *
+     * @return \DateTime 
+     */
+    public function getLastMaintDateTime()
+    {
+        return $this->lastMaintDateTime;
     }
 
     /**
      * Add productProcessTime
      *
      * @param \TSProj\ProductBundle\Entity\ProductProcessTime $productProcessTime
-     * @return Process
+     * @return process
      */
     public function addProductProcessTime(\TSProj\ProductBundle\Entity\ProductProcessTime $productProcessTime)
     {
         $this->productProcessTime[] = $productProcessTime;
-        $productProcessTime->setProcess($this);
+
         return $this;
     }
 
@@ -164,66 +209,15 @@ class Process
     }
 
     /**
-     * Set deleteFlag
-     *
-     * @param boolean $deleteFlag
-     * @return Process
-     */
-    public function setDeleteFlag($deleteFlag)
-    {
-        $this->deleteFlag = $deleteFlag;
-
-        return $this;
-    }
-
-    /**
-     * Get deleteFlag
-     *
-     * @return boolean 
-     */
-    public function getDeleteFlag()
-    {
-        return $this->deleteFlag;
-    }
-
-    /**
-     * Set lastMaintDateTime
-     *
-     * @param \DateTime $lastMaintDateTime
-     * @return Process
-     */
-    public function setLastMaintDateTime($lastMaintDateTime)
-    {
-        $dateTime = new \DateTime();
-        if($lastMaintDateTime){
-            $this->lastMaintDateTime = $lastMaintDateTime;
-        }else{
-            $this->lastMaintDateTime = $dateTime;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Get lastMaintDateTime
-     *
-     * @return \DateTime 
-     */
-    public function getLastMaintDateTime()
-    {
-        return $this->lastMaintDateTime;
-    }
-
-    /**
      * Add product
      *
      * @param \TSProj\ProductBundle\Entity\Product $product
-     * @return Process
+     * @return process
      */
     public function addProduct(\TSProj\ProductBundle\Entity\Product $product)
     {
         $this->product[] = $product;
-        $product->setProcess($this);
+
         return $this;
     }
 
@@ -245,5 +239,38 @@ class Process
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Add project
+     *
+     * @param \TSProj\ProductBundle\Entity\Project $project
+     * @return process
+     */
+    public function addProject(\TSProj\ProductBundle\Entity\Project $project)
+    {
+        $this->project[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project
+     *
+     * @param \TSProj\ProductBundle\Entity\Project $project
+     */
+    public function removeProject(\TSProj\ProductBundle\Entity\Project $project)
+    {
+        $this->project->removeElement($project);
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }

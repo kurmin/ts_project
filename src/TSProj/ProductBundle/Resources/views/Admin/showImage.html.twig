@@ -1,0 +1,6 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+
+{% block field %}
+   <img src="{{ asset('uploads/media/product/0001/01/') }}{{ value|nl2br }}"/>
+{% endblock %}
