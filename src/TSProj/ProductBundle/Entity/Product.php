@@ -50,11 +50,11 @@ class Product
     private $drawingId;
     
     /**
-     * @var string
+     * @var \Application\Sonata\MediaBundle\Entity\Media
      *
-     * @ORM\Column(name="drawing_location", type="string", length=255,nullable=true)
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"},fetch="LAZY")
      */
-    private $drawingLocation;
+    protected $drawingImage;
 
     /**
      * @var float
@@ -230,29 +230,6 @@ class Product
     public function getDrawingId()
     {
         return $this->drawingId;
-    }
-
-    /**
-     * Set drawingLocation
-     *
-     * @param string $drawingLocation
-     * @return Product
-     */
-    public function setDrawingLocation($drawingLocation)
-    {
-        $this->drawingLocation = $drawingLocation;
-
-        return $this;
-    }
-
-    /**
-     * Get drawingLocation
-     *
-     * @return string 
-     */
-    public function getDrawingLocation()
-    {
-        return $this->drawingLocation;
     }
 
     /**
@@ -508,5 +485,28 @@ class Product
     public function getPrevProject()
     {
         return $this->prevProject;
+    }
+
+    /**
+     * Set drawingImage
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $drawingImage
+     * @return Product
+     */
+    public function setDrawingImage(\Application\Sonata\MediaBundle\Entity\Media $drawingImage = null)
+    {
+        $this->drawingImage = $drawingImage;
+
+        return $this;
+    }
+
+    /**
+     * Get drawingImage
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getDrawingImage()
+    {
+        return $this->drawingImage;
     }
 }
