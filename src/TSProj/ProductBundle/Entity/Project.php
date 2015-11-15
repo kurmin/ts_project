@@ -138,7 +138,7 @@ class Project
     /**
      * @var string
      * 
-     * @ORM\Column(name="current_phase",type="string")
+     * @ORM\ManyToOne(targetEntity="Process",inversedBy="project")
      */
     private $currentPhase;
     

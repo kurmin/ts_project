@@ -90,7 +90,7 @@ class ProjectAdmin extends Admin
                 ->with('Contact Info',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box box-solid',))
-                        ->add('client')      
+                        ->add('client',null,array('empty_value'=>"--------- กรุณาเลือกชื่อลูกค้า ---------"))      
                         ->add('projectDeliveryAddress','textarea')
                         ->add('projectContactPhoneNo')       
                 ->end()
@@ -98,9 +98,9 @@ class ProjectAdmin extends Admin
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))    
                         ->add('orderDate','sonata_type_date_picker') 
-                        ->add('expectedDeliveryDate','sonata_type_date_picker')    
-                        ->add('projectStartDate','sonata_type_date_picker')
-                        ->add('projectEndDate','sonata_type_date_picker')
+                        ->add('expectedDeliveryDate','sonata_type_date_picker',array('required'=>false))    
+                        ->add('projectStartDate','sonata_type_date_picker',array('required'=>false))
+                        ->add('projectEndDate','sonata_type_date_picker',array('required'=>false))
                 ->end()    
                 ->with('General',
                    array('class'       =>  'col-md-6',
@@ -111,15 +111,15 @@ class ProjectAdmin extends Admin
                         ->add('percentFinished')
                 ->end() 
             ->end() 
-            ->tab('Product')    
-                         ->add('product', 'sonata_type_collection',
-                            array(),
-                            array(
-                                'edit' => 'inline',
-                                'inline' => 'table',
-                            )
-                         )   
-           ->end()
+//            ->tab('Product')    
+//                         ->add('product', 'sonata_type_collection',
+//                            array(),
+//                            array(
+//                                'edit' => 'inline',
+//                                'inline' => 'table',
+//                            )
+//                         )   
+//           ->end()
         ;
     }
 
