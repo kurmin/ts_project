@@ -52,8 +52,8 @@ class NewProjectController extends Controller
         $query = $em->getRepository('TSProjProductBundle:ProductProcessTime')->createQueryBuilder('p');
         $query->select('p')
               ->where('p.product = :product')->setParameter('product',$product)
-              ->groupBy('p.product')
-              ->orderBy('p.startDateTime');  
+              //->groupBy('p.product')
+              ->orderBy('p.startDateTime ','ASC');  
         $productStartDate = $query->getQuery()->getResult();
         
         if(count($product)==1){
