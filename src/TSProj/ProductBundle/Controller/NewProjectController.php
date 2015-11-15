@@ -48,14 +48,25 @@ class NewProjectController extends Controller
         $productBarcode = $request->request->get('productBarcode');
         $em = $this->getDoctrine()->getEntityManager();
         $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productBarcode);
+        
+        $query = $em->getRepository('TSProjProductBundle:ProductProcessTime')->createQueryBuilder('p');
+        $query->select('p')
+              ->where('p.product = :product')->setParameter('product',$product)
+              ->groupBy('p.product')
+              ->orderBy('p.startDateTime');  
+        $productStartDate = $query->getQuery()->getResult();
+        
         if(count($product)==1){
             $response = array(  "code" => 100, 
                                 "success" => true,
                                 "productname"=>$product->getProductName(),
-                                "projectid"=>$product->getProject()->getId(),
+                                "projectid"=>$product->getProject()->getProjectBarcode(),
                                 "projectname"=>$product->getProject()->getProjectName(),
                                 "expectdate"=>$product->getProject()->getExpectedDeliveryDate(),
-                                "clientname"=>$product->getProject()->getClient()->getClientName()
+                                "clientname"=>$product->getProject()->getClient()->getClientName(),
+                                //***rit*** date is not showing
+                                "productstartdate"=>$productStartDate[0]->getStartDateTime(),
+                                "projectpercent"=>$product->getProject()->getPercentFinished(),
                     );
         }
         else
