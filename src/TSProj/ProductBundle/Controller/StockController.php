@@ -23,7 +23,9 @@ class StockController extends Controller{
      */
     public function stockcreateAction()
     {
+        $em = $this->getDoctrine()->getEntityManager();
+        $Stock = $em->getRepository("TSProjProductBundle:Stock")->findAll();
                  
-        return $this->render('TSProjProductBundle:twig:stock.html.twig');    
+        return $this->render('TSProjProductBundle:twig:stock.html.twig',array("stock" => $Stock));    
     }
 }
