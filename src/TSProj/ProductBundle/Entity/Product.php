@@ -118,6 +118,13 @@ class Product
     private $percentFinished;
     
     /**
+     * @var string
+     * 
+     * @ORM\ManyToOne(targetEntity="Process",inversedBy="currentProduct")
+     */
+    private $currentPhase;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -508,5 +515,28 @@ class Product
     public function getDrawingImage()
     {
         return $this->drawingImage;
+    }
+
+    /**
+     * Set currentPhase
+     *
+     * @param \TSProj\ProductBundle\Entity\Process $currentPhase
+     * @return Product
+     */
+    public function setCurrentPhase(\TSProj\ProductBundle\Entity\Process $currentPhase = null)
+    {
+        $this->currentPhase = $currentPhase;
+
+        return $this;
+    }
+
+    /**
+     * Get currentPhase
+     *
+     * @return \TSProj\ProductBundle\Entity\Process 
+     */
+    public function getCurrentPhase()
+    {
+        return $this->currentPhase;
     }
 }

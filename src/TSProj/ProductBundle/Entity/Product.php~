@@ -118,6 +118,13 @@ class Product
     private $percentFinished;
     
     /**
+     * @var string
+     * 
+     * @ORM\ManyToOne(targetEntity="Process",inversedBy="currentProduct")
+     */
+    private $currentPhase;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -485,5 +492,28 @@ class Product
     public function getPrevProject()
     {
         return $this->prevProject;
+    }
+
+    /**
+     * Set drawingImage
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $drawingImage
+     * @return Product
+     */
+    public function setDrawingImage(\Application\Sonata\MediaBundle\Entity\Media $drawingImage = null)
+    {
+        $this->drawingImage = $drawingImage;
+
+        return $this;
+    }
+
+    /**
+     * Get drawingImage
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media 
+     */
+    public function getDrawingImage()
+    {
+        return $this->drawingImage;
     }
 }

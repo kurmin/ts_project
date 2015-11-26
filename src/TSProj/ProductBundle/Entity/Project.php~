@@ -135,12 +135,9 @@ class Project
      */
     private $percentFinished;
     
-    /**
-     * @var string
-     * 
-     * @ORM\Column(name="current_phase",type="string")
-     */
-    private $currentPhase;
+    public function __toString() {
+        return $this->projectName;
+    }
     
     /**
      * Get id
@@ -541,4 +538,28 @@ class Project
     {
         return $this->expectedDeliveryDate;
     }
+
+    /**
+     * Set percentFinished
+     *
+     * @param float $percentFinished
+     * @return Project
+     */
+    public function setPercentFinished($percentFinished)
+    {
+        $this->percentFinished = $percentFinished;
+
+        return $this;
+    }
+
+    /**
+     * Get percentFinished
+     *
+     * @return float 
+     */
+    public function getPercentFinished()
+    {
+        return $this->percentFinished;
+    }
+
 }

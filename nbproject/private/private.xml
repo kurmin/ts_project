@@ -3,6 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Resources/views/Admin/Employee.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/EmployeeAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Entity/Employee.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProductAdminController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Resources/views/Admin/showImage.html.twig</file>
+=======
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/showImage.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProductAdmin.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Product.php</file>
@@ -10,6 +17,7 @@
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Project.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Process.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Stock.php</file>
+>>>>>>> refs/remotes/origin/master
         </group>
     </open-files>
 </project-private>
