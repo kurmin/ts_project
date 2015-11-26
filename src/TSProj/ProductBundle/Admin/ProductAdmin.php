@@ -148,6 +148,7 @@ class ProductAdmin extends Admin
             ->with('Performance',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))
+                     ->add('currentPhase')        
                      ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true))
                      ->add('percentFinished',null,array('required'=>false,'read_only'=>true)) 
             ->end()    

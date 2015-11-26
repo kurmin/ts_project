@@ -61,11 +61,12 @@ class EmployeeAdmin extends Admin
             ->add('employeeAddress')
             ->add('employeeTelHome')
             ->add('employeeTelMobile')
-            ->add('employeeStartWorkingDate')
-            ->add('employeelastWorkingDate')
+            ->add('employeeStartWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
+            ->add('employeelastWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
             ->add('employeeRole')
            // ->add('EmployeeImage', 'file', array('label' => 'Employee Image', 'required' => false,  'data_class' => null))
             ->add('EmployeeImage', 'sonata_media_type', array(
+                 'required' => false,
                  'provider' => 'sonata.media.provider.image',
                  'context'  => 'Employee'    
             ));

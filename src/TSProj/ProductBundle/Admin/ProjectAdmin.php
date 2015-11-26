@@ -97,17 +97,16 @@ class ProjectAdmin extends Admin
                 ->with('Project Date',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))    
-                        ->add('orderDate','sonata_type_date_picker') 
-                        ->add('expectedDeliveryDate','sonata_type_date_picker',array('required'=>false))    
-                        ->add('projectStartDate','sonata_type_date_picker',array('required'=>false))
-                        ->add('projectEndDate','sonata_type_date_picker',array('required'=>false))
+                        ->add('orderDate','sonata_type_date_picker',array('format' => 'dd/MM/yyyy',)) 
+                        ->add('expectedDeliveryDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy', ))    
+                        ->add('projectStartDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
+                        ->add('projectEndDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
                 ->end()    
                 ->with('General',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))     
                         ->add('amount')    
                         ->add('projectTimeConsuming',null,array('required'=>false,'read_only'=>true))
-                        ->add('currentPhase')    
                         ->add('percentFinished')
                 ->end() 
             ->end() 

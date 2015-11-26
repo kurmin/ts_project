@@ -65,22 +65,180 @@ class Process
     
     /**
      * 
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="currentPhase")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="currentPhase")
      **/
-    private $project;
+    private $currentProduct;
 
     public function __toString() {
         return $this->processName;
     }
+  
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
-     * Constructor
+     * Set processBarcode
+     *
+     * @param string $processBarcode
+     * @return process
      */
-    public function __construct()
+    public function setProcessBarcode($processBarcode)
     {
-        $this->productProcessTime = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->project = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->processBarcode = $processBarcode;
+
+        return $this;
     }
-  
+
+    /**
+     * Get processBarcode
+     *
+     * @return string 
+     */
+    public function getProcessBarcode()
+    {
+        return $this->processBarcode;
+    }
+
+    /**
+     * Set processName
+     *
+     * @param string $processName
+     * @return process
+     */
+    public function setProcessName($processName)
+    {
+        $this->processName = $processName;
+
+        return $this;
+    }
+
+    /**
+     * Get processName
+     *
+     * @return string 
+     */
+    public function getProcessName()
+    {
+        return $this->processName;
+    }
+
+    /**
+     * Set deleteFlag
+     *
+     * @param boolean $deleteFlag
+     * @return process
+     */
+    public function setDeleteFlag($deleteFlag)
+    {
+        $this->deleteFlag = $deleteFlag;
+
+        return $this;
+    }
+
+    /**
+     * Get deleteFlag
+     *
+     * @return boolean 
+     */
+    public function getDeleteFlag()
+    {
+        return $this->deleteFlag;
+    }
+
+    /**
+     * Set lastMaintDateTime
+     *
+     * @param \DateTime $lastMaintDateTime
+     * @return process
+     */
+    public function setLastMaintDateTime($lastMaintDateTime)
+    {
+        $this->lastMaintDateTime = $lastMaintDateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastMaintDateTime
+     *
+     * @return \DateTime 
+     */
+    public function getLastMaintDateTime()
+    {
+        return $this->lastMaintDateTime;
+    }
+
+    /**
+     * Add productProcessTime
+     *
+     * @param \TSProj\ProductBundle\Entity\ProductProcessTime $productProcessTime
+     * @return process
+     */
+    public function addProductProcessTime(\TSProj\ProductBundle\Entity\ProductProcessTime $productProcessTime)
+    {
+        $this->productProcessTime[] = $productProcessTime;
+
+        return $this;
+    }
+
+    /**
+     * Remove productProcessTime
+     *
+     * @param \TSProj\ProductBundle\Entity\ProductProcessTime $productProcessTime
+     */
+    public function removeProductProcessTime(\TSProj\ProductBundle\Entity\ProductProcessTime $productProcessTime)
+    {
+        $this->productProcessTime->removeElement($productProcessTime);
+    }
+
+    /**
+     * Get productProcessTime
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductProcessTime()
+    {
+        return $this->productProcessTime;
+    }
+
+    /**
+     * Add product
+     *
+     * @param \TSProj\ProductBundle\Entity\Product $product
+     * @return process
+     */
+    public function addProduct(\TSProj\ProductBundle\Entity\Product $product)
+    {
+        $this->product[] = $product;
+
+        return $this;
+    }
+
+    /**
+     * Remove product
+     *
+     * @param \TSProj\ProductBundle\Entity\Product $product
+     */
+    public function removeProduct(\TSProj\ProductBundle\Entity\Product $product)
+    {
+        $this->product->removeElement($product);
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
 }

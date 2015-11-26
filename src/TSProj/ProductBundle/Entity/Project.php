@@ -135,13 +135,6 @@ class Project
      */
     private $percentFinished;
     
-    /**
-     * @var string
-     * 
-     * @ORM\ManyToOne(targetEntity="Process",inversedBy="project")
-     */
-    private $currentPhase;
-    
     public function __toString() {
         return $this->projectName;
     }
@@ -569,26 +562,4 @@ class Project
         return $this->percentFinished;
     }
 
-    /**
-     * Set currentPhase
-     *
-     * @param string $currentPhase
-     * @return Project
-     */
-    public function setCurrentPhase($currentPhase)
-    {
-        $this->currentPhase = $currentPhase;
-
-        return $this;
-    }
-
-    /**
-     * Get currentPhase
-     *
-     * @return string 
-     */
-    public function getCurrentPhase()
-    {
-        return $this->currentPhase;
-    }
 }
