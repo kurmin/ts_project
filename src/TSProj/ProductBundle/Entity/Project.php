@@ -45,14 +45,14 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="project_delivery_address", type="string", length=255)
+     * @ORM\Column(name="project_delivery_address", type="string", length=255,nullable=true)
      */
     private $projectDeliveryAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="project_contact_phone_no", type="string", length=45)
+     * @ORM\Column(name="project_contact_phone_no", type="string", length=45,nullable=true)
      */
     private $projectContactPhoneNo;
  
@@ -73,14 +73,14 @@ class Project
     /**
      * @var \Date
      *
-     * @ORM\Column(name="project_start_date", type="date")
+     * @ORM\Column(name="project_start_date", type="date",nullable=true)
      */
     private $projectStartDate;
 
     /**
      * @var \Date
      *
-     * @ORM\Column(name="project_end_date", type="date")
+     * @ORM\Column(name="project_end_date", type="date",nullable=true)
      */
     private $projectEndDate;
 
@@ -119,7 +119,7 @@ class Project
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
     

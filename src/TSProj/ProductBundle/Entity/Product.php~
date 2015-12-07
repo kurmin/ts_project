@@ -125,6 +125,20 @@ class Product
     private $currentPhase;
     
     /**
+     * @var datetime
+     * 
+     * @ORM\Column(name="start_date_time",type="datetime")
+     */
+    private $startDateTime;
+    
+    /**
+     * @var datetime
+     * 
+     * @ORM\Column(name="end_date_time",type="datetime")
+     */
+    private $endDateTime;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -515,5 +529,51 @@ class Product
     public function getDrawingImage()
     {
         return $this->drawingImage;
+    }
+
+    /**
+     * Set currentPhase
+     *
+     * @param \TSProj\ProductBundle\Entity\Process $currentPhase
+     * @return Product
+     */
+    public function setCurrentPhase(\TSProj\ProductBundle\Entity\Process $currentPhase = null)
+    {
+        $this->currentPhase = $currentPhase;
+
+        return $this;
+    }
+
+    /**
+     * Get currentPhase
+     *
+     * @return \TSProj\ProductBundle\Entity\Process 
+     */
+    public function getCurrentPhase()
+    {
+        return $this->currentPhase;
+    }
+
+    /**
+     * Set startDateTime
+     *
+     * @param \DateTime $startDateTime
+     * @return Product
+     */
+    public function setStartDateTime($startDateTime)
+    {
+        $this->startDateTime = $startDateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get startDateTime
+     *
+     * @return \DateTime 
+     */
+    public function getStartDateTime()
+    {
+        return $this->startDateTime;
     }
 }

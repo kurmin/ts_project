@@ -1,7 +1,7 @@
 <?php
 
 namespace TSProj\ProductBundle\Admin;
-
+date_default_timezone_set("Asia/Bangkok");
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

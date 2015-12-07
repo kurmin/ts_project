@@ -125,6 +125,20 @@ class Product
     private $currentPhase;
     
     /**
+     * @var datetime
+     * 
+     * @ORM\Column(name="start_date_time",type="datetime",nullable=true)
+     */
+    private $startDateTime;
+    
+    /**
+     * @var datetime
+     * 
+     * @ORM\Column(name="end_date_time",type="datetime",nullable=true)
+     */
+    private $endDateTime;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -538,5 +552,51 @@ class Product
     public function getCurrentPhase()
     {
         return $this->currentPhase;
+    }
+
+    /**
+     * Set startDateTime
+     *
+     * @param \DateTime $startDateTime
+     * @return Product
+     */
+    public function setStartDateTime($startDateTime)
+    {
+        $this->startDateTime = $startDateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get startDateTime
+     *
+     * @return \DateTime 
+     */
+    public function getStartDateTime()
+    {
+        return $this->startDateTime;
+    }
+
+    /**
+     * Set endDateTime
+     *
+     * @param \DateTime $endDateTime
+     * @return Product
+     */
+    public function setEndDateTime($endDateTime)
+    {
+        $this->endDateTime = $endDateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get endDateTime
+     *
+     * @return \DateTime 
+     */
+    public function getEndDateTime()
+    {
+        return $this->endDateTime;
     }
 }

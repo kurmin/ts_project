@@ -53,7 +53,7 @@ class Process
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
     
