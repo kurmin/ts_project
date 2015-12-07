@@ -1,7 +1,7 @@
 <?php
 
 namespace TSProj\ProductBundle\Admin;
-
+date_default_timezone_set("Asia/Bangkok");
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -9,17 +9,8 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class ProductAdmin extends Admin
+class ProductAdmin extends BaseAdmin
 {
-    public function createQuery($context = 'list')
-    {
-        $query = parent::createQuery($context);
-        $query->andWhere(
-            $query->expr()->eq($query->getRootAliases()[0] . '.deleteFlag', ':not_delete')
-        );
-        $query->setParameter('not_delete', 0);
-        return $query;
-    }
     
     public function update($object)
     {
@@ -42,40 +33,51 @@ class ProductAdmin extends Admin
         foreach ($this->extensions as $extension) {
             $extension->postUpdate($this, $object);
         }
-        
         if($object->getStock() !== $original['stock']) {
            //get stock id
            //stock layout -> [id] - [stockProductName] | Time: [estimateTime (in hour)]
            $stockId = "";
-           $pos = 0;
-           while(!ctype_space(substr($original['stock'], $pos, 1))){
-               $stockId .= substr($original['stock'], $pos, 1);
-               $pos++;
-           } 
-           $old = $em->getRepository("TSProjProductBundle:Stock")->find($stockId);
-           $this->updateStock($object,$old);
+           if(!is_null($original['stock'])){
+                $pos = 0;
+                while(!ctype_space(substr($original['stock'], $pos, 1))){
+                    $stockId .= substr($original['stock'], $pos, 1);
+                    $pos++;
+                }
+                $old = $em->getRepository("TSProjProductBundle:Stock")->find($stockId);
+                $old->setStockProductQuantity($old->getStockProductQuantity() + 1);
+                $object->setProductTimeConsuming($original['productTimeConsuming']-$old->getEstimateTime());
+           }
+           $this->updateStock($object);
         }
+        
+        // Set date to today
+        $dateTime = new \DateTime();
+        
+        //update last maintenance date time
+        $object->setLastMaintDateTime($dateTime);
+        $old->setLastMaintDateTime($dateTime);
+        $em->persist($object);
+        $em->persist($old);
+        
+        $em->flush();
         
         return $object;
     }
     
-    private function updateStock($object,$original){
+    private function updateStock($object){
         /* @var $object \TSProj\ProductBundle\Entity\Product  */
-        /* @var $original \TSProj\ProductBundle\Entity\Product */
         $em = $this->getModelManager()->getEntityManager($this->getClass());
-        $original->setStockProductQuantity($original->getStockProductQuantity() + 1);
         $new_stock = $object->getStock();
+        $curr = new \DateTime();
         if($new_stock){
             $new_stock->setStockProductQuantity($new_stock->getStockProductQuantity() - 1);
-            $object->setProductTimeConsuming($new_stock->getEstimateTime());
+            $new_stock->setLastMaintDateTime($curr);
+            $object->setProductTimeConsuming($object->getProductTimeConsuming() + $new_stock->getEstimateTime());
             $em->persist($new_stock);
         }else{
             $object->setProductTimeConsuming(0);
         }
         $em->persist($object);
-        $em->persist($original);
-        
-        $em->flush();
     }
 
     /**
@@ -85,13 +87,18 @@ class ProductAdmin extends Admin
             configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
+            ->add('project')    
             ->add('productBarcode')
             ->add('productName')
             ->add('productDescription')
             ->add('productTimeConsuming')
             ->add('drawingId')
-            ->add('drawingImage')    
+            ->add('stock')
+            ->add('productStatus',null,array('choices'=> \TSProj\ProductBundle\Entity\WorkStatus::$status_list))  
+            ->add('percentFinished')
+            ->add('currentPhase')
+            ->add('startDateTime', 'doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
+            ->add('endDateTime', 'doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
         ;
     }
 
@@ -101,14 +108,11 @@ class ProductAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper    
-            ->add('id')
             ->add('productBarcode')
             ->add('productName')
-            ->add('productDescription')
             ->add('productTimeConsuming')
-            ->add('drawingId')
-            //->add('drawingImage')     
-            ->add('process') 
+            ->add('drawingId')     
+            ->add('currentPhase') 
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))    
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -134,7 +138,7 @@ class ProductAdmin extends Admin
                     ->add('productBarcode')
                     ->add('productName')
                     ->add('productDescription')     
-                    ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,))
+                    ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,'required'=>true))
                     ->add('stock',null,array('required'=>false,'empty_value'=>'------ ไม่ผูกกับ Stock ------'))
             ->end()
             ->with('Process List',
@@ -148,9 +152,11 @@ class ProductAdmin extends Admin
             ->with('Performance',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))
-                     ->add('currentPhase')        
+                     ->add('currentPhase',null,array('required'=>false))        
                      ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true))
                      ->add('percentFinished',null,array('required'=>false,'read_only'=>true)) 
+                     ->add('startDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
+                     ->add('endDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm', ))
             ->end()    
             ->with('Drawing',
                    array('class'       =>  'col-md-6',
@@ -173,8 +179,10 @@ class ProductAdmin extends Admin
         $dateTime = new \DateTime();
 
         // Instance points to the entity that is being created
-        $instance->setLastMaintDateTime($dateTime);
-
+        $instance->setLastMaintDateTime($dateTime)
+                 ->setPercentFinished(0)
+                 ->setDeleteFlag(0);
+        
         return $instance;
     }
 
@@ -184,14 +192,19 @@ class ProductAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
+            ->add('project')
             ->add('productBarcode')
             ->add('productName')
             ->add('productDescription')
-            ->add('productTimeConsuming')
+            ->add('productStatus')    
             ->add('drawingId')
             ->add('drawingImage', 'string', array('template' => 'TSProjProductBundle:Admin:showImage.html.twig'))
-            ->add('process')       
+            ->add('process')    
+            ->add('currentPhase')  
+            ->add('startDateTime')
+            ->add('endDateTime')
+            ->add('productTimeConsuming')        
+            ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig'))    
         ;
     }
     

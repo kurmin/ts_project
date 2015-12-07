@@ -28,6 +28,7 @@
           <tag name="sonata.admin" manager_type="orm" group="People" label="Employee"/>
           <argument />
           <argument>TSProj\PeopleBundle\Entity\Employee</argument>
+          <argument>TSProjPeopleBundle:EmployeeAdmin</argument>
           <argument />
           <call method="setTranslationDomain">
               <argument>TSProjPeopleBundle</argument>
@@ -37,6 +38,7 @@
           <tag name="sonata.admin" manager_type="orm" group="People" label="Client"/>
           <argument />
           <argument>TSProj\PeopleBundle\Entity\Client</argument>
+          <argument>TSProjPeopleBundle:ClientAdmin</argument>
           <argument />
           <call method="setTranslationDomain">
               <argument>TSProjPeopleBundle</argument>

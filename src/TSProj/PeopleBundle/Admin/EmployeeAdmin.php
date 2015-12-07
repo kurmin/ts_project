@@ -1,15 +1,29 @@
 <?php
 
 namespace TSProj\PeopleBundle\Admin;
-
-use Sonata\AdminBundle\Admin\Admin;
+date_default_timezone_set("Asia/Bangkok");
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
-class EmployeeAdmin extends Admin
+class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
 {
+   public function getNewInstance()
+    {
+        $instance = parent::getNewInstance();
+
+        // Set date to today
+        $dateTime = new \DateTime();
+
+        // Instance points to the entity that is being created
+        $instance->setLastMaintDateTime($dateTime)
+                 ->setDeleteFlag(0);
+
+        return $instance;
+    }
+    
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -17,11 +31,14 @@ class EmployeeAdmin extends Admin
     {
         $datagridMapper
             ->add('employeeId')
+            ->add('employeeBarcode')    
             ->add('employeeNationalIdentityId')
             ->add('employee_title', 'doctrine_orm_choice', array(), 'choice' , array('choices' => \TSProj\PeopleBundle\Entity\Employee::$titleList))
             ->add('employeeName')
             ->add('employeeSurname')
             ->add('employeeRole')
+            ->add('employeeTelMobile')    
+            ->add('employeeStartWorkingDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
         ;
     }
 
@@ -41,7 +58,7 @@ class EmployeeAdmin extends Admin
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
-                    'delete' => array(),
+                    'delete' => array('template' => 'TSProjPeopleBundle:CRUD:list__action_deleteRow.html.twig'),
                 )
             ))
         ;
@@ -54,16 +71,18 @@ class EmployeeAdmin extends Admin
     {
         $formMapper
             ->add('employeeId')
+            ->add('employeeBarcode')    
             ->add('employeeNationalIdentityId')
             ->add('employee_title','choice',array('choices'=>  \TSProj\PeopleBundle\Entity\Employee::$titleList))
             ->add('employeeName')
             ->add('employeeSurname')
             ->add('employeeAddress')
-            ->add('employeeTelHome')
+            ->add('employeeTelHome',null,array('required'=>false))
             ->add('employeeTelMobile')
             ->add('employeeStartWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
             ->add('employeelastWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
             ->add('employeeRole')
+            ->add('employeeStatus',null,array('required'=>false))    
            // ->add('EmployeeImage', 'file', array('label' => 'Employee Image', 'required' => false,  'data_class' => null))
             ->add('EmployeeImage', 'sonata_media_type', array(
                  'required' => false,
@@ -79,9 +98,9 @@ class EmployeeAdmin extends Admin
     {
         $showMapper
             ->add('employeeId')
+            ->add('employeeBarcode')    
             ->add('employeeNationalIdentityId')
-            ->add('employeeName')
-            ->add('employeeSurname')
+            ->add('name')    
             ->add('employeeAddress')
             ->add('employeeTelHome')
             ->add('employeeTelMobile')
@@ -89,6 +108,12 @@ class EmployeeAdmin extends Admin
             ->add('employeelastWorkingDate')
             ->add('employeeRole')
             ->add('EmployeeImage','string', array('template' => 'TSProjPeopleBundle:Admin:showImage.html.twig'))
+            ->add('employeeStatus')    
         ;
+    }
+    
+     protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow');
     }
 }

@@ -57,7 +57,7 @@ class Employee
      * @ORM\Column(name="employee_title", type="string", length=20)
      */
     
-    private $employee_title;
+    private $employeeTitle;
     
     /**
      * @var string
@@ -126,7 +126,7 @@ class Employee
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
     
@@ -235,6 +235,11 @@ class Employee
         return $this->employeeSurname;
     }
 
+    public function getName()
+    {
+        return $this->employeeTitle.$this->employeeName." ".$this->employeeSurname; 
+    }   
+    
     /**
      * Set employeeAddress
      *
@@ -599,7 +604,7 @@ class Employee
      */
     public function setEmployeeTitle($employeeTitle)
     {
-        $this->employee_title = $employeeTitle;
+        $this->employeeTitle = $employeeTitle;
 
         return $this;
     }
@@ -611,6 +616,6 @@ class Employee
      */
     public function getEmployeeTitle()
     {
-        return $this->employee_title;
+        return $this->employeeTitle;
     }
 }
