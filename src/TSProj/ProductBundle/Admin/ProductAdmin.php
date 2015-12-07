@@ -33,6 +33,10 @@ class ProductAdmin extends BaseAdmin
         foreach ($this->extensions as $extension) {
             $extension->postUpdate($this, $object);
         }
+        
+        // Set date to today
+        $dateTime = new \DateTime();
+        
         if($object->getStock() !== $original['stock']) {
            //get stock id
            //stock layout -> [id] - [stockProductName] | Time: [estimateTime (in hour)]
@@ -45,19 +49,16 @@ class ProductAdmin extends BaseAdmin
                 }
                 $old = $em->getRepository("TSProjProductBundle:Stock")->find($stockId);
                 $old->setStockProductQuantity($old->getStockProductQuantity() + 1);
+                $old->setLastMaintDateTime($dateTime);
                 $object->setProductTimeConsuming($original['productTimeConsuming']-$old->getEstimateTime());
+                $em->persist($old);
            }
            $this->updateStock($object);
         }
         
-        // Set date to today
-        $dateTime = new \DateTime();
-        
         //update last maintenance date time
         $object->setLastMaintDateTime($dateTime);
-        $old->setLastMaintDateTime($dateTime);
         $em->persist($object);
-        $em->persist($old);
         
         $em->flush();
         
