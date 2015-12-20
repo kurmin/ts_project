@@ -33,7 +33,6 @@ class StockAdmin extends BaseAdmin
     {
         $datagridMapper
             ->add('stockProductName')
-            ->add('stockProductDescription')
             ->add('estimateTime')
             ->add('stockProductQuantity')
         ;
