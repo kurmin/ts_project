@@ -37,14 +37,12 @@ class ProjectAdmin extends BaseAdmin
             ->add('projectBarcode')    
             ->add('projectName')
             ->add('client')    
-            ->add('amount')    
+            //->add('amount')    
             ->add('projectStatus',null,array('choices'=> \TSProj\ProductBundle\Entity\WorkStatus::$status_list))
-            ->add('orderDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
-            ->add('expectDeliveryDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
-            ->add('projectStartDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
-            ->add('projectEndDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
-            ->add('projectTimeConsuming')    
-            ->add('percentFinished')    
+//            ->add('orderDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
+//            ->add('expectDeliveryDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
+//            ->add('projectStartDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
+//            ->add('projectEndDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))   
         ;
     }
 

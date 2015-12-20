@@ -36,9 +36,7 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
             ->add('employee_title', 'doctrine_orm_choice', array(), 'choice' , array('choices' => \TSProj\PeopleBundle\Entity\Employee::$titleList))
             ->add('employeeName')
             ->add('employeeSurname')
-            ->add('employeeRole')
-            ->add('employeeTelMobile')    
-            ->add('employeeStartWorkingDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
+            ->add('employeeRole') 
         ;
     }
 

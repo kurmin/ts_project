@@ -91,15 +91,10 @@ class ProductAdmin extends BaseAdmin
             ->add('project')    
             ->add('productBarcode')
             ->add('productName')
-            ->add('productDescription')
-            ->add('productTimeConsuming')
-            ->add('drawingId')
-            ->add('stock')
             ->add('productStatus',null,array('choices'=> \TSProj\ProductBundle\Entity\WorkStatus::$status_list))  
-            ->add('percentFinished')
             ->add('currentPhase')
-            ->add('startDateTime', 'doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
-            ->add('endDateTime', 'doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
+            //->add('startDateTime', 'doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
+            //->add('endDateTime', 'doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
         ;
     }
 
@@ -109,10 +104,10 @@ class ProductAdmin extends BaseAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper    
+            ->add('project')    
             ->add('productBarcode')
             ->add('productName')
             ->add('productTimeConsuming')
-            ->add('drawingId')     
             ->add('currentPhase') 
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))    
             ->add('_action', 'actions', array(
@@ -135,7 +130,7 @@ class ProductAdmin extends BaseAdmin
             ->with('General',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))   
-                    ->add('project',null,array('empty_value'=>"--------- กรุณาเลือกโปรเจ็ค ---------"))     
+                    ->add('project',null,array('empty_value'=>"--------- กรุณาเลือกโปรเจ็ค ---------",'required'=>true))     
                     ->add('productBarcode')
                     ->add('productName')
                     ->add('productDescription')     

@@ -179,8 +179,8 @@
                 </div>
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
-                    <span style="text-align:right;font-weight: bold;">วันที่:</span>
-                    <input type="text" name="createdate" id="createdate" class="form-control"  placeholder="วันที่ทำชิ้นงาน" />
+                    <span style="text-align:right;font-weight: bold;">วันที่เริ่มงาน:</span>
+                    <input type="text" name="productstartdate" id="productstartdate" class="form-control"  placeholder="วันที่เริ่มงาน" />
                 </div>
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
@@ -214,7 +214,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">รหัสพนักงาน:</span>
-                    <input type="text" name="empid" id="empid" maxlength="4" class="form-control"  placeholder="รหัสพนักงาน" />
+                    <input type="text" name="empid" id="empid" class="form-control"  placeholder="รหัสพนักงาน" />
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
@@ -266,6 +266,11 @@
                     <span style="text-align:right;font-weight: bold;">วันที่สิ้นสุดกระบวนการ:</span>
                     <input type="text" name="processenddate" id="processenddate"  class="form-control"  placeholder="วันที่สิ้นสุดกระบวนการ" />
                 </div>
+            </div>   
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                     <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>
+                </div>
             </div>
         </div>
     </div>
@@ -288,9 +293,9 @@
         });
         
         $(document).on("change","#empid",function(){
-           {# if($("#projectid").val().length=="11")
+            {#if($("#projectid").val().length=="11")
             {#}
-                if($(this).val().length==4)
+                if($(this).val().length!=0)
                 {
                    {# $("#pg2").removeClass("step-active").addClass("step-done");
                     $("#pg3").addClass("step-active");#}
@@ -298,21 +303,23 @@
                 }
                 else
                 {
-                    alert("กรุณาระบุรหัสหนักงานให้ครบ 4 ตำแหน่ง");
+{#                    alert("กรุณาระบุรหัสหนักงานให้ครบ 4 ตำแหน่ง");#}
                     {#$("#pg2").removeClass("step-done").addClass("step-active");
                     $("#pg3").removeClass("step-active");#}
-                    $(this).focus();
-                    return;
-                }
-          {#  }
-            else
-            {
-                $("#pg1").removeClass("step-done").addClass("step-active");
+                    {#$(this).focus();
+                    return;#}
+                    get_employeedetail($("#empid").val());
+                
+                 }
+{#            }     #}
+{#            else#}
+{#            {#}
+                {#$("#pg1").removeClass("step-done").addClass("step-active");
                 $("#pg2").removeClass("step-active");
                 alert("กรุณาระบุรหัสโปรเจกก่อน");
                 $("#projectid").focus();
-                return;
-            }#}
+                return;#}
+{#            }#}
           
         });
         {#$(document).on("change","#empid",function(){
@@ -327,12 +334,22 @@
                     return;
                 }
         });#}
+        
+        $(document).on("click", "#insertTable", function() {
+           alert("Test");
+           $(this).focus();
+           return;
+        });
+            
         $(document).on("change","#processid",function(){
              if($(this).val().length!=0)
                 {
                     get_processid($(this).val());
                 }
         });
+        
+        // Insert button functionality
+
         
         function get_employeedeatail(empid)
         {
@@ -341,7 +358,7 @@
                     {'empid': empid}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
-                      $("#empname").val(response.name);
+                      $("#empname").val(response.empname);
                     }else if(response.code == 300)
                     {
                         alert(response.message);
@@ -359,6 +376,9 @@
                       $("#projectname").val(response.projectname);
                       $("#deliverdate").val(response.expectdate.date);
                       $("#customername").val(response.clientname);
+                      $("#productstartdate").val(response.productstartdate);
+                      $("#projectpercent").val(response.projectpercent);
+                      $("#itemcount").val(response.itemcount);
                     }else if(response.code == 300)
                     {
                         alert(response.message);

@@ -32,9 +32,6 @@ class ClientAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
         $datagridMapper
             ->add('clientName')
             ->add('clientContactName')
-            ->add('clientAddress')
-            ->add('clientTelNo1')    
-            ->add('clientTelNo2')     
         ;
     }
 
