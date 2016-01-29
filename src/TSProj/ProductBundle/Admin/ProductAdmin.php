@@ -143,6 +143,8 @@ class ProductAdmin extends BaseAdmin
                 ->add('process',null,
                    array(  'expanded'  =>  true,
                            'multiple'  =>  true,
+                           'required'  =>  true,
+                           'empty_data' => 'ไม่มีงาน, รองานผลิต',
                         ))   
             ->end()   
             ->with('Performance',
@@ -206,6 +208,7 @@ class ProductAdmin extends BaseAdmin
     
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow');
+        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow')
+                   ->remove('delete');
     }
 }

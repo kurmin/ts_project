@@ -86,6 +86,7 @@ class ClientAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
     
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow');
+        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow')
+                   ->remove('delete');
     }
 }

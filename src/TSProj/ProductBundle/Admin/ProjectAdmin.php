@@ -59,7 +59,7 @@ class ProjectAdmin extends BaseAdmin
             ->add('amount')    
             ->add('orderDate')     
             ->add('expectDeliveryDate') 
-            ->add('projectTimeConsuming')    
+            ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:list_time.html.twig'))  
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))     
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -104,8 +104,8 @@ class ProjectAdmin extends BaseAdmin
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))     
                         ->add('amount')    
-                        ->add('projectTimeConsuming',null,array('required'=>false,'read_only'=>true))
-                        ->add('percentFinished',null,array('required'=>false,))
+//                        ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming'))
+                        ->add('percentFinished',null,array('required'=>false,'read_only'=>true))
                 ->end() 
             ->end() 
 //            ->tab('Product')    
@@ -138,7 +138,7 @@ class ProjectAdmin extends BaseAdmin
             ->add('expectDeliveryDate')        
             ->add('projectStartDate')
             ->add('projectEndDate')  
-            ->add('projectTimeConsuming') 
+            ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:show_time.html.twig'))
             ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig'))      
         ;
     }
@@ -149,6 +149,7 @@ class ProjectAdmin extends BaseAdmin
 //    }
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow');
+        $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow')
+                   ->remove('delete');
     }
 }

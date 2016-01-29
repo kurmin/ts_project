@@ -90,6 +90,27 @@ class Project
      * @ORM\Column(name="project_time_consuming", type="float",nullable=true)
      */
     private $projectTimeConsuming;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="time_consuming_days", type="integer",nullable=true)
+     */
+    private $timeConsumingDays=0;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="time_consuming_hours", type="integer",nullable=true)
+     */
+    private $timeConsuminghours=0;
+    
+     /**
+     * @var integer
+     * 
+     * @ORM\Column(name="time_consuming_mins", type="integer",nullable=true)
+     */
+    private $timeConsumingmins=0;
 
     /**
      * @ORM\ManyToOne(targetEntity="TSProj\PeopleBundle\Entity\Client",inversedBy="project")
@@ -562,4 +583,82 @@ class Project
         return $this->percentFinished;
     }
 
+
+    /**
+     * Set timeConsumingDays
+     *
+     * @param \int $timeConsumingDays
+     * @return Project
+     */
+    public function setTimeConsumingDays($timeConsumingDays)
+    {
+        $this->timeConsumingDays = $timeConsumingDays;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsumingDays
+     *
+     * @return \int 
+     */
+    public function getTimeConsumingDays()
+    {
+        return $this->timeConsumingDays;
+    }
+
+    /**
+     * Set timeConsuminghours
+     *
+     * @param \int $timeConsuminghours
+     * @return Project
+     */
+    public function setTimeConsuminghours($timeConsuminghours)
+    {
+        $this->timeConsuminghours = $timeConsuminghours;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsuminghours
+     *
+     * @return \int 
+     */
+    public function getTimeConsuminghours()
+    {
+        return $this->timeConsuminghours;
+    }
+
+    /**
+     * Set timeConsumingmins
+     *
+     * @param \int $timeConsumingmins
+     * @return Project
+     */
+    public function setTimeConsumingmins($timeConsumingmins)
+    {
+        $this->timeConsumingmins = $timeConsumingmins;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsumingmins
+     *
+     * @return \int 
+     */
+    public function getTimeConsumingmins()
+    {
+        return $this->timeConsumingmins;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getTimeConsuming()
+    {
+        return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsuminghours(),$this->getTimeConsumingmins());
+    }        
 }
