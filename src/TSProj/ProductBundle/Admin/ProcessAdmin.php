@@ -64,4 +64,9 @@ class ProcessAdmin extends Admin
             ->add('processName')
         ;
     }
+    
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('delete');
+    }
 }

@@ -46,7 +46,7 @@ class StockAdmin extends BaseAdmin
         $listMapper
             ->add('stockProductName')
             ->add('stockProductDescription')
-            ->add('estimateTime')
+            ->add('estimateTime',null,array('label'=>'Estimated Time(hrs)'))
             ->add('stockProductQuantity')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -67,7 +67,7 @@ class StockAdmin extends BaseAdmin
         $formMapper
             ->add('stockProductName')
             ->add('stockProductDescription')
-            ->add('estimateTime')
+            ->add('estimateTime',null,array('label'=>'Estimated Time(hrs)'))
             ->add('stockProductQuantity')
         ;
     }
@@ -80,13 +80,14 @@ class StockAdmin extends BaseAdmin
         $showMapper
             ->add('stockProductName')
             ->add('stockProductDescription')
-            ->add('estimateTime')
+            ->add('estimateTime',null,array('label'=>'Estimated Time','template'=>'TSProjProductBundle:Admin:time.html.twig'))
             ->add('stockProductQuantity')
         ;
     }
     
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow');
+        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow')
+                   ->remove('delete');
     }
 }

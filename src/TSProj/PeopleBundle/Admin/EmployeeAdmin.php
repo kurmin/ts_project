@@ -80,7 +80,7 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
             ->add('employeeStartWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
             ->add('employeelastWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
             ->add('employeeRole')
-            ->add('employeeStatus',null,array('required'=>false))    
+            ->add('employeeStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,))    
            // ->add('EmployeeImage', 'file', array('label' => 'Employee Image', 'required' => false,  'data_class' => null))
             ->add('EmployeeImage', 'sonata_media_type', array(
                  'required' => false,
@@ -112,6 +112,7 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
     
      protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow');
+        $collection->add('deleteRow', $this->getRouterIdParameter().'/deleteRow')
+                   ->remove('delete');
     }
 }

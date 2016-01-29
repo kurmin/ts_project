@@ -1,0 +1,15 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+
+{% block field %}
+    {% set time = value|split(',')%}
+    {#{{value}}#}
+    {% if time[0] is not empty and time[0] != 0 %}
+        {{time[0]}} day(s)
+    {% endif %}
+    {% if time[1] is not empty and time[1] != 0 %}
+        {{time[1]}} hour(s)
+    {% endif %}
+    {% if time[2] is not empty and time[2] != 0%}
+        {{time[2]}} min(s)
+    {% endif %}
+{% endblock %}
