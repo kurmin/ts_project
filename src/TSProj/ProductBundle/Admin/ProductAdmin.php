@@ -65,6 +65,16 @@ class ProductAdmin extends BaseAdmin
         return $object;
     }
     
+    public function preUpdate($object) {
+        parent::preUpdate($object);
+        $em = $this->getModelManager()->getEntityManager($this->getClass());
+        $startDate = $object->getStartDateTime();
+        $endDate = $object->getEndDateTime();
+        if($endDate < $startDate){
+            
+        }
+    }
+    
     private function updateStock($object){
         /* @var $object \TSProj\ProductBundle\Entity\Product  */
         $em = $this->getModelManager()->getEntityManager($this->getClass());
@@ -80,6 +90,13 @@ class ProductAdmin extends BaseAdmin
         }
         $em->persist($object);
     }
+    
+//    public function validate(ErrorElement $errorElement, $object) {
+//        $errorElement 
+//            ->with('endDateTime')
+//                ->assertGreaterThan('endDateTime','startDateTime')
+//            ->end();    
+//    }
 
     /**
      * @param DatagridMapper $datagridMapper
@@ -108,6 +125,7 @@ class ProductAdmin extends BaseAdmin
             ->add('productBarcode')
             ->add('productName')
             ->add('productTimeConsuming')
+			->add('productStatus')
             ->add('currentPhase') 
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))    
             ->add('_action', 'actions', array(
@@ -133,7 +151,8 @@ class ProductAdmin extends BaseAdmin
                     ->add('project',null,array('empty_value'=>"--------- กรุณาเลือกโปรเจ็ค ---------",'required'=>true))     
                     ->add('productBarcode')
                     ->add('productName')
-                    ->add('productDescription')     
+                    ->add('productDescription') 
+					->add('material',null,array('required'=>false))	
                     ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,'required'=>true))
                     ->add('stock',null,array('required'=>false,'empty_value'=>'------ ไม่ผูกกับ Stock ------'))
             ->end()
@@ -150,9 +169,11 @@ class ProductAdmin extends BaseAdmin
             ->with('Performance',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))
-                     ->add('currentPhase',null,array('required'=>false))        
+                     ->add('currentPhase',null,array('required'=>false)) 
+					 ->add('estimatedTimeHour',null,array('required'=>false,'label'=>'Estimated Time (Hour)'))
+					 ->add('estimatedTimeMin',null,array('required'=>false,'label'=>'Estimated Time (Minute)'))
                      ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true))
-                     ->add('percentFinished',null,array('required'=>false,'read_only'=>true)) 
+                     ->add('percentFinished',null,array('required'=>false,'read_only'=>true,"label"=> 'Percent Finished (%)')) 
                      ->add('startDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
                      ->add('endDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm', ))
             ->end()    
@@ -194,16 +215,18 @@ class ProductAdmin extends BaseAdmin
             ->add('productBarcode')
             ->add('productName')
             ->add('productDescription')
+			->add('material')
             ->add('productStatus')    
             ->add('drawingId')
             ->add('drawingImage', 'string', array('template' => 'TSProjProductBundle:Admin:showImage.html.twig'))
             ->add('process')    
             ->add('currentPhase')  
+			->add('estimatedTimeHour')
+			->add('estimatedTimeMin')
             ->add('startDateTime')
             ->add('endDateTime')
             ->add('productTimeConsuming')        
-            ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig'))    
-        ;
+            ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig','label'=>'Percent Finidhed (%)'));
     }
     
     protected function configureRoutes(RouteCollection $collection)
