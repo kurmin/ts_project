@@ -137,6 +137,27 @@ class Product
      * @ORM\Column(name="end_date_time",type="datetime",nullable=true)
      */
     private $endDateTime;
+	
+	/**
+     * @var string
+     * 
+     * @ORM\Column(name="material",type="string",nullable=true)
+     */
+	 private $material;
+	 
+	 /**
+     * @var integer
+     * 
+     * @ORM\Column(name="estimated_time_hour",type="integer",nullable=true)
+     */
+	 private $estimatedTimeHour;
+	 
+	 /**
+     * @var integer
+     * 
+     * @ORM\Column(name="estimated_time_min",type="integer",nullable=true)
+     */
+	 private $estimatedTimeMin;
     
     /**
      * Constructor
@@ -598,5 +619,74 @@ class Product
     public function getEndDateTime()
     {
         return $this->endDateTime;
+    }
+
+    /**
+     * Set material
+     *
+     * @param string $material
+     * @return Product
+     */
+    public function setMaterial($material)
+    {
+        $this->material = $material;
+
+        return $this;
+    }
+
+    /**
+     * Get material
+     *
+     * @return string 
+     */
+    public function getMaterial()
+    {
+        return $this->material;
+    }
+
+    /**
+     * Set estimatedTimeHour
+     *
+     * @param integer $estimatedTimeHour
+     * @return Product
+     */
+    public function setEstimatedTimeHour($estimatedTimeHour)
+    {
+        $this->estimatedTimeHour = $estimatedTimeHour;
+
+        return $this;
+    }
+
+    /**
+     * Get estimatedTimeHour
+     *
+     * @return integer 
+     */
+    public function getEstimatedTimeHour()
+    {
+        return $this->estimatedTimeHour;
+    }
+
+    /**
+     * Set estimatedTimeMin
+     *
+     * @param integer $estimatedTimeMin
+     * @return Product
+     */
+    public function setEstimatedTimeMin($estimatedTimeMin)
+    {
+        $this->estimatedTimeMin = $estimatedTimeMin;
+
+        return $this;
+    }
+
+    /**
+     * Get estimatedTimeMin
+     *
+     * @return integer 
+     */
+    public function getEstimatedTimeMin()
+    {
+        return $this->estimatedTimeMin;
     }
 }

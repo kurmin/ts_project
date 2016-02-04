@@ -156,6 +156,13 @@ class Project
      */
     private $percentFinished;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="work_order_no", type="string", length=20)
+     */
+    private $workOrderNo;
+    
     public function __toString() {
         return $this->projectName;
     }
@@ -661,4 +668,27 @@ class Project
     {
         return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsuminghours(),$this->getTimeConsumingmins());
     }        
+
+    /**
+     * Set workOrderNo
+     *
+     * @param string $workOrderNo
+     * @return Project
+     */
+    public function setWorkOrderNo($workOrderNo)
+    {
+        $this->workOrderNo = $workOrderNo;
+
+        return $this;
+    }
+
+    /**
+     * Get workOrderNo
+     *
+     * @return string 
+     */
+    public function getWorkOrderNo()
+    {
+        return $this->workOrderNo;
+    }
 }

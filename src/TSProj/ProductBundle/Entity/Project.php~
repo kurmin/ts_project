@@ -92,25 +92,25 @@ class Project
     private $projectTimeConsuming;
     
     /**
-     * @var int
+     * @var integer
      * 
-     * @ORM\Column(name="time_consuming_days", type="int",nullable=true)
+     * @ORM\Column(name="time_consuming_days", type="integer",nullable=true)
      */
-    private $timeConsumingDays;
+    private $timeConsumingDays=0;
     
     /**
-     * @var int
+     * @var integer
      * 
-     * @ORM\Column(name="time_consuming_hours", type="int",nullable=true)
+     * @ORM\Column(name="time_consuming_hours", type="integer",nullable=true)
      */
-    private $timeConsuminghours;
+    private $timeConsuminghours=0;
     
      /**
-     * @var int
+     * @var integer
      * 
-     * @ORM\Column(name="time_consuming_mins", type="int",nullable=true)
+     * @ORM\Column(name="time_consuming_mins", type="integer",nullable=true)
      */
-    private $timeConsumingmins;
+    private $timeConsumingmins=0;
 
     /**
      * @ORM\ManyToOne(targetEntity="TSProj\PeopleBundle\Entity\Client",inversedBy="project")
@@ -155,6 +155,13 @@ class Project
      * @ORM\Column(name="percent_finished",type="float")
      */
     private $percentFinished;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="work_order_no", type="string", length=20)
+     */
+    private $workOrderNo;
     
     public function __toString() {
         return $this->projectName;
@@ -583,4 +590,82 @@ class Project
         return $this->percentFinished;
     }
 
+
+    /**
+     * Set timeConsumingDays
+     *
+     * @param \int $timeConsumingDays
+     * @return Project
+     */
+    public function setTimeConsumingDays($timeConsumingDays)
+    {
+        $this->timeConsumingDays = $timeConsumingDays;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsumingDays
+     *
+     * @return \int 
+     */
+    public function getTimeConsumingDays()
+    {
+        return $this->timeConsumingDays;
+    }
+
+    /**
+     * Set timeConsuminghours
+     *
+     * @param \int $timeConsuminghours
+     * @return Project
+     */
+    public function setTimeConsuminghours($timeConsuminghours)
+    {
+        $this->timeConsuminghours = $timeConsuminghours;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsuminghours
+     *
+     * @return \int 
+     */
+    public function getTimeConsuminghours()
+    {
+        return $this->timeConsuminghours;
+    }
+
+    /**
+     * Set timeConsumingmins
+     *
+     * @param \int $timeConsumingmins
+     * @return Project
+     */
+    public function setTimeConsumingmins($timeConsumingmins)
+    {
+        $this->timeConsumingmins = $timeConsumingmins;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsumingmins
+     *
+     * @return \int 
+     */
+    public function getTimeConsumingmins()
+    {
+        return $this->timeConsumingmins;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getTimeConsuming()
+    {
+        return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsuminghours(),$this->getTimeConsumingmins());
+    }        
 }
