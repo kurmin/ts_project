@@ -55,13 +55,34 @@ class Product
      * @ORM\ManyToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"},fetch="LAZY")
      */
     protected $drawingImage;
-
+    
     /**
-     * @var float
-     *
-     * @ORM\Column(name="product_time_consuming", type="float",nullable=true)
+     * @var integer
+     * 
+     * @ORM\Column(name="product_time_consuming_days", type="integer",nullable=true)
      */
-    private $productTimeConsuming;
+    private $productTimeConsumingDays=0;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="product_time_consuming_hours", type="integer",nullable=true)
+     */
+    private $productTimeConsumingHours=0;
+    
+     /**
+     * @var integer
+     * 
+     * @ORM\Column(name="product_time_consuming_mins", type="integer",nullable=true)
+     */
+    private $productTimeConsumingMins=0;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="no_of_process",type="integer")
+     */
+    private $noOfProcess;
     
     /**
      * @var id
@@ -272,29 +293,6 @@ class Product
     public function getDrawingId()
     {
         return $this->drawingId;
-    }
-
-    /**
-     * Set productTimeConsuming
-     *
-     * @param float $productTimeConsuming
-     * @return Product
-     */
-    public function setProductTimeConsuming($productTimeConsuming)
-    {
-        $this->productTimeConsuming = $productTimeConsuming;
-
-        return $this;
-    }
-
-    /**
-     * Get productTimeConsuming
-     *
-     * @return float 
-     */
-    public function getProductTimeConsuming()
-    {
-        return $this->productTimeConsuming;
     }
 
     /**
@@ -688,5 +686,97 @@ class Product
     public function getEstimatedTimeMin()
     {
         return $this->estimatedTimeMin;
+    }
+
+    /**
+     * Set productTimeConsumingDays
+     *
+     * @param integer $productTimeConsumingDays
+     * @return Product
+     */
+    public function setProductTimeConsumingDays($productTimeConsumingDays)
+    {
+        $this->productTimeConsumingDays = $productTimeConsumingDays;
+
+        return $this;
+    }
+
+    /**
+     * Get productTimeConsumingDays
+     *
+     * @return integer 
+     */
+    public function getProductTimeConsumingDays()
+    {
+        return $this->productTimeConsumingDays;
+    }
+
+    /**
+     * Set noOfProcess
+     *
+     * @param integer $noOfProcess
+     * @return Product
+     */
+    public function setNoOfProcess($noOfProcess)
+    {
+        $this->noOfProcess = $noOfProcess;
+
+        return $this;
+    }
+
+    /**
+     * Get noOfProcess
+     *
+     * @return integer 
+     */
+    public function getNoOfProcess()
+    {
+        return $this->noOfProcess;
+    }
+
+    /**
+     * Set productTimeConsumingHours
+     *
+     * @param integer $productTimeConsumingHours
+     * @return Product
+     */
+    public function setProductTimeConsumingHours($productTimeConsumingHours)
+    {
+        $this->productTimeConsumingHours = $productTimeConsumingHours;
+
+        return $this;
+    }
+
+    /**
+     * Get productTimeConsumingHours
+     *
+     * @return integer 
+     */
+    public function getProductTimeConsumingHours()
+    {
+        return $this->productTimeConsumingHours;
+    }
+
+    /**
+     * Set productTimeConsumingMins
+     *
+     * @param integer $productTimeConsumingMins
+     * @return Product
+     */
+    public function setProductTimeConsumingMins($productTimeConsumingMins)
+    {
+        $this->productTimeConsumingMins = $productTimeConsumingMins;
+
+        return $this;
+    }
+
+    /**
+     * Get productTimeConsumingMins
+     *
+     * @return integer 
+     */
+    public function getProductTimeConsumingMins()
+    {
+        return $this->productTimeConsumingMins;
     }
 }
