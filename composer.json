@@ -30,7 +30,8 @@
         "sonata-project/translation-bundle": "~1.0",
         "sonata-project/media-bundle": "^2.3",
         "sonata-project/intl-bundle": "2.2.x-dev",
-        "jms/serializer-bundle": "~0.13"
+        "jms/serializer-bundle": "~0.13",
+        "knplabs/knp-snappy-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

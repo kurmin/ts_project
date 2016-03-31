@@ -83,13 +83,6 @@ class Project
      * @ORM\Column(name="project_end_date", type="date",nullable=true)
      */
     private $projectEndDate;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="project_time_consuming", type="float",nullable=true)
-     */
-    private $projectTimeConsuming;
     
     /**
      * @var integer
@@ -290,29 +283,6 @@ class Project
     public function getProjectEndDate()
     {
         return $this->projectEndDate;
-    }
-
-    /**
-     * Set projectTimeConsuming
-     *
-     * @param float $projectTimeConsuming
-     * @return Project
-     */
-    public function setProjectTimeConsuming($projectTimeConsuming)
-    {
-        $this->projectTimeConsuming = $projectTimeConsuming;
-
-        return $this;
-    }
-
-    /**
-     * Get projectTimeConsuming
-     *
-     * @return float 
-     */
-    public function getProjectTimeConsuming()
-    {
-        return $this->projectTimeConsuming;
     }
 
     /**
