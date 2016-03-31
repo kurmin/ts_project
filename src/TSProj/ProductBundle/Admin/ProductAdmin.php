@@ -144,6 +144,12 @@ class ProductAdmin extends BaseAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $qb = $this->getModelManager()->getEntityManager('TSProjProductBundle:Stock')->createQueryBuilder();
+        $qb->select('s')
+           ->from('TSProjProductBundle:Stock','s')
+           ->where('s.deleteFlag=:no')
+           ->setParameter(':no',0);     
+        
         $formMapper
             ->with('General',
                    array('class'       =>  'col-md-6',
@@ -154,7 +160,15 @@ class ProductAdmin extends BaseAdmin
                     ->add('productDescription') 
 					->add('material',null,array('required'=>false))	
                     ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,'required'=>true))
-                    ->add('stock',null,array('required'=>false,'empty_value'=>'------ ไม่ผูกกับ Stock ------'))
+                    ->add('stock','sonata_type_model',array(
+//                                'class'         =>'TSProj\ProductBundle\Entity\Product',
+//                                'query_builder' =>function(\Doctrine\ORM\EntityRepository $rep){
+//                                    return $rep->createQueryBuilder('s')
+//                                               ->where('s.deleteFlag',0);     
+//                                },
+                                'query'=>$qb,
+                                'required'      =>false,
+                                'empty_value'   =>'------ ไม่ผูกกับ Stock ------',))
             ->end()
             ->with('Process List',
                    array('class'       =>  'col-md-6',
@@ -172,7 +186,9 @@ class ProductAdmin extends BaseAdmin
                      ->add('currentPhase',null,array('required'=>false)) 
 					 ->add('estimatedTimeHour',null,array('required'=>false,'label'=>'Estimated Time (Hour)'))
 					 ->add('estimatedTimeMin',null,array('required'=>false,'label'=>'Estimated Time (Minute)'))
-                     ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true))
+                     ->add('productTimeConsumingDays',null,array('required'=>false,'read_only'=>true))
+                     ->add('productTimeConsumingHours',null,array('required'=>false,'read_only'=>true))
+                     ->add('productTimeConsumingMins',null,array('required'=>false,'read_only'=>true))
                      ->add('percentFinished',null,array('required'=>false,'read_only'=>true,"label"=> 'Percent Finished (%)')) 
                      ->add('startDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
                      ->add('endDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm', ))
