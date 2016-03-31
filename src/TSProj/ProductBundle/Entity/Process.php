@@ -53,7 +53,7 @@ class Process
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
     
@@ -65,9 +65,9 @@ class Process
     
     /**
      * 
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="currentPhase")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="currentPhase")
      **/
-    private $project;
+    private $currentProduct;
 
     public function __toString() {
         return $this->processName;
@@ -242,35 +242,45 @@ class Process
     }
 
     /**
-     * Add project
-     *
-     * @param \TSProj\ProductBundle\Entity\Project $project
-     * @return process
+     * Constructor
      */
-    public function addProject(\TSProj\ProductBundle\Entity\Project $project)
+    public function __construct()
     {
-        $this->project[] = $project;
+        $this->productProcessTime = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->product = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->currentProduct = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add currentProduct
+     *
+     * @param \TSProj\ProductBundle\Entity\Product $currentProduct
+     * @return Process
+     */
+    public function addCurrentProduct(\TSProj\ProductBundle\Entity\Product $currentProduct)
+    {
+        $this->currentProduct[] = $currentProduct;
 
         return $this;
     }
 
     /**
-     * Remove project
+     * Remove currentProduct
      *
-     * @param \TSProj\ProductBundle\Entity\Project $project
+     * @param \TSProj\ProductBundle\Entity\Product $currentProduct
      */
-    public function removeProject(\TSProj\ProductBundle\Entity\Project $project)
+    public function removeCurrentProduct(\TSProj\ProductBundle\Entity\Product $currentProduct)
     {
-        $this->project->removeElement($project);
+        $this->currentProduct->removeElement($currentProduct);
     }
 
     /**
-     * Get project
+     * Get currentProduct
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getProject()
+    public function getCurrentProduct()
     {
-        return $this->project;
+        return $this->currentProduct;
     }
 }

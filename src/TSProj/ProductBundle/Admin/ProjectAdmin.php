@@ -1,7 +1,7 @@
 <?php
 
 namespace TSProj\ProductBundle\Admin;
-
+date_default_timezone_set("Asia/Bangkok");
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -9,19 +9,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
-class ProjectAdmin extends Admin
+class ProjectAdmin extends BaseAdmin
 {
-    public function createQuery($context = 'list')
-    {
-        $query = parent::createQuery($context);
-        $query->andWhere(
-            $query->expr()->eq($query->getRootAliases()[0] . '.deleteFlag', ':not_delete')
-        );
-        $query->setParameter('not_delete', 0);
-        return $query;
-    }
     
-    public function getNewInstance()
+   public function getNewInstance()
     {
         $instance = parent::getNewInstance();
 
@@ -29,8 +20,11 @@ class ProjectAdmin extends Admin
         $dateTime = new \DateTime();
 
         // Instance points to the entity that is being created
-        $instance->setLastMaintDateTime($dateTime);
-
+        $instance->setLastMaintDateTime($dateTime)
+                 ->setPercentFinished(0)
+                 ->setDeleteFlag(0)
+                 ->setFinishedFlag(0);
+        
         return $instance;
     }
     
@@ -40,10 +34,15 @@ class ProjectAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('projectBarcode')    
             ->add('projectName')
-            ->add('projectStartDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
-            ->add('projectEndDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
-            ->add('projectStatus',null,array('choices'=> \TSProj\ProductBundle\Entity\WorkStatus::$status_list));
+            ->add('client')    
+            //->add('amount')    
+            ->add('projectStatus',null,array('choices'=> \TSProj\ProductBundle\Entity\WorkStatus::$status_list))
+//            ->add('orderDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
+//            ->add('expectDeliveryDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))    
+//            ->add('projectStartDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))
+//            ->add('projectEndDate','doctrine_orm_datetime', array('field_type'=>'sonata_type_datetime_picker',))   
         ;
     }
 
@@ -55,13 +54,12 @@ class ProjectAdmin extends Admin
         $listMapper
             ->add('projectBarcode')
             ->add('projectName')
-            ->add('orderDate') 
-            ->add('amount')
             ->add('client')    
-            ->add('projectDeliveryAddress')
             ->add('projectContactPhoneNo')
-            ->add('expectDeliveryDate')
-            ->add('currentPhase')    
+            ->add('amount')    
+            ->add('orderDate')     
+            ->add('expectDeliveryDate') 
+            ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:list_time.html.twig'))  
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))     
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -91,24 +89,23 @@ class ProjectAdmin extends Admin
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box box-solid',))
                         ->add('client',null,array('empty_value'=>"--------- กรุณาเลือกชื่อลูกค้า ---------"))      
-                        ->add('projectDeliveryAddress','textarea')
-                        ->add('projectContactPhoneNo')       
+                        ->add('projectDeliveryAddress','textarea',array('required'=>false))
+                        ->add('projectContactPhoneNo',null,array('required'=>false))       
                 ->end()
                 ->with('Project Date',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))    
-                        ->add('orderDate','sonata_type_date_picker') 
-                        ->add('expectedDeliveryDate','sonata_type_date_picker',array('required'=>false))    
-                        ->add('projectStartDate','sonata_type_date_picker',array('required'=>false))
-                        ->add('projectEndDate','sonata_type_date_picker',array('required'=>false))
+                        ->add('orderDate','sonata_type_date_picker',array('format' => 'dd/MM/yyyy',)) 
+                        ->add('expectedDeliveryDate','sonata_type_date_picker',array('required'=>true,'format' => 'dd/MM/yyyy', ))    
+                        ->add('projectStartDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm',))
+                        ->add('projectEndDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm',))
                 ->end()    
                 ->with('General',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))     
                         ->add('amount')    
-                        ->add('projectTimeConsuming',null,array('required'=>false,'read_only'=>true))
-                        ->add('currentPhase')    
-                        ->add('percentFinished')
+//                        ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming'))
+                        ->add('percentFinished',null,array('required'=>false,'read_only'=>true))
                 ->end() 
             ->end() 
 //            ->tab('Product')    
@@ -129,19 +126,20 @@ class ProjectAdmin extends Admin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('id')
+            ->add('projectBarcode')
             ->add('projectName')
+            ->add('projectStatus')    
             ->add('projectDeliveryAddress')
             ->add('projectContactPhoneNo')
-            ->add('projectStartDate')
-            ->add('projectEndDate')
-            ->add('projectTimeConsuming')
-//            ->with('Product', array('collapsed' => true))
-//                ->add('child.name',null,array('label'=>'Name'))
-//                ->add('child.school',null,array('label'=>'School'))
-//                ->add('child.age',null,array('label'=>'Age')) 
-//            ->end()    
+            ->add('client')    
+            ->add('amount')
             ->add('product')    
+            ->add('orderDate')
+            ->add('expectDeliveryDate')        
+            ->add('projectStartDate')
+            ->add('projectEndDate')  
+            ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:show_time.html.twig'))
+            ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig'))      
         ;
     }
 
@@ -151,6 +149,7 @@ class ProjectAdmin extends Admin
 //    }
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow');
+        $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow')
+                   ->remove('delete');
     }
 }

@@ -38,7 +38,7 @@ class ProductProcessTime
     /**
      * @var float
      *
-     * @ORM\Column(name="time_consuming", type="float")
+     * @ORM\Column(name="time_consuming", type="float",nullable=true)
      */
     private $timeConsuming=0;
 
@@ -79,7 +79,7 @@ class ProductProcessTime
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
 

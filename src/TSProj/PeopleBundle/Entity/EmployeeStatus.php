@@ -33,6 +33,10 @@ class EmployeeStatus
      * @ORM\OneToMany(targetEntity="Employee", mappedBy="employeeStatus")
      **/
     private $employee;
+    
+    public function __toString() {
+        return $this->statusDescription;
+    }    
 
     /**
      * Get id

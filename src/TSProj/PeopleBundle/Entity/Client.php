@@ -39,14 +39,14 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="client_address", type="string", length=255)
+     * @ORM\Column(name="client_address", type="string", length=255,nullable=true)
      */
     private $clientAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="client_tel_no_1", type="string", length=20)
+     * @ORM\Column(name="client_tel_no_1", type="string", length=20,nullable=true)
      */
     private $clientTelNo1;
 
@@ -67,7 +67,7 @@ class Client
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
     

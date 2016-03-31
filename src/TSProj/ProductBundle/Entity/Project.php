@@ -45,14 +45,14 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="project_delivery_address", type="string", length=255)
+     * @ORM\Column(name="project_delivery_address", type="string", length=255,nullable=true)
      */
     private $projectDeliveryAddress;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="project_contact_phone_no", type="string", length=45)
+     * @ORM\Column(name="project_contact_phone_no", type="string", length=45,nullable=true)
      */
     private $projectContactPhoneNo;
  
@@ -73,14 +73,14 @@ class Project
     /**
      * @var \Date
      *
-     * @ORM\Column(name="project_start_date", type="date")
+     * @ORM\Column(name="project_start_date", type="date",nullable=true)
      */
     private $projectStartDate;
 
     /**
      * @var \Date
      *
-     * @ORM\Column(name="project_end_date", type="date")
+     * @ORM\Column(name="project_end_date", type="date",nullable=true)
      */
     private $projectEndDate;
 
@@ -90,6 +90,27 @@ class Project
      * @ORM\Column(name="project_time_consuming", type="float",nullable=true)
      */
     private $projectTimeConsuming;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="time_consuming_days", type="integer",nullable=true)
+     */
+    private $timeConsumingDays=0;
+    
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="time_consuming_hours", type="integer",nullable=true)
+     */
+    private $timeConsuminghours=0;
+    
+     /**
+     * @var integer
+     * 
+     * @ORM\Column(name="time_consuming_mins", type="integer",nullable=true)
+     */
+    private $timeConsumingmins=0;
 
     /**
      * @ORM\ManyToOne(targetEntity="TSProj\PeopleBundle\Entity\Client",inversedBy="project")
@@ -119,7 +140,7 @@ class Project
     /** 
      * @var datetime
      * 
-     * @ORM\Column(name="last_maint_dt_time",type="datetime",nullable=true)
+     * @ORM\Column(name="last_maint_dt_time",type="datetime")
      */
     private $lastMaintDateTime;
     
@@ -137,10 +158,10 @@ class Project
     
     /**
      * @var string
-     * 
-     * @ORM\ManyToOne(targetEntity="Process",inversedBy="project")
+     *
+     * @ORM\Column(name="work_order_no", type="string", length=20)
      */
-    private $currentPhase;
+    private $workOrderNo;
     
     public function __toString() {
         return $this->projectName;
@@ -569,26 +590,105 @@ class Project
         return $this->percentFinished;
     }
 
+
     /**
-     * Set currentPhase
+     * Set timeConsumingDays
      *
-     * @param string $currentPhase
+     * @param \int $timeConsumingDays
      * @return Project
      */
-    public function setCurrentPhase($currentPhase)
+    public function setTimeConsumingDays($timeConsumingDays)
     {
-        $this->currentPhase = $currentPhase;
+        $this->timeConsumingDays = $timeConsumingDays;
 
         return $this;
     }
 
     /**
-     * Get currentPhase
+     * Get timeConsumingDays
+     *
+     * @return \int 
+     */
+    public function getTimeConsumingDays()
+    {
+        return $this->timeConsumingDays;
+    }
+
+    /**
+     * Set timeConsuminghours
+     *
+     * @param \int $timeConsuminghours
+     * @return Project
+     */
+    public function setTimeConsuminghours($timeConsuminghours)
+    {
+        $this->timeConsuminghours = $timeConsuminghours;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsuminghours
+     *
+     * @return \int 
+     */
+    public function getTimeConsuminghours()
+    {
+        return $this->timeConsuminghours;
+    }
+
+    /**
+     * Set timeConsumingmins
+     *
+     * @param \int $timeConsumingmins
+     * @return Project
+     */
+    public function setTimeConsumingmins($timeConsumingmins)
+    {
+        $this->timeConsumingmins = $timeConsumingmins;
+
+        return $this;
+    }
+
+    /**
+     * Get timeConsumingmins
+     *
+     * @return \int 
+     */
+    public function getTimeConsumingmins()
+    {
+        return $this->timeConsumingmins;
+    }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function getTimeConsuming()
+    {
+        return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsuminghours(),$this->getTimeConsumingmins());
+    }        
+
+    /**
+     * Set workOrderNo
+     *
+     * @param string $workOrderNo
+     * @return Project
+     */
+    public function setWorkOrderNo($workOrderNo)
+    {
+        $this->workOrderNo = $workOrderNo;
+
+        return $this;
+    }
+
+    /**
+     * Get workOrderNo
      *
      * @return string 
      */
-    public function getCurrentPhase()
+    public function getWorkOrderNo()
     {
-        return $this->currentPhase;
+        return $this->workOrderNo;
     }
 }

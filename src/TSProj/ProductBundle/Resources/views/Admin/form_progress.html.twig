@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit_form.html.twig' %}
+
+{% block form %}
+    {{value}} %
+    {#<div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow={{ value }}
+            aria-valuemin="0" aria-valuemax="100" style="width:{{value}}%">
+          {{value}}% Complete (success)
+        </div>
+    </div>#}
+{% endblock %}

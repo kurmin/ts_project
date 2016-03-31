@@ -17,15 +17,17 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode("TEST1234");
         
-        $query = $em->getRepository('TSProjProductBundle:ProductProcessTime')->createQueryBuilder('p');
-        $query->select('p')
-              ->where('p.product = :product')->setParameter('product',$product)
-              ->groupBy('p.product')
-              ->orderBy('p.startDateTime');  
-        $productStartDate = $query->getQuery()->getResult();
+//        $query = $em->getRepository('TSProjProductBundle:ProductProcessTime')->createQueryBuilder('p');
+//        $query->select('p')
+//              ->where('p.product = :product')->setParameter('product',$product)
+//              ->groupBy('p.product')
+//              ->orderBy('p.startDateTime');  
+//        $productStartDate = $query->getQuery()->getResult();
         echo "ggggg"; 
-        echo date_format($productStartDate[0]->getStartDateTime(), 'Y-m-d'); die();
-        
+//        echo date_format($productStartDate[0]->getStartDateTime(), 'Y-m-d'); die();
+        echo date_format($product->getStartDateTime(),'Y-m-d');
+        $proCnt = $product->getProductProcessTime();
+        \Doctrine\Common\Util\Debug::dump($proCnt);
         return array('name' => $name);
     }
 }

@@ -2,5 +2,6 @@
 
 
 {% block field %}
-   <img src="{{ asset('uploads/media/Employee/0001/01/') }}{{ value|nl2br }}" width="300"/>
+   <img src="{% path value, 'reference' %}" width="300" /> 
+{#   <img src="{{ asset('uploads/media/Employee/0001/01/') }}{{ value|nl2br }}" width="300"/>#}
 {% endblock %}

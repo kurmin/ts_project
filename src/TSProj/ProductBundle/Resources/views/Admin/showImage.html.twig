@@ -2,5 +2,6 @@
 
 
 {% block field %}
-   <img src="{{ asset('uploads/media/product/0001/01/') }}{{ value|nl2br }}"/>
+    <img src="{% path value, 'reference' %}" width="500" class="photo-diapo" data-zoom-image="{% path value, 'reference' %}"/> 
+{#    <img src="{{ asset('uploads/media/product/0001/01/') }}{{ value|nl2br }}"/>#}
 {% endblock %}
