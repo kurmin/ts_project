@@ -31,7 +31,8 @@
         "sonata-project/media-bundle": "^2.3",
         "sonata-project/intl-bundle": "2.2.x-dev",
         "jms/serializer-bundle": "~0.13",
-        "knplabs/knp-snappy-bundle": "dev-master"
+        "sonata-project/classification-bundle": "~2.3",
+        "whiteoctober/tcpdf-bundle": "^1.0"
     },
     "scripts": {
         "post-install-cmd": [

@@ -54,12 +54,4 @@
           </call>
         </service>
     </services>
-    <service id="sonata.admin.exporter" class="TSProj\ProductBundle\Export\Exporter">
-            <call method="setKnpSnappyPdf">
-                <argument type="service" id="knp.snappy_pdf" />
-            </call>
-            <call method="setTemplateEngine">
-                <argument type="service" id="templating" />
-            </call>
-    </service>
 </container>
