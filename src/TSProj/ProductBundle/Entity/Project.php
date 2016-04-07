@@ -31,6 +31,13 @@ class Project
     /**
      * @var string
      *
+     * @ORM\Column(name="project_detail", type="string", length=255,nullable=true)
+     */
+    private $projectDetail;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="project_barcode", type="string", length=255)
      */
     private $projectBarcode;
@@ -660,5 +667,28 @@ class Project
     public function getWorkOrderNo()
     {
         return $this->workOrderNo;
+    }
+
+    /**
+     * Set projectDetail
+     *
+     * @param string $projectDetail
+     * @return Project
+     */
+    public function setProjectDetail($projectDetail)
+    {
+        $this->projectDetail = $projectDetail;
+    
+        return $this;
+    }
+
+    /**
+     * Get projectDetail
+     *
+     * @return string 
+     */
+    public function getProjectDetail()
+    {
+        return $this->projectDetail;
     }
 }
