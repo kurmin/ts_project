@@ -31,6 +31,13 @@ class Project
     /**
      * @var string
      *
+     * @ORM\Column(name="project_detail", type="string", length=255)
+     */
+    private $projectDetail;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="project_barcode", type="string", length=255)
      */
     private $projectBarcode;
@@ -83,13 +90,6 @@ class Project
      * @ORM\Column(name="project_end_date", type="date",nullable=true)
      */
     private $projectEndDate;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="project_time_consuming", type="float",nullable=true)
-     */
-    private $projectTimeConsuming;
     
     /**
      * @var integer
@@ -290,29 +290,6 @@ class Project
     public function getProjectEndDate()
     {
         return $this->projectEndDate;
-    }
-
-    /**
-     * Set projectTimeConsuming
-     *
-     * @param float $projectTimeConsuming
-     * @return Project
-     */
-    public function setProjectTimeConsuming($projectTimeConsuming)
-    {
-        $this->projectTimeConsuming = $projectTimeConsuming;
-
-        return $this;
-    }
-
-    /**
-     * Get projectTimeConsuming
-     *
-     * @return float 
-     */
-    public function getProjectTimeConsuming()
-    {
-        return $this->projectTimeConsuming;
     }
 
     /**
@@ -668,4 +645,27 @@ class Project
     {
         return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsuminghours(),$this->getTimeConsumingmins());
     }        
+
+    /**
+     * Set workOrderNo
+     *
+     * @param string $workOrderNo
+     * @return Project
+     */
+    public function setWorkOrderNo($workOrderNo)
+    {
+        $this->workOrderNo = $workOrderNo;
+
+        return $this;
+    }
+
+    /**
+     * Get workOrderNo
+     *
+     * @return string 
+     */
+    public function getWorkOrderNo()
+    {
+        return $this->workOrderNo;
+    }
 }

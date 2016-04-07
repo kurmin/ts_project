@@ -21,7 +21,9 @@ class AppKernel extends Kernel
             new TSProj\PeopleBundle\TSProjPeopleBundle(),
             new Sonata\MediaBundle\SonataMediaBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
-            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+            new Sonata\ClassificationBundle\SonataClassificationBundle(),
+            new Application\Sonata\ClassificationBundle\ApplicationSonataClassificationBundle(),
+            new WhiteOctober\TCPDFBundle\WhiteOctoberTCPDFBundle(),
 
             // Add your dependencies
             new Sonata\CoreBundle\SonataCoreBundle(),
