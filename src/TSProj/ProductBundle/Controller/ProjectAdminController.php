@@ -83,7 +83,9 @@ class ProjectAdminController extends CRUDController
         // Set auto page breaks
         $pdf -> SetAutoPageBreak (TRUE, PDF_MARGIN_BOTTOM);
 
-        $pdf->SetFont('helvetica', '', 11, '', true);
+        
+        
+        $pdf->SetFont('freeserif', '', 12, '', true);
         $pdf->AddPage();
         
         //---------------- generate barcode --------------------------
@@ -93,7 +95,7 @@ class ProjectAdminController extends CRUDController
             'stretch' => false,
             'fitwidth' => true,
             'cellfitalign' => '',
-            'border' => true,
+            'border' => false,
             'hpadding' => 'auto',
             'vpadding' => 'auto',
             'fgcolor' => array(0,0,0),
@@ -101,23 +103,30 @@ class ProjectAdminController extends CRUDController
             'text' => true,
             'font' => 'helvetica',
             'fontsize' => 8,
-            'stretchtext' => 4
+            'stretchtext' => 0
         );
 
         // PRINT VARIOUS 1D BARCODES
 
         // CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
-//        $pdf->Cell(0, 0, 'CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9', 0, 1);
-//        $pdf->write1DBarcode('CODE 39', 'C39', '', '', '', 18, 0.4, $style, 'N');
+        //$pdf->Cell(0, 0, 'CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9', 0, 1);
+        //$pdf->write1DBarcode($project->getProjectBarcode(), 'C128', '', '', '', 18, 0.4, $style, 'M');
+        //$pdf->write1DBarcode($project->getProjectBarcode(), 'C128B', 10, 50, 105, 18, 0.4, $style, 'N');
 //        
 
         //$html = '<h1>Working on Symfony</h1>';
+        $params = $pdf->serializeTCPDFtagParameters(array($project->getProjectBarcode(), 'C128', '', '', 80, 30, 0.4, array('position'=>'S', 'border'=>true, 'padding'=>4, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>8, 'stretchtext'=>4), 'N'));
+        //$test = $pdf->write1DBarcode($project->getProjectBarcode(), 'C128', '50', '50', 80, 30, 0.4, array('position'=>'S', 'border'=>true, 'padding'=>4, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>8, 'stretchtext'=>4), 'N');
         
         $html = $this-> RenderView('TSProjProductBundle:Export:projectPdf.html.twig',  
                 array( 'lead' => 'one' , 
                         'project' => $project, 
-                        'heureConclusion' => '$heureConclusion' , 
-                        'adresseIP' => '$adresseIP'
+                        'product' => $project->getProduct(), 
+                        'orderDate' => $project->getorderDate()->format('d/m/Y'),
+                        'expectedDeliveryDate' => $project->getexpectedDeliveryDate()->format('d/m/Y'),
+                        
+                        'params' => $params,
+                     //'test' => $test,
                     ));
   
         $pdf -> WriteHTML ($html, true, false, true, false, '');
