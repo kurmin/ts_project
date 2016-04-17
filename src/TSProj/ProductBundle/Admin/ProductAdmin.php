@@ -125,7 +125,7 @@ class ProductAdmin extends BaseAdmin
             ->add('productBarcode')
             ->add('productName')
             ->add('productTimeConsuming')
-			->add('productStatus')
+	    ->add('productStatus')
             ->add('currentPhase') 
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))    
             ->add('_action', 'actions', array(

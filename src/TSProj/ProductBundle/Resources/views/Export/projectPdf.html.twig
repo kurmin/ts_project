@@ -48,12 +48,33 @@
 </table>
 <br /> <br/>
 
-<b><u>รายละเอียดของสินค้า</u></b> <br />
-{{project.projectDetail}}
-
-    <br />
-<tcpdf method="write1DBarcode" params="{{params}}"/>
-
-
+<table>
+    <tr><td>
+        <b><u>รายละเอียดของสินค้า</u></b> 
+        </td>
+    </tr>
+    <tr>
+        <td width ="40%">
+            {{project.projectDetail}}
+        </td>
+        <td width ="30%">
+            <tcpdf method="write1DBarcode" params="{{params}}"/>
+        </td>
+        <td width ="30%">
+            <Table border="1">
+                <tr>
+                    <td align="center"><font size = "14"><b>หมายเลขสินค้า</b></font>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"><font size = "16"><b>{{project.projectBarcode}}</b></font>
+                    </td>                           
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br/> <br/>                   
+                    
 </body>
 </html>

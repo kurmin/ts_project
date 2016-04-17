@@ -58,7 +58,7 @@ class ProjectAdmin extends BaseAdmin
             ->add('projectContactPhoneNo')
             ->add('amount')    
             ->add('orderDate')     
-            ->add('expectDeliveryDate') 
+            ->add('expectedDeliveryDate') 
             ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:list_time.html.twig'))  
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))     
             ->add('_action', 'actions', array(
