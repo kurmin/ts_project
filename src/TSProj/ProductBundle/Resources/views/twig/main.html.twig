@@ -5,7 +5,7 @@
 {% block stylesheets %}
 {% endblock %}
 {% block body %}
-    {#<div class="row">
+<!--    {#<div class="row">
         ####### display in twig ######### <br /> 
         {% for item in pro1 %} 
             {{ item.productDescription }} <br />
@@ -14,109 +14,54 @@
         {% for item_r in pro2 %} 
             {{ item_r.productDescription }} <br />
         {% endfor %}  
-    </div>#}
+    </div>#}-->
     <div class="row">
         <div class="col-sm-5 col-md-5">
-            <h1>Dashboard</h1>
+            <h1></h1>
             <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+            จำนวนโปรเจคเสร็จสิ้นในเดือนนี้ {{ finish }} โปรเจค
         </div>
         <div class="col-sm-7 col-md-7">
-            <h2 class="sub-header">Project Progress</h2>
+            <h2 class="sub-header">สถานะของโปรเจค</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>ชิ้นงาน</th>
+                            <th>หมายเลขโปรเจค</th>
+                            <th>ชื่อโปรเจค</th>
                             <th>ลูกค้า</th>
                             <th>สถานะงาน</th>
-                            <th>ผู้รับผิดชอบ</th>
+                            <th>กำหนดส่งมอบ</th>
+                            <th>วันที่เริ่มงาน</th>
                             <th>เวลาทั้งหมด</th>
-                            <th>ประเภทชิ้นงาน</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1,001</td>
-                            <td>Lorem</td>
-                            <td>ipsum</td>
-                            <td>In Progress</td>
-                            <td>sit</td>
-                            <td>1</td>
-                            <td>ผลิต</td>
-                        </tr>
-                        <tr>
-                            <td>1,002</td>
-                            <td>amet</td>
-                            <td>consectetur</td>
-                            <td>In Progress</td>
-                            <td>elit</td>
-                            <td>1</td>
-                            <td>ผลิต</td>
-                        </tr>
-                        <tr>
-                            <td>1,003</td>
-                            <td>Integer</td>
-                            <td>nec</td>
-                            <td>In Progress</td>
-                            <td>Praesent</td>
-                            <td>2</td>
-                            <td>สต็อก</td>
-                        </tr>
-                        <tr>
-                            <td>1,003</td>
-                            <td>libero</td>
-                            <td>Sed</td>
-                            <td>In Progress</td>
-                            <td>ante</td>
-                            <td>1</td>
-                            <td>ผลิต</td>
-                        </tr>
-                        <tr>
-                            <td>1,004</td>
-                            <td>dapibus</td>
-                            <td>diam</td>
-                            <td>Hold</td>
-                            <td>nisi</td>
-                            <td>1</td>
-                            <td>สต็อก</td>
-                        </tr>
-                        <tr>
-                            <td>1,005</td>
-                            <td>Nulla</td>
-                            <td>quis</td>
-                            <td>Finish</td>
-                            <td>at</td>
-                            <td>2</td>
-                            <td>ผลิต</td>
-                        </tr>
-                        <tr>
-                            <td>1,006</td>
-                            <td>nibh</td>
-                            <td>elementum</td>
-                            <td>Wait Assign</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>1,007</td>
-                            <td>sagittis</td>
-                            <td>ipsum</td>
-                            <td>Hold</td>
-                            <td>mauris</td>
-                            <td>1</td>
-                            <td>ผลิต</td>
-                        </tr>
-                        <tr>
-                            <td>1,008</td>
-                            <td>Fusce</td>
-                            <td>nec</td>
-                            <td>Wait Assign</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        {% for item in project %}
+                            <tr>
+                                <td>{{ item.workOrderNo }}</td>
+                                <td>{{ item.projectName }}</td>
+                                <td>
+                                {% if item.client is not null %}
+                                    {{ item.client.clientName }} 
+                                {% endif %}
+                                </td>
+                                <td>{{ item.projectStatus }}</td>
+                                <td>{{ item.expectedDeliveryDate | date('d/m/Y') }}</td>
+                                <td>{{ item.projectStartDate | date('d/m/Y') }}</td>
+                                <td>
+                                    {% if item.timeConsumingDays is not null and item.timeConsumingDays > 0 %}
+                                        {{ item.timeConsumingDays }} วัน
+                                    {% endif %}
+                                    {% if item.timeConsuminghours is not null and item.timeConsuminghours > 0 %}
+                                        {{ item.timeConsuminghours }} ชั่วโมง 
+                                    {% endif %}
+                                    {% if item.timeConsumingmins is not null and item.timeConsumingmins > 0 %}
+                                        {{ item.timeConsumingmins }} นาที
+                                    {% endif %}
+                                <td>
+                            </tr>
+                        {% endfor %}    
                     </tbody>
                 </table>
             </div> </div>
@@ -125,9 +70,13 @@
 
 {% block javascripts %}
 
-    <script src="{{ asset('bundles/tsprojproduct/js/highcharts.js') }}"></script>
+    <script src="{{ asset('bundles/tsprojproduct/js/highcharts.js') }}"></script>   
     <script>
         $(function () {
+            var finish = {{ finish }};
+            var hold   = {{ hold }};
+            var waitAssign = {{ waitAssign }};
+            var inProgress = {{ inProgress }};
             $('#container').highcharts({
                 chart: {
                     plotBackgroundColor: null,
@@ -157,10 +106,9 @@
                         type: 'pie',
                         name: 'Job Precentage',
                         data: [
-                            ['Finish', 20],
-                            ['In Process', 50],
-                            ['Wait Assign', 20],
-                            ['Hold', 10]
+                            ['In Process', inProgress],
+                            ['Wait Assign', waitAssign],
+                            ['Hold', hold]
                         ]
                     }]
             });

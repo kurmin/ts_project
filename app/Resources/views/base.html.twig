@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+    <a href="base.html.twig"></a>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('bundles/tsprojproduct/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('bundles/tsprojproduct/css/dashboard.css') }}">
@@ -25,7 +26,7 @@
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{ url('new_project') }}">สแกนชิ้นงาน</a></li>
-                <li><a href="{{url('stock_create')}}">งานสต๊อก</a></li>
+<!--                <li><a href="{{url('stock_create')}}">งานสต๊อก</a></li>-->
                 <li><a href="#">รายงานสินค้าในสต๊อก</a></li>
               </ul>
             </div>

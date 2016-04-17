@@ -138,10 +138,9 @@ class ProjectAdminController extends CRUDController
             if($n < count($product)){
             
             $productTable .= '<tr><td>' . $product[$n]->getProductDescription() . '</td>'
-            //$productTable .= '<tr><td></tdn
-                    . '<td></td>'
-                    . '<td></td>'
-                    . '<td></td>'
+                    . '<td align ="center">'. $product[$n]->getDrawingID() . '</td>'
+                    . '<td align ="center">'. $product[$n]->getMaterial() . '</td>'
+                    . '<td align ="center">'. $project->getAmount() . ' UNIT</td>'
                     . '<td></td>';
             $productTable .= '</tr>';
             }

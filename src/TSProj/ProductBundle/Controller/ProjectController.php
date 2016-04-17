@@ -16,9 +16,38 @@ class ProjectController extends Controller
     public function mainAction()
     {
         // example for retreiving data from database
-//        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $projects = $em->getRepository("TSProjProductBundle:Project")->findAll();
+        
+        //count project and divided into 4 groups
+        $now   = new \DateTime();
+        $curr = $now->format("Y-m-d");
+        $firstDayOfMonth = date("Y-m-1", strtotime($curr));
+        
+        $qb = $em->createQueryBuilder();
+        $qb->select('count(p.id)')
+           ->from('TSProjProductBundle:Project','p')
+           ->innerJoin('p.projectStatus', 'ps')      
+           ->where('ps.statusName = :status')     
+           ->setParameter('status', 'status_havent');
+        $waitAssign = $qb->getQuery()->getSingleScalarResult(); 
+        
+        $qb->setParameter('status', 'status_in_progress');
+        $inProgress = $qb->getQuery()->getSingleScalarResult(); 
+        
+        $qb->setParameter('status', 'status_hold');
+        $hold = $qb->getQuery()->getSingleScalarResult(); 
+        
+        $qb->where('ps.statusName = :status')
+           ->andWhere('p.projectEndDate >= :first')
+           ->andWhere('p.projectEndDate <= :current')     
+           ->setParameter('status','status_complete')
+           ->setParameter('first',$firstDayOfMonth)
+           ->setParameter('current',$curr);
+        $finish = $qb->getQuery()->getSingleScalarResult();
+
 //        
-//        $products = $em->getRepository("TSProjProductBundle:Product")->findAll();
 //        foreach($products as $product){
 //            echo "Name: ".$product->getProductName()." ";
 //        }
@@ -53,7 +82,12 @@ class ProjectController extends Controller
 //        }
 //          
         //return $this->render('TSProjProductBundle:twig:main.html.twig',array("pro1" => $products, "pro2" => $results));    
-        return $this->render('TSProjProductBundle:twig:main.html.twig');    
+        return $this->render('TSProjProductBundle:twig:main.html.twig',
+                array("project" => $projects,
+                      "finish"  => $finish,
+                      "hold"    => $hold,
+                      "waitAssign" => $waitAssign,
+                      "inProgress" => $inProgress));    
     }
 
     
