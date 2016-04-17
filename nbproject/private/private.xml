@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/ClientAdmin.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProductAdmin.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/StockAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/DefaultController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/NewProjectController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/twig/newproject.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/app/Resources/views/base.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Project.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/composer.json</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/config/services.xml</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Export/projectPdf.html.twig</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectAdminController.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/app/config/config.yml</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/twig/main.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/CRUD/list__action_deleteRow.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectController.php</file>
         </group>
     </open-files>
 </project-private>
