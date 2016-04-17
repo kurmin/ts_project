@@ -67,6 +67,7 @@ class ProjectAdmin extends BaseAdmin
                     'edit' => array(),
                     'delete' => array('template' => 'TSProjProductBundle:CRUD:list__action_projectDeleteRow.html.twig',),
                     'project' => array('template' => 'TSProjProductBundle:CRUD:list__action_projectPdf.html.twig',),
+                    'report' => array('template' => 'TSProjProductBundle:CRUD:list__action_reportPdf.html.twig',),
                 )
             ))
         ;
@@ -153,6 +154,7 @@ class ProjectAdmin extends BaseAdmin
     {
         $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow')
                    ->add('projectPdf', $this->getRouterIdParameter().'/projectPdf')
+                   ->add('reportPdf', $this->getRouterIdParameter().'/reportPdf')
                    ->remove('delete');
     }
 }
