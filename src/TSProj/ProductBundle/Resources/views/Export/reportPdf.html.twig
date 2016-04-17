@@ -1,0 +1,80 @@
+{# src/Acme/DemoBundle/Resources/views/Export/pdf_Form.html #}
+<!DOCTYPE html>
+<html>
+    <body>
+        <table border="0" width="100%">
+            <tr>
+                <td width= "40%">
+                    <font size = "20"><b>บริษัท วิสเมค จำกัด</b></font>
+                </td>
+                <td width= "20%">
+                </td>
+                <td width= "40%" align = "right">
+                    <Table border="1">
+                        <tr>
+                            <td align="center"><font size = "20"><b>ใบสั่งผลิต / งานซ่อม</b></font>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+<br /><br />
+
+
+
+<table width ="700">
+<tr>
+	<td width= "10%">ชื่อลูกค้า </td>
+	<td width= "30%">{{project.client.clientName}} </td>
+        <td width= "10%"></td>
+	<td width= "10%">ใบสั่งงานเลขที่</td>
+	<td width= "40%">{{project.workOrderNo}}</td>
+</tr>
+<tr>
+	<td width= "10%">สถานที่ส่งของ </td>
+	<td width= "30%">{{project.projectDeliveryAddress}} </td>
+        <td width= "10%"></td>
+	<td width= "10%">วันที่ </td>
+	<td width= "40%">{{orderDate}}</td>
+</tr>
+<tr>
+	<td width= "10%">กำหนดส่งมอบ </td>
+	<td width= "30%" >{{expectedDeliveryDate}} </td>
+        <td width= "10%"></td>
+	<td width= "10%">จำนวน</td>
+	<td width= "45%">{{project.Amount}}</td>
+</tr>        
+</table>
+<br /> <br/>
+
+<table>
+    <tr><td>
+        <b><u>รายละเอียดของสินค้า</u></b> 
+        </td>
+    </tr>
+    <tr>
+        <td width ="40%">
+            {{project.projectDetail}}
+        </td>
+        <td width ="30%">
+            <tcpdf method="write1DBarcode" params="{{params}}"/>
+        </td>
+        <td width ="30%">
+            <Table border="1">
+                <tr>
+                    <td align="center"><font size = "14"><b>หมายเลขสินค้า</b></font>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center"><font size = "16"><b>{{project.projectBarcode}}</b></font>
+                    </td>                           
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br/> <br/>                   
+                    
+</body>
+</html>
