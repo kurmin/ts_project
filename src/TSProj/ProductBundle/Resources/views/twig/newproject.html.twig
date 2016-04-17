@@ -200,6 +200,11 @@
                     <span style="text-align:right;font-weight: bold;">จำนวนชิ้นงาน:</span>
                     <input type="text" name="itemcount" id="itemcount" class="form-control"  placeholder="จำนวนชิ้นงาน" />
                 </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">สต๊อก:</span>
+                    <input type="text" name="stock" id="itemcount" class="form-control" placeholder="should be dropdown list" />
+                </div>
             </div>
         </div>
     </div>
@@ -267,12 +272,12 @@
                     <input type="text" name="processenddate" id="processenddate"  class="form-control"  placeholder="วันที่สิ้นสุดกระบวนการ" />
                 </div>
             </div>   
-            <div class="row">
-                <div class="col-sm-3 col-md-3">
-                     <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>
-                </div>
-            </div>
         </div>
+    </div>
+    <div class="col-sm-3 col-md-3 pull-right" align='right'>
+        <button type="button" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
+        <button type="button" name="insertTable" class="btn btn-primary" value="submit" onclick="return confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?')">ตกลง</button>
+<!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
     </div>
         
 {% endblock %}
