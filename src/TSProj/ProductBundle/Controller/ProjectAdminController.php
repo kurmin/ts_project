@@ -115,7 +115,7 @@ class ProjectAdminController extends CRUDController
 //        
 
         //$htmla = '<h1>Working on Symfony</h1>';
-        $params = $pdf->serializeTCPDFtagParameters(array($project->getProjectBarcode(), 'C128', '', '', 80, 30, 0.4, array('position'=>'S', 'border'=>true, 'padding'=>4, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>8, 'stretchtext'=>4), 'N'));
+        $params = $pdf->serializeTCPDFtagParameters(array($project->getProjectBarcode(), 'C128', '', '', 50, 18, 0.2, array('position'=>'S', 'border'=>false, 'padding'=>1, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>10, 'stretchtext'=>1), 'N'));
         //$test = $pdf->write1DBarcode($project->getProjectBarcode(), 'C128', '50', '50', 80, 30, 0.4, array('position'=>'S', 'border'=>true, 'padding'=>4, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>8, 'stretchtext'=>4), 'N');
        
         $productTable = '<table border="1"><tr align="Center"><td width="40%">รายการ</td><td width="15%">รหัสแบบ</td><td width="15%">วัสดุ</td><td width="15%">จำนวน</td><td width="15%">หมายเหตุ</td></tr>';        
@@ -247,10 +247,10 @@ class ProjectAdminController extends CRUDController
 //        
 
         //$htmla = '<h1>Working on Symfony</h1>';
-        $params = $pdf->serializeTCPDFtagParameters(array($project->getProjectBarcode(), 'C128', '', '', 80, 30, 0.4, array('position'=>'S', 'border'=>true, 'padding'=>4, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>8, 'stretchtext'=>4), 'N'));
+        $params = $pdf->serializeTCPDFtagParameters(array($project->getProjectBarcode(), 'C128', '', '', 50, 18, 0.2, array('position'=>'S', 'border'=>false, 'padding'=>1, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>10, 'stretchtext'=>1), 'N'));
         //$test = $pdf->write1DBarcode($project->getProjectBarcode(), 'C128', '50', '50', 80, 30, 0.4, array('position'=>'S', 'border'=>true, 'padding'=>4, 'fgcolor'=>array(0,0,0), 'bgcolor'=>array(255,255,255), 'text'=>true, 'font'=>'helvetica', 'fontsize'=>8, 'stretchtext'=>4), 'N');
        
-        $productTable = '<table border="1"><tr align="Center"><td width="40%">รายการ</td><td width="15%">รหัสแบบ</td><td width="15%">วัสดุ</td><td width="15%">จำนวน</td><td width="15%">หมายเหตุ</td></tr>';        
+        $productTable = '<table border="1"><tr align="Center"><td width = "15%">รหัสชิ้นงาน</td><td width="40%">รายการ</td><td width="15%">เวลาประมาณการ</td><td width="15%">เวลาที่ใช้จริง</td><td width="15%">หมายเหตุ</td></tr>';        
         $product = $project->getProduct();
         
         /*foreach($product as $item){
@@ -266,7 +266,7 @@ class ProjectAdminController extends CRUDController
         $productTable .= '</table>';*/
 
         
-        $html = $this-> RenderView('TSProjProductBundle:Export:projectPdf.html.twig',  
+        $html = $this-> RenderView('TSProjProductBundle:Export:reportPdf.html.twig',  
                 array( 'lead' => 'one' , 
                         'project' => $project, 
                         'product' => $project->getProduct(), 
@@ -280,10 +280,10 @@ class ProjectAdminController extends CRUDController
         while ($n <= 20) {
             if($n < count($product)){
             
-            $productTable .= '<tr><td>' . $product[$n]->getProductDescription() . '</td>'
-                    . '<td align ="center">'. $product[$n]->getDrawingID() . '</td>'
-                    . '<td align ="center">'. $product[$n]->getMaterial() . '</td>'
-                    . '<td align ="center">'. $project->getAmount() . ' UNIT</td>'
+            $productTable .= '<tr><td>' . $product[$n]->getProductBarcode() . '</td>'
+                    . '<td align ="center">'. $product[$n]->getProductDescription() . '</td>'
+                    . '<td align ="center">'. $product[$n]->getEstimatedTimeHour() .'H '. $product[$n]->getEstimatedTimeMin(). 'M </td>'
+                    . '<td align ="center">'. $product[$n]->getProductTimeConsumingDays() .'D '. $product[$n]->getProductTimeConsumingHours().'H '. $product[$n]->getProductTimeConsumingMins().'M </td>'
                     . '<td></td>';
             $productTable .= '</tr>';
             }
