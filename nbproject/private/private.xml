@@ -3,18 +3,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Product.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/EmployeeAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Export/projectPdf.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/StockAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProcessAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/list_progress.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/showImage.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectAdminController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Resources/views/Admin/showImage.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Process.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Entity/EmployeeStatus.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/ClientAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Entity/Client.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Project.php</file>
+=======
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/DefaultController.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/CRUD/list__action_projectPdf.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/NewProjectController.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/twig/newproject.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/app/Resources/views/base.html.twig</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/app/cache/prod/classes.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Project.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/twig/main.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/CRUD/list__action_deleteRow.html.twig</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectAdminController.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectController.php</file>
+>>>>>>> refs/remotes/origin/master
         </group>
     </open-files>
 </project-private>

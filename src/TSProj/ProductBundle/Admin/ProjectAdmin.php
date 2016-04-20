@@ -152,24 +152,7 @@ class ProjectAdmin extends BaseAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('projectDeleteRow', $this->getRouterIdParameter().'/projectDeleteRow')
-                   ->add('projectPdf', $this->getRouterIdParameter().'/projectPdf');
-                   //->remove('delete');
-    }
-    
-    public function getBatchActions()
-    {
-        // retrieve the default (currently only the delete action) actions
-        $actions = parent::getBatchActions();
-
-        // check user permissions
-        if($this->hasRoute('edit') && $this->isGranted('EDIT') && $this->hasRoute('delete') && $this->isGranted('DELETE')){
-            $actions['merge']=[
-                'label'            => $this->trans('action_merge', array(), 'SonataAdminBundle'),
-                'ask_confirmation' => true // If true, a confirmation will be asked before performing the action
-            ];
-
-        }
-
-        return $actions;
+                   ->add('projectPdf', $this->getRouterIdParameter().'/projectPdf')
+                   ->remove('delete');
     }
 }
