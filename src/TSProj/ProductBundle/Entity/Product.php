@@ -165,7 +165,14 @@ class Product
      * @ORM\Column(name="material",type="string",nullable=true)
      */
 	 private $material;
-	 
+	
+     /**
+     * @var integer
+     * 
+     * @ORM\Column(name="estimated_time_day",type="integer",nullable=true)
+     */
+	 private $estimatedTimeDay;
+         
 	 /**
      * @var integer
      * 
@@ -778,5 +785,28 @@ class Product
     public function getProductTimeConsumingMins()
     {
         return $this->productTimeConsumingMins;
+    }
+
+    /**
+     * Set estimatedTimeDay
+     *
+     * @param integer $estimatedTimeDay
+     * @return Product
+     */
+    public function setEstimatedTimeDay($estimatedTimeDay)
+    {
+        $this->estimatedTimeDay = $estimatedTimeDay;
+    
+        return $this;
+    }
+
+    /**
+     * Get estimatedTimeDay
+     *
+     * @return integer 
+     */
+    public function getEstimatedTimeDay()
+    {
+        return $this->estimatedTimeDay;
     }
 }
