@@ -184,6 +184,7 @@ class ProductAdmin extends BaseAdmin
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))
                      ->add('currentPhase',null,array('required'=>false)) 
+                                         ->add('estimatedTimeDay',null,array('required'=>false,'label'=>'Estimated Time (Day)'))
 					 ->add('estimatedTimeHour',null,array('required'=>false,'label'=>'Estimated Time (Hour)'))
 					 ->add('estimatedTimeMin',null,array('required'=>false,'label'=>'Estimated Time (Minute)'))
                      ->add('productTimeConsumingDays',null,array('required'=>false,'read_only'=>true))
@@ -237,6 +238,7 @@ class ProductAdmin extends BaseAdmin
             ->add('drawingImage', 'string', array('template' => 'TSProjProductBundle:Admin:showImage.html.twig'))
             ->add('process')    
             ->add('currentPhase')  
+                        ->add('estimatedTimeDay')
 			->add('estimatedTimeHour')
 			->add('estimatedTimeMin')
             ->add('startDateTime')
