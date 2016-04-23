@@ -5,10 +5,10 @@
         <group>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Product.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/EmployeeAdmin.php</file>
-            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Export/projectPdf.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/StockAdmin.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProcessAdmin.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Export/reportPdf.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/list_progress.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/showImage.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Resources/views/Admin/showImage.html.twig</file>

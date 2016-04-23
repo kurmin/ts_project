@@ -145,7 +145,18 @@ class ProjectAdminController extends CRUDController
                     ));
         
         $n = 0;
-        while ($n <= 20) {
+        $rowno = 0;
+        
+        if(count($product) > 20)
+        {
+            $rowno = count($product);
+        }
+        else
+        {
+            $rowno = 20;
+        };
+        
+        while ($n <= $rowno) {
             if($n < count($product)){
             
             $productTable .= '<tr><td>' . $product[$n]->getProductDescription() . '</td>'
@@ -277,13 +288,56 @@ class ProjectAdminController extends CRUDController
                     ));
         
         $n = 0;
-        while ($n <= 20) {
+        $rowno = 0;
+        
+        if(count($product) > 20)
+        {
+            $rowno = count($product);
+        }
+        else
+        {
+            $rowno = 20;
+        };
+        
+       
+        
+        while ($n <= $rowno) {
+     
             if($n < count($product)){
+                
+             if ($product[$n]->getEstimatedTimeDay() > 0)
+             {
+                $EstimatedTime = $product[$n]->getEstimatedTimeDay() .'D '.$product[$n]->getEstimatedTimeHour() .'H '. $product[$n]->getEstimatedTimeMin(). 'M';
+             }
+             else if (is_null($product[$n]->getEstimatedTimeDay()) && $product[$n]->getEstimatedTimeHour() > 0)
+             {
+                 $EstimatedTime = $product[$n]->getEstimatedTimeHour() .'H '. $product[$n]->getEstimatedTimeMin(). 'M';
+             }
+             else if (is_null($product[$n]->getEstimatedTimeHour()) && $product[$n]->getEstimatedTimeMin() > 0)
+             {
+                 $EstimatedTime = $product[$n]->getEstimatedTimeMin(). 'M';
+             }
+             else {$EstimatedTime = '';}
+             
+             
+             if ($product[$n]->getProductTimeConsumingDays() > 0)
+             {
+                $TimeConsuming =  $product[$n]->getProductTimeConsumingDays() .'D '. $product[$n]->getProductTimeConsumingHours().'H '. $product[$n]->getProductTimeConsumingMins().'M';
+             }
+             else if (is_null($product[$n]->getProductTimeConsumingDays()) && $product[$n]->getProductTimeConsumingHours() > 0)
+             {
+                 $TimeConsuming = $product[$n]->getProductTimeConsumingHours().'H '. $product[$n]->getProductTimeConsumingMins().'M';
+             }
+             else if (is_null($product[$n]->getProductTimeConsumingHours()) && $product[$n]->getProductTimeConsumingMins() > 0)
+             {
+                 $TimeConsuming = $product[$n]->getProductTimeConsumingMins().'M';
+             }
+             else {$TimeConsuming = '';}
             
             $productTable .= '<tr><td>' . $product[$n]->getProductBarcode() . '</td>'
-                    . '<td align ="center">'. $product[$n]->getProductDescription() . '</td>'
-                    . '<td align ="center">'. $product[$n]->getEstimatedTimeHour() .'H '. $product[$n]->getEstimatedTimeMin(). 'M </td>'
-                    . '<td align ="center">'. $product[$n]->getProductTimeConsumingDays() .'D '. $product[$n]->getProductTimeConsumingHours().'H '. $product[$n]->getProductTimeConsumingMins().'M </td>'
+                    . '<td>'. $product[$n]->getProductDescription() . '</td>'
+                    . '<td align ="center">'. $EstimatedTime. '</td>'
+                    . '<td align ="center">'. $TimeConsuming.'</td>'
                     . '<td></td>';
             $productTable .= '</tr>';
             }
