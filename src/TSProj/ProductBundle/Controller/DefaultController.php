@@ -6,16 +6,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
     /**
-     * @Route("/hello1/{name}")
+     * @Route("/test")
      * @Template()
      */
-    public function indexAction($name)
+    public function indexAction()
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode("TEST1234");
+        $product = $em->getRepository("TSProjProductBundle:Product")->find(1);//insert id product into ()
+        $ppts = $product->getProductProcessTime(); //get productProcessTime by product id, result is in array
+        
+        //count number of product process time
+        $qb = $em->createQueryBuilder();
+        $qb->select('count(p.id)')
+           ->from('TSProjProductBundle:ProductProcessTime','p')
+           ->innerJoin('p.product', 'pd')      
+           ->where('pd.id = :productId')     
+           ->setParameter('productId', '1');
+        $cntPpt = $qb->getQuery()->getSingleScalarResult(); 
+        
+        //--------- nok codes here ---------------------------
+        if($cntPpt%2 == 0){
+            $test = $this->timeConsumingCalculation(); // add parameter by yourself
+        }
+        echo $cntPpt." ".$test; die();        
         
 //        $query = $em->getRepository('TSProjProductBundle:ProductProcessTime')->createQueryBuilder('p');
 //        $query->select('p')
@@ -28,6 +44,6 @@ class DefaultController extends Controller
         echo date_format($product->getStartDateTime(),'Y-m-d');
         $proCnt = $product->getProductProcessTime();
         \Doctrine\Common\Util\Debug::dump($proCnt);
-        return array('name' => $name);
+        return array();
     }
 }
