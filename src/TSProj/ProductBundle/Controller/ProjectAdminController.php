@@ -283,6 +283,8 @@ class ProjectAdminController extends CRUDController
                         'product' => $project->getProduct(), 
                         'orderDate' => $project->getorderDate()->format('d/m/Y'),
                         'expectedDeliveryDate' => $project->getexpectedDeliveryDate()->format('d/m/Y'),
+                        'ProjectStartDate' => $project->getProjectStartDate()->format('d/m/Y'),
+                        'ProjectEndDate' => $project->getProjectEndDate()->format('d/m/Y'),
                         'params' => $params,
                      //'test' => $test,
                     ));
