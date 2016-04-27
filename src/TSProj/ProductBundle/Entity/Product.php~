@@ -165,7 +165,14 @@ class Product
      * @ORM\Column(name="material",type="string",nullable=true)
      */
 	 private $material;
-	 
+	
+     /**
+     * @var integer
+     * 
+     * @ORM\Column(name="estimated_time_day",type="integer",nullable=true)
+     */
+	 private $estimatedTimeDay;     
+         
 	 /**
      * @var integer
      * 
@@ -712,52 +719,6 @@ class Product
     }
 
     /**
-     * Set productTimeConsuminghours
-     *
-     * @param integer $productTimeConsuminghours
-     * @return Product
-     */
-    public function setProductTimeConsuminghours($productTimeConsuminghours)
-    {
-        $this->productTimeConsuminghours = $productTimeConsuminghours;
-
-        return $this;
-    }
-
-    /**
-     * Get productTimeConsuminghours
-     *
-     * @return integer 
-     */
-    public function getProductTimeConsuminghours()
-    {
-        return $this->productTimeConsuminghours;
-    }
-
-    /**
-     * Set productTimeConsumingmins
-     *
-     * @param integer $productTimeConsumingmins
-     * @return Product
-     */
-    public function setProductTimeConsumingmins($productTimeConsumingmins)
-    {
-        $this->productTimeConsumingmins = $productTimeConsumingmins;
-
-        return $this;
-    }
-
-    /**
-     * Get productTimeConsumingmins
-     *
-     * @return integer 
-     */
-    public function getProductTimeConsumingmins()
-    {
-        return $this->productTimeConsumingmins;
-    }
-
-    /**
      * Set noOfProcess
      *
      * @param integer $noOfProcess
@@ -778,5 +739,51 @@ class Product
     public function getNoOfProcess()
     {
         return $this->noOfProcess;
+    }
+
+    /**
+     * Set productTimeConsumingHours
+     *
+     * @param integer $productTimeConsumingHours
+     * @return Product
+     */
+    public function setProductTimeConsumingHours($productTimeConsumingHours)
+    {
+        $this->productTimeConsumingHours = $productTimeConsumingHours;
+
+        return $this;
+    }
+
+    /**
+     * Get productTimeConsumingHours
+     *
+     * @return integer 
+     */
+    public function getProductTimeConsumingHours()
+    {
+        return $this->productTimeConsumingHours;
+    }
+
+    /**
+     * Set productTimeConsumingMins
+     *
+     * @param integer $productTimeConsumingMins
+     * @return Product
+     */
+    public function setProductTimeConsumingMins($productTimeConsumingMins)
+    {
+        $this->productTimeConsumingMins = $productTimeConsumingMins;
+
+        return $this;
+    }
+
+    /**
+     * Get productTimeConsumingMins
+     *
+     * @return integer 
+     */
+    public function getProductTimeConsumingMins()
+    {
+        return $this->productTimeConsumingMins;
     }
 }
