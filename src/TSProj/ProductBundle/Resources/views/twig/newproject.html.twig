@@ -97,6 +97,7 @@
     </style>
 {% endblock %}
 {% block body %}
+    <form name="form1" method="post" id="form1">
     <div class="row">
         <div class="col-sm-12 col-md-12">
             <h4 class="sub-header">สแกนชิ้นงาน</h4>
@@ -276,10 +277,11 @@
     </div>
     <div class="col-sm-3 col-md-3 pull-right" align='right'>
         <button type="button" id="clear_btn" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
-        <button type="button" name="insertTable" class="btn btn-primary" value="submit" onclick="return confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?')">ตกลง</button>
+        <button type="button" name="insertTable" class="btn btn-primary" id="insertTable" value="submit" onclick="return confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?')">ตกลง</button>
 <!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
     </div>
         
+    </form>
 {% endblock %}
 
 {% block javascripts %}
