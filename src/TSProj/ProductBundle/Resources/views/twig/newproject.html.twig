@@ -277,7 +277,7 @@
     </div>
     <div class="col-sm-3 col-md-3 pull-right" align='right'>
         <button type="button" id="clear_btn" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
-        <button type="button" name="insertTable" class="btn btn-primary" id="insertTable" value="submit" onclick="return confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?')">ตกลง</button>
+        <button type="button" name="insertTable" class="btn btn-primary" id="insertTable" value="submit">ตกลง</button>
 <!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
     </div>
         
@@ -343,9 +343,10 @@
         });#}
         
         $(document).on("click", "#insertTable", function() {
-           alert("Test");
-           $(this).focus();
-           return;
+           if(validation()){
+                console.log($("#form1").serialize());
+                return;
+            }
         });
             
         $(document).on("change","#processid",function(){
@@ -411,6 +412,34 @@
                         alert(response.message);
                     }
                 }, "json");  
+        }
+        
+        function validation()
+        {
+            if($("#productid").val()=="")
+            {   alert("กรุณาระบุข้อมูล รหัสชิ้นงาน");
+                $("#productid").focus();
+                return false;
+            }else if($("#empid").val()=="")
+            {   alert("กรุณาระบุข้อมูล รหัสพนักงาน");
+                $("#empid").focus();
+                return false;
+            }else if($("#processid").val()=="")
+            {   alert("กรุณาระบุข้อมูล รหัสกระบวนการ");
+                $("#processid").focus();
+                return false;
+            }else
+            {
+                if(confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?'))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
         }
     </script>
 

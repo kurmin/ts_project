@@ -35,7 +35,7 @@ class NewProjectController extends Controller
         }
         else
         {
-         $response = array("code" => 300, "success" => true,"empname"=>"","message"=>"no data found");
+         $response = array("code" => 300, "success" => true,"empname"=>"","message"=>"ไม่พบข้อมูลพนักงานที่ท่านทำการค้นหา");
         }
         return new Response(json_encode($response)); 
     }
@@ -72,7 +72,7 @@ class NewProjectController extends Controller
         }
         else
         {
-         $response = array("code" => 300, "success" => true,"message"=>"no data found");
+         $response = array("code" => 300, "success" => true,"message"=>"ไม่พบข้อมูลชิ้นงานที่ท่านกำลังค้นหา");
         }
         return new Response(json_encode($response)); 
     }
@@ -91,7 +91,7 @@ class NewProjectController extends Controller
         }
         else
         {
-            $response = array("code" => 300, "success" => true,"message"=>"no data found");
+            $response = array("code" => 300, "success" => true,"message"=>"ไม่พบข้อมูลกระบวนการที่ท่านกำลังค้นหา");
         }
         return new Response(json_encode($response)); 
     }
