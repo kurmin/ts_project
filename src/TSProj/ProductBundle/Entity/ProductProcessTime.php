@@ -24,14 +24,14 @@ class ProductProcessTime
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_date_time", type="date")
+     * @ORM\Column(name="start_date_time", type="datetime")
      */
     private $startDateTime;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_date_time", type="date",nullable=true)
+     * @ORM\Column(name="end_date_time", type="datetime",nullable=true)
      */
     private $endDateTime;
 
