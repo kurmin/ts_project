@@ -344,7 +344,19 @@
         
         $(document).on("click", "#insertTable", function() {
            if(validation()){
-                console.log($("#form1").serialize());
+               var data = $("#form1").serialize();
+                console.log(data);
+                $.post('{{path('ajax_save_product_Process_Time')}}',
+                    data, 
+            function(response){
+                    if(response.code == 100 && response.success){//dummy check
+                      alert(response.empname);
+                      alert("save successful");
+                    }else if(response.code == 300)
+                    {
+                        alert(response.message);
+                    }
+                }, "json");  
                 return;
             }
         });

@@ -29,8 +29,8 @@ class NewProjectController extends Controller
         $empid = $request->request->get('empid');
         $em = $this->getDoctrine()->getEntityManager();
         $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeId($empid);
-        $name = $employee->getEmployeeName()." ".$employee->getEmployeeSurname();
         if(count($employee)==1){
+            $name = $employee->getEmployeeName()." ".$employee->getEmployeeSurname();
             $response = array("code" => 100, "success" => true,"empname"=>$name);
         }
         else
@@ -95,5 +95,57 @@ class NewProjectController extends Controller
         }
         return new Response(json_encode($response)); 
     }
+    
+    
+    /**
+     * @Route("/save",name="ajax_save_product_Process_Time")
+     */
+    public function ajax_save_product_Process_TimeAction()
+    {
+        
+        $request = $this->container->get('request');  
+        
+        $productid= $request->request->get('productid'); 
+        $projectid= $request->request->get('projectid');    
+        $projectname= $request->request->get('projectname');    
+        $customername= $request->request->get('customername');    
+        $productstartdate= $request->request->get('productstartdate');    
+        $deliverdate= $request->request->get('deliverdate');    
+        $projectpercent= $request->request->get('projectpercent');    
+        $itemcount= $request->request->get('itemcount');    
+        $stock= $request->request->get('stock');    
+        $empid= $request->request->get('empid');    
+        $empname= $request->request->get('empname');    
+        $processid= $request->request->get('processid');    
+        $processname= $request->request->get('processname');    
+        $pro_barcode= $request->request->get('pro_barcode');    
+        $processstartdate= $request->request->get('processstartdate');    
+        $processenddate= $request->request->get('processenddate');    
+        
+        $now   = new \DateTime();
+        $curr = $now->format("Y-m-d");
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        
+        
+//        $qb->select('count(p.id)')
+//           ->from('TSProjProductBundle:ProductProcessTime','ppt')
+//           ->where('ppt.product = :product')     
+//           ->andWhere('ppt.product = :productid')     
+//           ->andWhere('ppt.process = :processid')        
+//           ->andWhere('ppt.employee = :employeeid')      
+//           ->andWhere('ppt.startDateTime = :startdate')   
+//           ->setParameter('productid', $productid)
+//           ->setParameter('processid', $processid) 
+//           ->setParameter('employeeid', $empid) 
+//           ->setParameter('date', $curr);
+//        $findCount = $qb->getQuery()->getSingleScalarResult(); 
+        
+        
+        $response = array("code" => 100, "success" => true,"empname"=>"Hello");
+        return new Response(json_encode($response)); 
+    }
+    
 
 }
