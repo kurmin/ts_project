@@ -275,7 +275,7 @@
         </div>
     </div>
     <div class="col-sm-3 col-md-3 pull-right" align='right'>
-        <button type="button" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
+        <button type="button" id="clear_btn" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
         <button type="button" name="insertTable" class="btn btn-primary" value="submit" onclick="return confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?')">ตกลง</button>
 <!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
     </div>
@@ -351,6 +351,12 @@
                 {
                     get_processid($(this).val());
                 }
+        });
+         
+        $(document).on("click","#clear_btn",function(){
+            $("input").each(function(){
+                $(this).val("");
+            });
         });
         
         // Insert button functionality
