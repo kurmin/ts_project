@@ -220,7 +220,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">รหัสพนักงาน:</span>
-                    <input type="text" name="empid" id="empid" class="form-control"  placeholder="รหัสพนักงาน" />
+                    <input type="text" name="emp_barcode" id="emp_barcode" class="form-control"  placeholder="รหัสพนักงาน" />
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
@@ -244,7 +244,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">รหัสกระบวนการ:</span>
-                    <input type="text" name="processid" id="processid" class="form-control"  placeholder="รหัสกระบวนการ" />
+                    <input type="text" name="process_barcode" id="process_barcode" class="form-control"  placeholder="รหัสกระบวนการ" />
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
@@ -299,14 +299,14 @@
             }
         });
         
-        $(document).on("change","#empid",function(){
+        $(document).on("change","#emp_barcode",function(){
             {#if($("#projectid").val().length=="11")
             {#}
                 if($(this).val().length!=0)
                 {
                    {# $("#pg2").removeClass("step-active").addClass("step-done");
                     $("#pg3").addClass("step-active");#}
-                    get_employeedeatail($("#empid").val());
+                    get_employeedeatail($("#emp_barcode").val());
                 }
                 else
                 {
@@ -315,7 +315,7 @@
                     $("#pg3").removeClass("step-active");#}
                     {#$(this).focus();
                     return;#}
-                    get_employeedetail($("#empid").val());
+                    get_employeedetail($("#emp_barcode").val());
                 
                  }
 {#            }     #}
@@ -329,10 +329,10 @@
 {#            }#}
           
         });
-        {#$(document).on("change","#empid",function(){
+        {#$(document).on("change","#emp_barcode",function(){
              if($(this).val().length=="4")
                 {
-                    get_employeedeatail($("#empid").val());
+                    get_employeedeatail($("#emp_barcode").val());
                 }
                 else
                 {
@@ -361,7 +361,7 @@
             }
         });
             
-        $(document).on("change","#processid",function(){
+        $(document).on("change","#process_barcode",function(){
              if($(this).val().length!=0)
                 {
                     get_processid($(this).val());
@@ -377,11 +377,11 @@
         // Insert button functionality
 
         
-        function get_employeedeatail(empid)
+        function get_employeedeatail(emp_barcode)
         {
             
              $.post('{{path('ajax_get_employee_detail')}}',
-                    {'empid': empid}, 
+                    {'emp_barcode': emp_barcode}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       $("#empname").val(response.empname);
@@ -408,20 +408,30 @@
                     }else if(response.code == 300)
                     {
                         alert(response.message);
+                        $("#process_barcode").val("");
+                        $("#projectid").val(response.projectid);
+                        $("#projectname").val(response.projectname);
+                        $("#deliverdate").val(response.expectdate.date);
+                        $("#customername").val(response.clientname);
+                        $("#productstartdate").val(response.productstartdate);
+                        $("#projectpercent").val(response.projectpercent);
+                        $("#itemcount").val(response.itemcount);
                     }
                 }, "json");  
         }
-        function get_processid(processid)
+        function get_processid(process_barcode)
         {
             
              $.post('{{path('ajax_get_process_detail')}}',
-                    {'processid': processid}, 
+                    {'process_barcode': process_barcode}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       $("#processname").val(response.name);
                     }else if(response.code == 300)
                     {
                         alert(response.message);
+                        $("#process_barcode").val("");
+                        $("#processname").val("");
                     }
                 }, "json");  
         }
@@ -432,13 +442,13 @@
             {   alert("กรุณาระบุข้อมูล รหัสชิ้นงาน");
                 $("#productid").focus();
                 return false;
-            }else if($("#empid").val()=="")
+            }else if($("#emp_barcode").val()=="")
             {   alert("กรุณาระบุข้อมูล รหัสพนักงาน");
-                $("#empid").focus();
+                $("#emp_barcode").focus();
                 return false;
-            }else if($("#processid").val()=="")
+            }else if($("#process_barcode").val()=="")
             {   alert("กรุณาระบุข้อมูล รหัสกระบวนการ");
-                $("#processid").focus();
+                $("#process_barcode").focus();
                 return false;
             }else
             {

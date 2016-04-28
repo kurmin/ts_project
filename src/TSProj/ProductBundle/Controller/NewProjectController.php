@@ -1,12 +1,13 @@
 <?php
-
 namespace TSProj\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
+use TSProj\ProductBundle\Entity\ProductProcessTime;
 
+date_default_timezone_set("Asia/Bangkok");
 class NewProjectController extends Controller
 {
     /**
@@ -26,9 +27,9 @@ class NewProjectController extends Controller
     public function ajax_employee_detailAction()
     {
         $request = $this->container->get('request');       
-        $empid = $request->request->get('empid');
+        $emp_barcode = $request->request->get('emp_barcode');
         $em = $this->getDoctrine()->getEntityManager();
-        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeId($empid);
+        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeBarcode($emp_barcode);
         if(count($employee)==1){
             $name = $employee->getEmployeeName()." ".$employee->getEmployeeSurname();
             $response = array("code" => 100, "success" => true,"empname"=>$name);
@@ -83,7 +84,7 @@ class NewProjectController extends Controller
     public function ajax_process_detailAction()
     {
         $request = $this->container->get('request');       
-        $processBarcode = $request->request->get('processid');
+        $processBarcode = $request->request->get('process_barcode');
         $em = $this->getDoctrine()->getEntityManager();
         $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
         if(count($process)==1){
@@ -114,9 +115,9 @@ class NewProjectController extends Controller
         $projectpercent= $request->request->get('projectpercent');    
         $itemcount= $request->request->get('itemcount');    
         $stock= $request->request->get('stock');    
-        $empid= $request->request->get('empid');    
+        $emp_barcode= $request->request->get('emp_barcode');    
         $empname= $request->request->get('empname');    
-        $processid= $request->request->get('processid');    
+        $processBarcode = $request->request->get('process_barcode');   
         $processname= $request->request->get('processname');    
         $pro_barcode= $request->request->get('pro_barcode');    
         $processstartdate= $request->request->get('processstartdate');    
@@ -124,26 +125,81 @@ class NewProjectController extends Controller
         
         $now   = new \DateTime();
         $curr = $now->format("Y-m-d");
+        $day =new \DateTime($curr);
         
         $em = $this->getDoctrine()->getEntityManager();
         $qb = $em->createQueryBuilder();
+        $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productid);
+        $product_id = $product->getId();
+        
+        $process  = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
+        if(count($process)==1){
+            $process_id =  $process->getId();
+        }
+        
+        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeBarcode($emp_barcode);
+        if(count($employee)==1){
+            $emp_id = $employee->getId();
+        }
+                
+        $qb->select('ppt.id')
+           ->from('TSProjProductBundle:ProductProcessTime','ppt')
+           ->innerJoin('ppt.product', 'pd')      
+           ->innerJoin('ppt.process', 'pc')      
+           ->innerJoin('ppt.employee', 'emp')      
+           ->Where('ppt.startDateTime = :startdate') 
+           ->andwhere('pd.id = :productid')     
+           ->andWhere('pc.id = :process_id')        
+           ->andWhere('emp.id = :employeeid')      
+           ->andWhere('ppt.startDateTime = :startdate')   
+           ->setParameter('productid', $product_id)
+           ->setParameter('process_id', $process_id) 
+           ->setParameter('employeeid', $emp_id) 
+           ->setParameter('startdate', $curr);
+        $ProductProcessTimeId = $qb->getQuery()->getSingleScalarResult(); 
+        
+        if(!$ProductProcessTimeId)
+        {
+            //insert new record
+            $newProductProcessTime = new ProductProcessTime();
+            $newProductProcessTime->setProduct($product);
+            $newProductProcessTime->setProcess($process);
+            $newProductProcessTime->setEmployee($employee);
+            $newProductProcessTime->setStartDateTime($day);
+            $newProductProcessTime->setTimeConsuming('0');
+            $newProductProcessTime->setFinishedFlag('0');
+            $newProductProcessTime->setLastMaintDateTime($now);
+            $newProductProcessTime->setApprovalEmployee(null);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newProductProcessTime);
+            $entityManager->flush();
+            
+        }
+        else
+        {    
+            $em = $this->getDoctrine()->getManager();
+            $ProductProcessTime = $em->getRepository('TSProjProductBundle:ProductProcessTime')->find($ProductProcessTimeId);
+            
+            if (!$ProductProcessTime) {
+                throw $this->createNotFoundException(
+                    'No ProductProcessTime found for id '.$ProductProcessTimeId
+                );
+            }
+
+            $ProductProcessTime->setEndDateTime($now);
+            $em->flush();
+        }
         
         
-//        $qb->select('count(p.id)')
-//           ->from('TSProjProductBundle:ProductProcessTime','ppt')
-//           ->where('ppt.product = :product')     
-//           ->andWhere('ppt.product = :productid')     
-//           ->andWhere('ppt.process = :processid')        
-//           ->andWhere('ppt.employee = :employeeid')      
-//           ->andWhere('ppt.startDateTime = :startdate')   
-//           ->setParameter('productid', $productid)
-//           ->setParameter('processid', $processid) 
-//           ->setParameter('employeeid', $empid) 
-//           ->setParameter('date', $curr);
-//        $findCount = $qb->getQuery()->getSingleScalarResult(); 
-        
-        
-        $response = array("code" => 100, "success" => true,"empname"=>"Hello");
+        $response = array("code" => 100, 
+                "success" => true,
+                "empname"=>"Hello",
+                "product_id"=>$product_id,
+                "process_id"=>$process_id
+                ,"now"=>$now
+                ,"curr"=>$curr
+                ,"ProductProcessTimeId"=>$ProductProcessTimeId
+                ,"emp_id"=>$emp_id);
         return new Response(json_encode($response)); 
     }
     
