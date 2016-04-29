@@ -8,7 +8,33 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class BaseController extends Controller
 {
-    public function timeConsumingCalculation(){
-        return 2;
+    public function timeConsumingCalculation($Time_Min){
+        
+        $TimeConsumingDay = 0;
+        $TimeConsumingHour = 0;
+        $TimeConsumingMin = 0;
+        
+        if ($Time_Min < 60)
+        {
+            $TimeConsumingMin = $Time_Min;
+        }
+        else if ($Time_Min >= 60 && $Time_Min < 1440)
+        {
+            $TimeConsumingHour = floor($Time_Min/60);
+            $TimeConsumingMin = $Time_Min - ($TimeConsumingHour * 60);
+        }
+        else if ($Time_Min >= 1440)
+        {
+            $TimeConsumingDay = floor($Time_Min/1440);
+            $TimeConsumingHour = floor(($Time_Min - ($TimeConsumingDay * 1440))/60);
+            $TimeConsumingMin = $Time_Min - ($TimeConsumingDay *1440) - ($TimeConsumingHour * 60);
+        }
+        else
+        {
+            $TimeConsumingDay = 0;
+            $TimeConsumingHour = 0;
+            $TimeConsumingMin = 0;
+        }
+        return array($TimeConsumingDay, $TimeConsumingHour, $TimeConsumingMin);;
     }
 }
