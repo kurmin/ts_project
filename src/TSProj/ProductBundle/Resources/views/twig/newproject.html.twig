@@ -97,6 +97,7 @@
     </style>
 {% endblock %}
 {% block body %}
+    <form name="form1" method="post" id="form1">
     <div class="row">
         <div class="col-sm-12 col-md-12">
             <h4 class="sub-header">สแกนชิ้นงาน</h4>
@@ -219,7 +220,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">รหัสพนักงาน:</span>
-                    <input type="text" name="empid" id="empid" class="form-control"  placeholder="รหัสพนักงาน" />
+                    <input type="text" name="emp_barcode" id="emp_barcode" class="form-control"  placeholder="รหัสพนักงาน" />
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
@@ -243,7 +244,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">รหัสกระบวนการ:</span>
-                    <input type="text" name="processid" id="processid" class="form-control"  placeholder="รหัสกระบวนการ" />
+                    <input type="text" name="process_barcode" id="process_barcode" class="form-control"  placeholder="รหัสกระบวนการ" />
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
@@ -275,11 +276,12 @@
         </div>
     </div>
     <div class="col-sm-3 col-md-3 pull-right" align='right'>
-        <button type="button" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
-        <button type="button" name="insertTable" class="btn btn-primary" value="submit" onclick="return confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?')">ตกลง</button>
+        <button type="button" id="clear_btn" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
+        <button type="button" name="insertTable" class="btn btn-primary" id="insertTable" value="submit">ตกลง</button>
 <!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
     </div>
         
+    </form>
 {% endblock %}
 
 {% block javascripts %}
@@ -297,14 +299,14 @@
             }
         });
         
-        $(document).on("change","#empid",function(){
+        $(document).on("change","#emp_barcode",function(){
             {#if($("#projectid").val().length=="11")
             {#}
                 if($(this).val().length!=0)
                 {
                    {# $("#pg2").removeClass("step-active").addClass("step-done");
                     $("#pg3").addClass("step-active");#}
-                    get_employeedeatail($("#empid").val());
+                    get_employeedeatail($("#emp_barcode").val());
                 }
                 else
                 {
@@ -313,7 +315,7 @@
                     $("#pg3").removeClass("step-active");#}
                     {#$(this).focus();
                     return;#}
-                    get_employeedetail($("#empid").val());
+                    get_employeedetail($("#emp_barcode").val());
                 
                  }
 {#            }     #}
@@ -327,10 +329,10 @@
 {#            }#}
           
         });
-        {#$(document).on("change","#empid",function(){
+        {#$(document).on("change","#emp_barcode",function(){
              if($(this).val().length=="4")
                 {
-                    get_employeedeatail($("#empid").val());
+                    get_employeedeatail($("#emp_barcode").val());
                 }
                 else
                 {
@@ -341,26 +343,45 @@
         });#}
         
         $(document).on("click", "#insertTable", function() {
-           alert("Test");
-           $(this).focus();
-           return;
+           if(validation()){
+               var data = $("#form1").serialize();
+                console.log(data);
+                $.post('{{path('ajax_save_product_Process_Time')}}',
+                    data, 
+            function(response){
+                    if(response.code == 100 && response.success){//dummy check
+                      alert(response.empname);
+                      alert("save successful");
+                    }else if(response.code == 300)
+                    {
+                        alert(response.message);
+                    }
+                }, "json");  
+                return;
+            }
         });
             
-        $(document).on("change","#processid",function(){
+        $(document).on("change","#process_barcode",function(){
              if($(this).val().length!=0)
                 {
                     get_processid($(this).val());
                 }
         });
+         
+        $(document).on("click","#clear_btn",function(){
+            $("input").each(function(){
+                $(this).val("");
+            });
+        });
         
         // Insert button functionality
 
         
-        function get_employeedeatail(empid)
+        function get_employeedeatail(emp_barcode)
         {
             
              $.post('{{path('ajax_get_employee_detail')}}',
-                    {'empid': empid}, 
+                    {'emp_barcode': emp_barcode}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       $("#empname").val(response.empname);
@@ -387,22 +408,60 @@
                     }else if(response.code == 300)
                     {
                         alert(response.message);
+                        $("#process_barcode").val("");
+                        $("#projectid").val(response.projectid);
+                        $("#projectname").val(response.projectname);
+                        $("#deliverdate").val(response.expectdate.date);
+                        $("#customername").val(response.clientname);
+                        $("#productstartdate").val(response.productstartdate);
+                        $("#projectpercent").val(response.projectpercent);
+                        $("#itemcount").val(response.itemcount);
                     }
                 }, "json");  
         }
-        function get_processid(processid)
+        function get_processid(process_barcode)
         {
             
              $.post('{{path('ajax_get_process_detail')}}',
-                    {'processid': processid}, 
+                    {'process_barcode': process_barcode}, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       $("#processname").val(response.name);
                     }else if(response.code == 300)
                     {
                         alert(response.message);
+                        $("#process_barcode").val("");
+                        $("#processname").val("");
                     }
                 }, "json");  
+        }
+        
+        function validation()
+        {
+            if($("#productid").val()=="")
+            {   alert("กรุณาระบุข้อมูล รหัสชิ้นงาน");
+                $("#productid").focus();
+                return false;
+            }else if($("#emp_barcode").val()=="")
+            {   alert("กรุณาระบุข้อมูล รหัสพนักงาน");
+                $("#emp_barcode").focus();
+                return false;
+            }else if($("#process_barcode").val()=="")
+            {   alert("กรุณาระบุข้อมูล รหัสกระบวนการ");
+                $("#process_barcode").focus();
+                return false;
+            }else
+            {
+                if(confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?'))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
         }
     </script>
 
