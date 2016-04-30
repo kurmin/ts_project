@@ -46,16 +46,22 @@ class DefaultController extends BaseController
         $product->setProductTimeConsumingDays($result[0]);
         $product->setProductTimeConsumingHours($result[1]);
         $product->setProductTimeConsumingMins($result[2]);
-        $em->persist($product);
         
         echo "Total time consuming : ".$TimeConsuming."<br/>";
         echo "Total time consuming (DAY) : ".$result[0]."<br/>";
         echo "Total time consuming (HOUR) : ".$result[1]."<br/>";
         echo "Total time consuming (MIN) : ".$result[2]."<br/>";
         
-        //update product start date and end date time
+        $esDay = $product->getEstimatedTimeDay();
+        $esHour = $product->getEstimatedTimeHour();
+        $esMin = $product->getEstimatedTimeMin();
+        $resultPercent = $this->percentFinishedCalculation($TimeConsuming, $esDay, $esHour, $esMin);
+        $product-> setPercentFinished($resultPercent);
         
-        //count number of product process time
+        echo $resultPercent."%";
+        
+        //update product start date and end date time
+       
         $qb2 = $em->createQueryBuilder();
         $qb2->select('p')
            ->from('TSProjProductBundle:ProductProcessTime','p')
@@ -64,8 +70,6 @@ class DefaultController extends BaseController
            ->setParameter('productId', '1')
            ->orderBy('p.startDateTime');  
         $products = $qb2->getQuery()->getResult();
-        //echo $min_start_date[0][1];
-       // $min_start_datetime = strtotime($min_start_date[0][1]);
         $product->setStartDateTime($products[0]->getStartDateTime());
         
         $qb3 = $em->createQueryBuilder();
@@ -76,8 +80,6 @@ class DefaultController extends BaseController
            ->setParameter('productId', '1')
            ->orderBy('p.endDateTime', 'desc');  
         $products = $qb3->getQuery()->getResult();
-        //echo $min_start_date[0][1];
-       // $min_start_datetime = strtotime($min_start_date[0][1]);
         $product->setEndDateTime($products[0]->getEndDateTime());
         
        $em->persist($product);

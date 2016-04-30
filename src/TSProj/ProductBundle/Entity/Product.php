@@ -809,4 +809,8 @@ class Product
     {
         return $this->estimatedTimeDay;
     }
+    public function getProductTimeConsuming()
+    {
+        return sprintf("%s,%s,%s",$this->getProductTimeConsumingDays(),$this->getProductTimeConsuminghours(),$this->getProductTimeConsumingMins());
+    }     
 }

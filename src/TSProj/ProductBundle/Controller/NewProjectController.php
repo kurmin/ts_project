@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use TSProj\ProductBundle\Entity\ProductProcessTime;
 
 date_default_timezone_set("Asia/Bangkok");
-class NewProjectController extends Controller
+class NewProjectController extends BaseController
 {
     /**
      * @Route("/new",name="new_project")
@@ -65,7 +65,7 @@ class NewProjectController extends Controller
                                 "projectname"=>$product->getProject()->getProjectName(),
                                 "expectdate"=>$product->getProject()->getExpectedDeliveryDate(),
                                 "clientname"=>$product->getProject()->getClient()->getClientName(),
-                                //"productstartdate"=>date_format($product->getStartDateTime(),'Y-m-d \TH:i:s'),
+                                "productstartdate"=>date_format($product->getStartDateTime(),'Y-m-d \TH:i:s'),
                                 "projectpercent"=>$product->getProject()->getPercentFinished(),
                                 "itemcount"=>$product->getProject()->getAmount(),
 
@@ -122,7 +122,7 @@ class NewProjectController extends Controller
         $pro_barcode= $request->request->get('pro_barcode');    
         $processstartdate= $request->request->get('processstartdate');    
         $processenddate= $request->request->get('processenddate');    
-        
+       
         $now   = new \DateTime();
         $curr = $now->format("Y-m-d");
         $day =new \DateTime($curr);
@@ -142,7 +142,7 @@ class NewProjectController extends Controller
             $emp_id = $employee->getId();
         }
                 
-        $qb->select('ppt.id')
+        $qb->select('ppt')
            ->from('TSProjProductBundle:ProductProcessTime','ppt')
            ->innerJoin('ppt.product', 'pd')      
            ->innerJoin('ppt.process', 'pc')      
@@ -151,14 +151,14 @@ class NewProjectController extends Controller
            ->andwhere('pd.id = :productid')     
            ->andWhere('pc.id = :process_id')        
            ->andWhere('emp.id = :employeeid')      
-           ->andWhere('ppt.startDateTime = :startdate')   
+           ->andWhere('ppt.endDateTime = :null')   
            ->setParameter('productid', $product_id)
            ->setParameter('process_id', $process_id) 
            ->setParameter('employeeid', $emp_id) 
-           ->setParameter('startdate', $curr);
-        $ProductProcessTimeId = $qb->getQuery()->getSingleScalarResult(); 
+           ->setParameter('endDate', null);
+        $ProductProcessTime = $qb->getQuery()->getResult();
         
-        if(!$ProductProcessTimeId)
+        if(!$ProductProcessTime)
         {
             //insert new record
             $newProductProcessTime = new ProductProcessTime();
@@ -170,37 +170,33 @@ class NewProjectController extends Controller
             $newProductProcessTime->setFinishedFlag('0');
             $newProductProcessTime->setLastMaintDateTime($now);
             $newProductProcessTime->setApprovalEmployee(null);
+            
+            $product->setCurrentPhase($process);
+            
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($newProductProcessTime);
+            $entityManager->persist($product);
             $entityManager->flush();
             
         }
         else
         {    
-            $em = $this->getDoctrine()->getManager();
-            $ProductProcessTime = $em->getRepository('TSProjProductBundle:ProductProcessTime')->find($ProductProcessTimeId);
-            
-            if (!$ProductProcessTime) {
-                throw $this->createNotFoundException(
-                    'No ProductProcessTime found for id '.$ProductProcessTimeId
-                );
-            }
-
             $ProductProcessTime->setEndDateTime($now);
+            $em->persist($ProductProcessTime);
             $em->flush();
         }
         
         
-        $response = array("code" => 100, 
-                "success" => true,
-                "empname"=>"Hello",
-                "product_id"=>$product_id,
-                "process_id"=>$process_id
-                ,"now"=>$now
-                ,"curr"=>$curr
-                ,"ProductProcessTimeId"=>$ProductProcessTimeId
-                ,"emp_id"=>$emp_id);
-        return new Response(json_encode($response)); 
+          $response = array("code" => 100, 
+                  "success" => true,
+                  "empname"=>"Hello",
+                  "product_id"=>$product_id,
+                  "process_id"=>$process_id,
+                  "now"=>$now,
+                  "curr"=>$curr,
+                  "ProductProcessTimeId"=>$ProductProcessTimeId,
+                  "emp_id"=>$emp_id);
+          return new Response(json_encode($response)); 
     }
     
 

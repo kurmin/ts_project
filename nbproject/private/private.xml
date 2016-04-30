@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/DefaultController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/NewProjectController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/ProductProcessTime.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/twig/newproject.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/BaseController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Product.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/app/config/parameters.yml</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectAdminController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectController.php</file>
+        </group>
+    </open-files>
+</project-private>
