@@ -86,6 +86,7 @@ class ProjectAdmin extends BaseAdmin
                         ->add('workOrderNo')
                         ->add('projectBarcode')    
                         ->add('projectName')
+                        ->add('projectDetail','textarea',array('required'=>false))
                         ->add('projectStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,))
                 ->end()    
                 ->with('Contact Info',
@@ -131,6 +132,7 @@ class ProjectAdmin extends BaseAdmin
         $showMapper
             ->add('projectBarcode')
             ->add('projectName')
+            ->add('projectDetail')
             ->add('projectStatus')    
             ->add('projectDeliveryAddress')
             ->add('projectContactPhoneNo')
@@ -138,7 +140,7 @@ class ProjectAdmin extends BaseAdmin
             ->add('amount')
             ->add('product')    
             ->add('orderDate')
-            ->add('expectDeliveryDate')        
+            ->add('expectedDeliveryDate')        
             ->add('projectStartDate')
             ->add('projectEndDate')  
             ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:show_time.html.twig'))

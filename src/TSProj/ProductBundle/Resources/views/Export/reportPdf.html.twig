@@ -12,7 +12,7 @@
                 <td width= "40%" align = "right">
                     <Table border="1">
                         <tr>
-                            <td align="center"><font size = "20"><b>ใบสั่งผลิต / งานซ่อม</b></font>
+                            <td align="center"><font size = "20"><b>ใบสรุปชั่วโมงการทำงาน</b></font>
                             </td>
                         </tr>
                     </table>
@@ -24,7 +24,7 @@
 <table width ="700">
 <tr>
 	<td width= "10%">ชื่อลูกค้า </td>
-	<td width= "30%">{{project.client.clientName}} </td>
+	<td width= "30%">{%if project.client is not null %} {{ project.client.clientName }} {% endif %}</td>
         <td width= "10%"></td>
 	<td width= "10%">ใบสั่งงานเลขที่</td>
 	<td width= "40%">{{project.workOrderNo}}</td>
@@ -41,7 +41,7 @@
 	<td width= "30%" >{{expectedDeliveryDate}} </td>
         <td width= "10%"></td>
 	<td width= "10%">จำนวน</td>
-	<td width= "45%">{{project.Amount}}</td>
+	<td width= "45%">{{project.Amount}} UNIT</td>
 </tr>        
 </table>
 <br /> <br/>

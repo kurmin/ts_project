@@ -124,7 +124,7 @@ class ProductAdmin extends BaseAdmin
             ->add('project')    
             ->add('productBarcode')
             ->add('productName')
-            ->add('productTimeConsuming')
+            ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:list_time.html.twig'))         
 	    ->add('productStatus')
             ->add('currentPhase') 
             ->add('percentFinished','string',array('label'=>'Current Progress','template'=>'TSProjProductBundle:Admin:list_progress.html.twig'))    
@@ -241,9 +241,9 @@ class ProductAdmin extends BaseAdmin
                         ->add('estimatedTimeDay')
 			->add('estimatedTimeHour')
 			->add('estimatedTimeMin')
-            ->add('startDateTime')
-            ->add('endDateTime')
-            ->add('productTimeConsuming')        
+            ->add('startDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
+            ->add('endDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
+            ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:list_time.html.twig'))         
             ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig','label'=>'Percent Finidhed (%)'));
     }
     
