@@ -1,13 +1,14 @@
 <?php
-
 namespace TSProj\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
+use TSProj\ProductBundle\Entity\ProductProcessTime;
 
-class NewProjectController extends Controller
+date_default_timezone_set("Asia/Bangkok");
+class NewProjectController extends BaseController
 {
     /**
      * @Route("/new",name="new_project")
@@ -26,16 +27,16 @@ class NewProjectController extends Controller
     public function ajax_employee_detailAction()
     {
         $request = $this->container->get('request');       
-        $empid = $request->request->get('empid');
+        $emp_barcode = $request->request->get('emp_barcode');
         $em = $this->getDoctrine()->getEntityManager();
-        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeId($empid);
-        $name = $employee->getEmployeeName()." ".$employee->getEmployeeSurname();
+        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeBarcode($emp_barcode);
         if(count($employee)==1){
+            $name = $employee->getEmployeeName()." ".$employee->getEmployeeSurname();
             $response = array("code" => 100, "success" => true,"empname"=>$name);
         }
         else
         {
-         $response = array("code" => 300, "success" => true,"empname"=>"","message"=>"no data found");
+         $response = array("code" => 300, "success" => true,"empname"=>"","message"=>"ไม่พบข้อมูลพนักงานที่ท่านทำการค้นหา");
         }
         return new Response(json_encode($response)); 
     }
@@ -64,7 +65,7 @@ class NewProjectController extends Controller
                                 "projectname"=>$product->getProject()->getProjectName(),
                                 "expectdate"=>$product->getProject()->getExpectedDeliveryDate(),
                                 "clientname"=>$product->getProject()->getClient()->getClientName(),
-                                //"productstartdate"=>date_format($product->getStartDateTime(),'Y-m-d \TH:i:s'),
+                                "productstartdate"=>date_format($product->getStartDateTime(),'Y-m-d \TH:i:s'),
                                 "projectpercent"=>$product->getProject()->getPercentFinished(),
                                 "itemcount"=>$product->getProject()->getAmount(),
 
@@ -72,7 +73,7 @@ class NewProjectController extends Controller
         }
         else
         {
-         $response = array("code" => 300, "success" => true,"message"=>"no data found");
+         $response = array("code" => 300, "success" => true,"message"=>"ไม่พบข้อมูลชิ้นงานที่ท่านกำลังค้นหา");
         }
         return new Response(json_encode($response)); 
     }
@@ -83,7 +84,7 @@ class NewProjectController extends Controller
     public function ajax_process_detailAction()
     {
         $request = $this->container->get('request');       
-        $processBarcode = $request->request->get('processid');
+        $processBarcode = $request->request->get('process_barcode');
         $em = $this->getDoctrine()->getEntityManager();
         $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
         if(count($process)==1){
@@ -91,9 +92,112 @@ class NewProjectController extends Controller
         }
         else
         {
-            $response = array("code" => 300, "success" => true,"message"=>"no data found");
+            $response = array("code" => 300, "success" => true,"message"=>"ไม่พบข้อมูลกระบวนการที่ท่านกำลังค้นหา");
         }
         return new Response(json_encode($response)); 
     }
+    
+    
+    /**
+     * @Route("/save",name="ajax_save_product_Process_Time")
+     */
+    public function ajax_save_product_Process_TimeAction()
+    {
+        
+        $request = $this->container->get('request');  
+        
+        $productid= $request->request->get('productid'); 
+        $projectid= $request->request->get('projectid');    
+        $projectname= $request->request->get('projectname');    
+        $customername= $request->request->get('customername');    
+        $productstartdate= $request->request->get('productstartdate');    
+        $deliverdate= $request->request->get('deliverdate');    
+        $projectpercent= $request->request->get('projectpercent');    
+        $itemcount= $request->request->get('itemcount');    
+        $stock= $request->request->get('stock');    
+        $emp_barcode= $request->request->get('emp_barcode');    
+        $empname= $request->request->get('empname');    
+        $processBarcode = $request->request->get('process_barcode');   
+        $processname= $request->request->get('processname');    
+        $pro_barcode= $request->request->get('pro_barcode');    
+        $processstartdate= $request->request->get('processstartdate');    
+        $processenddate= $request->request->get('processenddate');    
+       
+        $now   = new \DateTime();
+        $curr = $now->format("Y-m-d");
+        $day =new \DateTime($curr);
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $qb = $em->createQueryBuilder();
+        $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productid);
+        $product_id = $product->getId();
+        
+        $process  = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
+        if(count($process)==1){
+            $process_id =  $process->getId();
+        }
+        
+        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeBarcode($emp_barcode);
+        if(count($employee)==1){
+            $emp_id = $employee->getId();
+        }
+                
+        $qb->select('ppt')
+           ->from('TSProjProductBundle:ProductProcessTime','ppt')
+           ->innerJoin('ppt.product', 'pd')      
+           ->innerJoin('ppt.process', 'pc')      
+           ->innerJoin('ppt.employee', 'emp')      
+           ->Where('ppt.startDateTime = :startdate') 
+           ->andwhere('pd.id = :productid')     
+           ->andWhere('pc.id = :process_id')        
+           ->andWhere('emp.id = :employeeid')      
+           ->andWhere('ppt.endDateTime = :null')   
+           ->setParameter('productid', $product_id)
+           ->setParameter('process_id', $process_id) 
+           ->setParameter('employeeid', $emp_id) 
+           ->setParameter('endDate', null);
+        $ProductProcessTime = $qb->getQuery()->getResult();
+        
+        if(!$ProductProcessTime)
+        {
+            //insert new record
+            $newProductProcessTime = new ProductProcessTime();
+            $newProductProcessTime->setProduct($product);
+            $newProductProcessTime->setProcess($process);
+            $newProductProcessTime->setEmployee($employee);
+            $newProductProcessTime->setStartDateTime($day);
+            $newProductProcessTime->setTimeConsuming('0');
+            $newProductProcessTime->setFinishedFlag('0');
+            $newProductProcessTime->setLastMaintDateTime($now);
+            $newProductProcessTime->setApprovalEmployee(null);
+            
+            $product->setCurrentPhase($process);
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($newProductProcessTime);
+            $entityManager->persist($product);
+            $entityManager->flush();
+            
+        }
+        else
+        {    
+            $ProductProcessTime->setEndDateTime($now);
+            $em->persist($ProductProcessTime);
+            $em->flush();
+        }
+        
+        
+          $response = array("code" => 100, 
+                  "success" => true,
+                  "empname"=>"Hello",
+                  "product_id"=>$product_id,
+                  "process_id"=>$process_id,
+                  "now"=>$now,
+                  "curr"=>$curr,
+                  "ProductProcessTimeId"=>$ProductProcessTimeId,
+                  "emp_id"=>$emp_id);
+          return new Response(json_encode($response)); 
+    }
+    
 
 }
