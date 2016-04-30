@@ -9,10 +9,29 @@
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/twig/newproject.html.twig</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/BaseController.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Product.php</file>
+<<<<<<< HEAD
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/EmployeeAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProductAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/StockAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Export/reportPdf.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/list_progress.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/NewProjectController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Resources/views/Admin/list_time.html.twig</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/DefaultController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectAdminController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProcessAdminController.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/Process.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Entity/EmployeeStatus.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Entity/ProductProcessTime.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/PeopleBundle/Admin/ClientAdmin.php</file>
+            <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/BaseController.php</file>
+=======
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Admin/ProjectAdmin.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/app/config/parameters.yml</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectAdminController.php</file>
             <file>file:/C:/xampp/htdocs/projects/ts_project/src/TSProj/ProductBundle/Controller/ProjectController.php</file>
+>>>>>>> refs/remotes/origin/mint_workingspace
         </group>
     </open-files>
 </project-private>
