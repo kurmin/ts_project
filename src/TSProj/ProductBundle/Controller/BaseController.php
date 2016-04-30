@@ -37,4 +37,13 @@ class BaseController extends Controller
         }
         return array($TimeConsumingDay, $TimeConsumingHour, $TimeConsumingMin);;
     }
+    
+    public function percentFinishedCalculation($Time_Min, $esDay, $esHour, $esMin){
+        
+        $PercentFinished = 0;
+        
+        $PercentFinished = ROUND(($Time_Min/(($esDay *24*60) + ($esHour*60) + $esMin))*100);
+       
+        return $PercentFinished;
+    }
 }

@@ -276,6 +276,17 @@ class ProjectAdminController extends CRUDController
         }
         $productTable .= '</table>';*/
 
+        $ProjectStartDate = $project->getProjectStartDate();
+        $ProjectEndDate = $project->getProjectEndDate();
+        
+        if (!is_null($ProjectStartDate))
+        {        
+            $ProjectStartDate = $project->getProjectStartDate()->format('d/m/Y');
+        };
+        if (!is_null($ProjectEndDate))
+        {        
+            $ProjectEndDate = $project->getProjectEndDate()->format('d/m/Y');
+        };   
         
         $html = $this-> RenderView('TSProjProductBundle:Export:reportPdf.html.twig',  
                 array( 'lead' => 'one' , 
@@ -283,8 +294,8 @@ class ProjectAdminController extends CRUDController
                         'product' => $project->getProduct(), 
                         'orderDate' => $project->getorderDate()->format('d/m/Y'),
                         'expectedDeliveryDate' => $project->getexpectedDeliveryDate()->format('d/m/Y'),
-                        'ProjectStartDate' => $project->getProjectStartDate()->format('d/m/Y'),
-                        'ProjectEndDate' => $project->getProjectEndDate()->format('d/m/Y'),
+                        'ProjectStartDate' => $ProjectStartDate,
+                        'ProjectEndDate' => $ProjectEndDate,
                         'params' => $params,
                      //'test' => $test,
                     ));
@@ -301,11 +312,17 @@ class ProjectAdminController extends CRUDController
             $rowno = 20;
         };
         
-       
+        $TotalProjTimeEstimatedDays = 0;
+        $TotalProjTimeEstimatedHours = 0;
+        $TotalProjTimeEstimatedMins = 0;
         
         while ($n <= $rowno) {
      
             if($n < count($product)){
+             
+             $TotalProjTimeEstimatedDays = $TotalProjTimeEstimatedDays + $product[$n]->getEstimatedTimeDay(); 
+             $TotalProjTimeEstimatedHours = $TotalProjTimeEstimatedHours + $product[$n]->getEstimatedTimeHour(); 
+             $TotalProjTimeEstimatedMins = $TotalProjTimeEstimatedMins + $product[$n]->getEstimatedTimeMin(); 
                 
              if ($product[$n]->getEstimatedTimeDay() > 0)
              {
@@ -354,6 +371,65 @@ class ProjectAdminController extends CRUDController
             }
             $n++;
         }
+        
+        if ($project->getTimeConsumingDays() > 0)
+        {
+            $ProjTimeConsuming =  $project->getTimeConsumingDays() .'D '. $project->getTimeConsumingHours().'H '. $project->getTimeConsumingMins().'M';
+        }
+        else if (is_null($project->getTimeConsumingDays()) && $project->getTimeConsumingHours() > 0)
+        {
+            $ProjTimeConsuming = $project->getTimeConsumingHours().'H '. $project->getTimeConsumingMins().'M';
+        }
+        else if (is_null($project->getTimeConsumingHours()) && $project->getTimeConsumingMins() > 0)
+        {
+            $ProjTimeConsuming = $project->getTimeConsumingMins().'M';
+        }
+        else {$ProjTimeConsuming = '';}
+        
+        $TotalProjTimeEstimated = "";
+        
+        if  ($TotalProjTimeEstimatedDays > 0 ||  $TotalProjTimeEstimatedHours > 0 || $TotalProjTimeEstimatedMins >0)
+        {
+            $calculateEstimated = ($TotalProjTimeEstimatedDays * 24 * 60) + ($TotalProjTimeEstimatedHours * 60) + $TotalProjTimeEstimatedMins;
+            
+            if ($calculateEstimated < 60)
+            {
+                $calculateEstimatedMin = $calculateEstimated;
+            }
+            else if ($calculateEstimated >= 60 && $calculateEstimated < 1440)
+            {
+                $calculateEstimatedHour = floor($calculateEstimated/60);
+                $calculateEstimatedMin = $calculateEstimated - ($calculateEstimatedHour * 60);
+            }
+            else if ($calculateEstimated >= 1440)
+            {
+                $calculateEstimatedDay = floor($calculateEstimated/1440);
+                $calculateEstimatedHour = floor(($calculateEstimated - ($calculateEstimatedDay * 1440))/60);
+                $calculateEstimatedMin = $calculateEstimated - ($calculateEstimatedDay *1440) - ($calculateEstimatedHour * 60);
+            }
+            else
+            {
+                $calculateEstimatedDay = 0;
+                $calculateEstimatedHour = 0;
+                $calculateEstimatedMin = 0;
+            }
+            
+           if ($calculateEstimatedDay > 0)
+            {
+                $TotalProjTimeEstimated =  $calculateEstimatedDay .'D '. $calculateEstimatedHour .'H '. $calculateEstimatedMin .'M';
+            }
+            else if ($calculateEstimatedDay = 0 && $calculateEstimatedHour > 0)
+            {
+                $TotalProjTimeEstimated = $calculateEstimatedHour .'H '. $calculateEstimatedMin .'M';
+            }
+            else if ($calculateEstimatedHour = 0 && $calculateEstimatedMin > 0)
+            {
+                $TotalProjTimeEstimated = $calculateEstimatedMin .'M';
+            }
+            else {$TotalProjTimeEstimated = '';}
+        }
+
+        $productTable .= '<tr><td></td><td align="right">รวม</td><td align ="center">'. $TotalProjTimeEstimated .'</td><td align ="center">'. $ProjTimeConsuming.'</td></tr>';
         $productTable .= '</table>';
         
 

@@ -26,7 +26,7 @@
 <table width ="700">
 <tr>
 	<td width= "10%">ชื่อลูกค้า </td>
-	<td width= "30%">{{project.client.clientName}} </td>
+	<td width= "30%">{%if project.client is not null %} {{ project.client.clientName }} {% endif %} </td>
         <td width= "10%"></td>
 	<td width= "10%">ใบสั่งงานเลขที่</td>
 	<td width= "40%">{{project.workOrderNo}}</td>
