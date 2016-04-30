@@ -28,7 +28,7 @@ class NewProjectController extends Controller
         $request = $this->container->get('request');       
         $empid = $request->request->get('empid');
         $em = $this->getDoctrine()->getEntityManager();
-        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->find($empid);
+        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeId($empid);
         $name = $employee->getEmployeeName()." ".$employee->getEmployeeSurname();
         if(count($employee)==1){
             $response = array("code" => 100, "success" => true,"empname"=>$name);
