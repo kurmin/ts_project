@@ -24,3 +24,9 @@ services:
         arguments: [~, TSProj\ProductBundle\Entity\Stock, TSProjProductBundle:StockAdmin]
         tags:
             - {name: sonata.admin, manager_type: orm, group: admin, label: Stock}
+
+    ts_proj_product.admin.product_process_time:
+        class: TSProj\ProductBundle\Admin\ProductProcessTimeAdmin
+        arguments: [~, TSProj\ProductBundle\Entity\ProductProcessTime, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: ProductProcessTime }

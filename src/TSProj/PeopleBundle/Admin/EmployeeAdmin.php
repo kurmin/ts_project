@@ -46,7 +46,7 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('employeeId')
+            ->add('employeeBarcode')
             ->add('employee_title')
             ->add('employeeName')
             ->add('employeeSurname')
@@ -68,7 +68,6 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('employeeId')
             ->add('employeeBarcode')    
             ->add('employeeNationalIdentityId')
             ->add('employee_title','choice',array('choices'=>  \TSProj\PeopleBundle\Entity\Employee::$titleList))
@@ -77,7 +76,7 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
             ->add('employeeAddress')
             ->add('employeeTelHome',null,array('required'=>false))
             ->add('employeeTelMobile')
-            ->add('employeeStartWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
+            ->add('employeeStartWorkingDate','sonata_type_date_picker',array('required'=>true,'format' => 'dd/MM/yyyy',))
             ->add('employeelastWorkingDate','sonata_type_date_picker',array('required'=>false,'format' => 'dd/MM/yyyy',))
             ->add('employeeRole')
             ->add('employeeStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,))    
@@ -95,7 +94,6 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('employeeId')
             ->add('employeeBarcode')    
             ->add('employeeNationalIdentityId')
             ->add('name')    
