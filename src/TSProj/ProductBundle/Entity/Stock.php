@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="stock")
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\StockRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Stock
 {
@@ -264,5 +265,13 @@ class Stock
     public function getLastMaintDateTime()
     {
         return $this->lastMaintDateTime;
+    }
+     /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
     }
 }

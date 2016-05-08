@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="product")
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
@@ -812,5 +813,13 @@ class Product
     public function getProductTimeConsuming()
     {
         return sprintf("%s,%s,%s",$this->getProductTimeConsumingDays(),$this->getProductTimeConsuminghours(),$this->getProductTimeConsumingMins());
-    }     
+    } 
+    /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
+    }
 }

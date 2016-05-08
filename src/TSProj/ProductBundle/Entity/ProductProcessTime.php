@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="product_process_time")
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\ProductProcessTimeRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class ProductProcessTime
 {
@@ -45,17 +46,17 @@ class ProductProcessTime
     /**
      * @ORM\ManyToOne(targetEntity="Product",inversedBy="productProcessTime")
      **/
-    private $product;
+    protected $product;
     
     /**
      * @ORM\ManyToOne(targetEntity="Process",inversedBy="productProcessTime")
      **/
-    private $process;
+    protected $process;
     
     /**
      * @ORM\ManyToOne(targetEntity="TSProj\PeopleBundle\Entity\Employee",inversedBy="productProcessTime")
      **/
-    private $employee;
+    protected $employee;
     
     /**
      * @ORM\ManyToOne(targetEntity="TSProj\PeopleBundle\Entity\Employee",inversedBy="productProcessTimeApproval")
@@ -312,7 +313,7 @@ class ProductProcessTime
         if($lastMaintDateTime){
             $this->lastMaintDateTime = $lastMaintDateTime;
         }else{
-            $this->lastMaintDateTime = $dateTime;
+            $this->lastMaintDateTime =  $dateTime;
         }
 
         return $this;
@@ -326,5 +327,14 @@ class ProductProcessTime
     public function getLastMaintDateTime()
     {
         return $this->lastMaintDateTime;
+    }
+    
+     /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
     }
 }
