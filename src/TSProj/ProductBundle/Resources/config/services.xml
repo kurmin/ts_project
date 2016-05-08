@@ -53,5 +53,15 @@
               <argument>TSProjProductBundle</argument>
           </call>
         </service>
+        <service id="sonata.admin.productProcessTime" class="TSProj\ProductBundle\Admin\ProductProcessTimeAdmin">
+          <tag name="sonata.admin" manager_type="orm" group="Content" label="Log Time Entry"/>
+          <argument />
+          <argument>TSProj\ProductBundle\Entity\ProductProcessTime</argument>
+          <argument>TSProjProductBundle:ProductProcessTimeAdmin</argument>
+          <argument />
+          <call method="setTranslationDomain">
+              <argument>TSProjProductBundle</argument>
+          </call>
+        </service>
     </services>
 </container>

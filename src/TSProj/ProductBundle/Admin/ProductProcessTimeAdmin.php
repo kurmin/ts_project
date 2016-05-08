@@ -1,14 +1,14 @@
 <?php
 
 namespace TSProj\ProductBundle\Admin;
-
+date_default_timezone_set("Asia/Bangkok");
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class ProductProcessTimeAdmin extends Admin
+class ProductProcessTimeAdmin extends Admin 
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -16,13 +16,10 @@ class ProductProcessTimeAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
-            ->add('startDateTime')
-            ->add('endDateTime')
-            ->add('timeConsuming')
-            ->add('deleteFlag')
+            ->add('product')
+            ->add('process')
+            ->add('employee')    
             ->add('finishedFlag')
-            ->add('lastMaintDateTime')
         ;
     }
 
@@ -32,16 +29,15 @@ class ProductProcessTimeAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('startDateTime')
-            ->add('endDateTime')
+            ->add('product')
+            ->add('process')
+            ->add('employee')    
+            ->add('startDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
+            ->add('endDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
             ->add('timeConsuming')
-            ->add('deleteFlag')
             ->add('finishedFlag')
-            ->add('lastMaintDateTime')
             ->add('_action', 'actions', array(
                 'actions' => array(
-                    'show' => array(),
                     'edit' => array(),
                     'delete' => array(),
                 )
@@ -55,29 +51,32 @@ class ProductProcessTimeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('id')
-            ->add('startDateTime')
-            ->add('endDateTime')
+            ->add('product',null,array('read_only'=>true))
+            ->add('process',null,array('read_only'=>true))
+            ->add('employee',null,array('read_only'=>true))
+            ->add('startDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
+            ->add('endDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
             ->add('timeConsuming')
-            ->add('deleteFlag')
-            ->add('finishedFlag')
-            ->add('lastMaintDateTime')
-        ;
-    }
+            ->add('finishedFlag','choice',array( 
+                    'choices'  => array(0 => 'No', 1 => 'Yes'), 
+                    'expanded'=>true,'multiple'=>false,'required'=>true,
+                    'label'=>'Finished?'))
+            ;
+        /*
+         *  public class keyClass extends EventDispatcher {
+        $formMapper->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $object= $event->getData();
+        $form = $event->getForm();
 
-    /**
-     * @param ShowMapper $showMapper
-     */
-    protected function configureShowFields(ShowMapper $showMapper)
-    {
-        $showMapper
-            ->add('id')
-            ->add('startDateTime')
-            ->add('endDateTime')
-            ->add('timeConsuming')
-            ->add('deleteFlag')
-            ->add('finishedFlag')
-            ->add('lastMaintDateTime')
-        ;
+        if (!$object || null === $object->getId()) 
+        {
+      
+            $form
+                ->add('product',null,array('required' => true,'disabled'  => false))
+                ->add('process',null,array('required' => true,'disabled'  => false))
+                ->add('employee',null,array('required' => true,'disabled'  => false));
+        }
+        });
+         */
     }
 }

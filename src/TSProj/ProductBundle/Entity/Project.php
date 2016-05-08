@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="project")
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\ProjectRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Project
 {
@@ -690,5 +691,13 @@ class Project
     public function getProjectDetail()
     {
         return $this->projectDetail;
+    }
+         /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
     }
 }

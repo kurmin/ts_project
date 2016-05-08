@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="process")
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\ProcessRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Process
 {
@@ -282,5 +283,13 @@ class Process
     public function getCurrentProduct()
     {
         return $this->currentProduct;
+    }
+     /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
     }
 }
