@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="client")
  * @ORM\Entity(repositoryClass="TSProj\PeopleBundle\Entity\ClientRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Client
 {
@@ -297,5 +298,13 @@ class Client
     public function getLastMaintDateTime()
     {
         return $this->lastMaintDateTime;
+    }
+    /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
     }
 }

@@ -107,8 +107,14 @@ class ProjectAdmin extends BaseAdmin
                 ->with('General',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))     
-                        ->add('amount')    
-//                        ->add('timeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming'))
+                        ->add('amount')
+                        ->add('finishedFlag','choice',array( 
+                                'choices'  => array(0 => 'No', 1 => 'Yes'), 
+                                'expanded'=>true,'multiple'=>false,'required'=>true,
+                                'label'=>'Finished?'))
+                        //->add('timeConsumingDays')
+                        //->add('timeConsumingHours') 
+                        //->add('timeConsumingMins')
                         ->add('percentFinished',null,array('required'=>false,'read_only'=>true))
                 ->end() 
             ->end() 

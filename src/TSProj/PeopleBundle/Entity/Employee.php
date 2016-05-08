@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="employee")
  * @ORM\Entity(repositoryClass="TSProj\PeopleBundle\Entity\EmployeeRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Employee
 {   
@@ -239,6 +240,10 @@ class Employee
     {
         return $this->employeeTitle.$this->employeeName." ".$this->employeeSurname; 
     }   
+    
+    public function __toString() {
+        return $this->employeeName." ".$this->employeeSurname; 
+    }
     
     /**
      * Set employeeAddress
@@ -617,5 +622,9 @@ class Employee
     public function getEmployeeTitle()
     {
         return $this->employeeTitle;
+    }
+    public function updatedTimestamps()
+    {
+        $this->setLastMaintDateTime(new \DateTime());
     }
 }
