@@ -34,8 +34,9 @@ class DefaultController extends BaseController
         if($cntPpt > 0){
             
         echo "Total rows in product_process_time table : ".$cntPpt."<br/>";
-            
-        $TimeConsuming = 0;   
+        
+        $TimeConsuming = 0;
+        
             foreach($ppts as $item){
                 $TimeConsumingA = $item->getTimeConsuming();
                 $TimeConsuming = $TimeConsuming + $TimeConsumingA;
@@ -55,10 +56,46 @@ class DefaultController extends BaseController
         $esDay = $product->getEstimatedTimeDay();
         $esHour = $product->getEstimatedTimeHour();
         $esMin = $product->getEstimatedTimeMin();
-        $resultPercent = $this->percentFinishedCalculation($TimeConsuming, $esDay, $esHour, $esMin);
+        
+        //count distinct number of processes that have been finished
+        
+        $qb = $em->createQueryBuilder();
+        $qb->select('count( distinct p.process)')
+           ->from('TSProjProductBundle:ProductProcessTime','p')
+           ->innerJoin('p.product', 'pd')      
+           ->where('pd.id = :productId') 
+           ->andWhere('p.finishedFlag = 1')     
+           ->setParameter('productId', '1');
+        $finishedCount = $qb->getQuery()->getSingleScalarResult(); 
+        
+        echo "No. of processes that have been finished:".$finishedCount."<br/>";
+        
+        //check whether all processes have been finished or not
+        
+        $noOfProcess =  $product->getNoOfProcess();
+        $ProductStatus = $product->getProductStatus();
+        
+        echo $ProductStatus;
+        
+        $finished = 0;
+        
+        if ($ProductStatus == 'เสร็จสิ้น')
+        {
+            $finished = 1;
+        }     
+        elseif($finishedCount ==  $noOfProcess)
+        {
+            $finished = 1;
+            
+            //update product status when all processes are finished
+            $product->setProductStatus('เสร็จสิ้น');
+        }
+         
+        $resultPercent = $this->percentFinishedCalculation($TimeConsuming, $esDay, $esHour, $esMin, $finished);
         $product-> setPercentFinished($resultPercent);
         
         echo $resultPercent."%";
+        
         
         //update product start date and end date time
        

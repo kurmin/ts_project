@@ -38,12 +38,18 @@ class BaseController extends Controller
         return array($TimeConsumingDay, $TimeConsumingHour, $TimeConsumingMin);;
     }
     
-    public function percentFinishedCalculation($Time_Min, $esDay, $esHour, $esMin){
+    public function percentFinishedCalculation($Time_Min, $esDay, $esHour, $esMin, $finished){
         
         $PercentFinished = 0;
         
-        $PercentFinished = ROUND(($Time_Min/(($esDay *24*60) + ($esHour*60) + $esMin))*100);
-       
+        if ($finished == 1)
+        {
+            $PercentFinished = 100;
+        }
+        else
+        {
+            $PercentFinished = ROUND(($Time_Min/(($esDay *24*60) + ($esHour*60) + $esMin))*100);
+        }    
         return $PercentFinished;
     }
 }
