@@ -204,7 +204,13 @@
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">สต๊อก:</span>
-                    <input type="text" name="stock" id="itemcount" class="form-control" placeholder="should be dropdown list" />
+                    <select name="stock" id="stock"  class="form-control" >
+                        <option value="">กรุณาเลือกสินค้าในสต๊อก</option>
+                        
+                        {% for item in stock %}
+                        <option value="{{ item.id }}">{{ item.stockProductName }}</option>
+                        {% endfor %}    
+                    </select>
                 </div>
             </div>
         </div>
