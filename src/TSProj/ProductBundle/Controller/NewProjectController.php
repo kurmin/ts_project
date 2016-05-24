@@ -16,7 +16,15 @@ class NewProjectController extends BaseController
     public function newAction()
     {
         //return new Response();
-        return $this->render('TSProjProductBundle:twig:newproject.html.twig',array()
+        $em = $this->getDoctrine()->getEntityManager();
+        $qb = $em->getRepository("TSProjProductBundle:Stock")->createQueryBuilder('st')
+        ->where('st.stockProductQuantity > :stockqty')
+        ->setParameter('stockqty', '0')
+        ->getQuery();
+        $stock = $qb->getResult();
+        
+        
+        return $this->render('TSProjProductBundle:twig:newproject.html.twig',array("stock"=>$stock)
         );
         
     }
