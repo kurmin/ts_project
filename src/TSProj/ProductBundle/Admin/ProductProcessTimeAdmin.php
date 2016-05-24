@@ -7,6 +7,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class ProductProcessTimeAdmin extends Admin 
 {
@@ -34,7 +36,7 @@ class ProductProcessTimeAdmin extends Admin
             ->add('employee')    
             ->add('startDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
             ->add('endDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
-            ->add('timeConsuming')
+            ->add('timeConsuming',null,array('label'=>'Total time spent (minutes)'))
             ->add('finishedFlag')
             ->add('_action', 'actions', array(
                 'actions' => array(
@@ -51,32 +53,32 @@ class ProductProcessTimeAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('product',null,array('read_only'=>true))
-            ->add('process',null,array('read_only'=>true))
-            ->add('employee',null,array('read_only'=>true))
+            ->add('product',null,array('read_only'=>true,'disabled' => true))
+            ->add('process',null,array('read_only'=>true,'disabled' => true))
+            ->add('employee',null,array('read_only'=>true,'disabled' => true))
             ->add('startDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
             ->add('endDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
-            ->add('timeConsuming')
+            ->add('timeConsuming',null,array('label'=>'Total time spent (minutes)'))
             ->add('finishedFlag','choice',array( 
                     'choices'  => array(0 => 'No', 1 => 'Yes'), 
                     'expanded'=>true,'multiple'=>false,'required'=>true,
                     'label'=>'Finished?'))
             ;
-        /*
-         *  public class keyClass extends EventDispatcher {
-        $formMapper->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-        $object= $event->getData();
+       
+        //public class keyClass extends EventDispatcher {
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $object= $this->getSubject($event->getData());
         $form = $event->getForm();
 
         if (!$object || null === $object->getId()) 
         {
       
             $form
-                ->add('product',null,array('required' => true,'disabled'  => false))
-                ->add('process',null,array('required' => true,'disabled'  => false))
-                ->add('employee',null,array('required' => true,'disabled'  => false));
+                ->add('product',null,array('required' => true, 'disabled' => false, 'empty_value' => '----choose product----'))
+                ->add('process',null,array('required' => true,'disabled'  => false, 'empty_value' => '----choose process----'))
+                ->add('employee',null,array('required' => true,'disabled'  => false, 'empty_value' => '----choose employee----'));
         }
         });
-         */
+            
     }
 }

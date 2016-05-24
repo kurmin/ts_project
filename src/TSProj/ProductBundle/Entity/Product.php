@@ -822,4 +822,24 @@ class Product
     {
         $this->setLastMaintDateTime(new \DateTime());
     }
+    /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedNoOfProcess()
+    {
+        $noOfProcess = count($this->process);        
+        $this->setNoOfProcess($noOfProcess);
+    }
+    /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedPercentFinished()
+    {
+        if($this->productStatus == 'เสร็จสิ้น')
+        {
+            $this->setPercentFinished(100);
+        }
+    }
 }

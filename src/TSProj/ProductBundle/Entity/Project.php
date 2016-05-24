@@ -104,14 +104,14 @@ class Project
      * 
      * @ORM\Column(name="time_consuming_hours", type="integer",nullable=true)
      */
-    private $timeConsuminghours=0;
+    private $timeConsumingHours=0;
     
      /**
      * @var integer
      * 
      * @ORM\Column(name="time_consuming_mins", type="integer",nullable=true)
      */
-    private $timeConsumingmins=0;
+    private $timeConsumingMins=0;
 
     /**
      * @ORM\ManyToOne(targetEntity="TSProj\PeopleBundle\Entity\Client",inversedBy="project")
@@ -593,49 +593,49 @@ class Project
     }
 
     /**
-     * Set timeConsuminghours
+     * Set timeConsumingHours
      *
-     * @param \int $timeConsuminghours
+     * @param \int $timeConsumingHours
      * @return Project
      */
-    public function setTimeConsuminghours($timeConsuminghours)
+    public function setTimeConsumingHours($timeConsumingHours)
     {
-        $this->timeConsuminghours = $timeConsuminghours;
+        $this->timeConsumingHours = $timeConsumingHours;
 
         return $this;
     }
 
     /**
-     * Get timeConsuminghours
+     * Get timeConsumingHours
      *
      * @return \int 
      */
-    public function getTimeConsuminghours()
+    public function getTimeConsumingHours()
     {
-        return $this->timeConsuminghours;
+        return $this->timeConsumingHours;
     }
 
     /**
-     * Set timeConsumingmins
+     * Set timeConsumingMins
      *
-     * @param \int $timeConsumingmins
+     * @param \int $timeConsumingMins
      * @return Project
      */
-    public function setTimeConsumingmins($timeConsumingmins)
+    public function setTimeConsumingMins($timeConsumingMins)
     {
-        $this->timeConsumingmins = $timeConsumingmins;
+        $this->$timeConsumingMins = $timeConsumingMins;
 
         return $this;
     }
 
     /**
-     * Get timeConsumingmins
+     * Get timeConsumingMins
      *
      * @return \int 
      */
-    public function getTimeConsumingmins()
+    public function getTimeConsumingMins()
     {
-        return $this->timeConsumingmins;
+        return $this->timeConsumingMins;
     }
     
     /**
@@ -644,7 +644,7 @@ class Project
      */
     public function getTimeConsuming()
     {
-        return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsuminghours(),$this->getTimeConsumingmins());
+        return sprintf("%s,%s,%s",$this->getTimeConsumingDays(),$this->getTimeConsumingHours(),$this->getTimeConsumingMins());
     }        
 
     /**
@@ -699,5 +699,16 @@ class Project
     public function updatedTimestamps()
     {
         $this->setLastMaintDateTime(new \DateTime());
+    }
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatedPercentFinished()
+    {
+        if($this->projectStatus == 'เสร็จสิ้น')
+        {
+            $this->setPercentFinished(100);
+        }
     }
 }
