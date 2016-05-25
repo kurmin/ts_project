@@ -30,3 +30,8 @@ services:
         arguments: [~, TSProj\ProductBundle\Entity\ProductProcessTime, SonataAdminBundle:CRUD]
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: ProductProcessTime }
+    doctrine.user_listener:
+        class: TSProj\ProductBundle\Admin\StockAdmin
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }

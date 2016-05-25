@@ -623,7 +623,7 @@ class Project
      */
     public function setTimeConsumingMins($timeConsumingMins)
     {
-        $this->$timeConsumingMins = $timeConsumingMins;
+        $this->timeConsumingMins = $timeConsumingMins;
 
         return $this;
     }
@@ -706,7 +706,7 @@ class Project
      */
     public function updatedPercentFinished()
     {
-        if($this->projectStatus == 'เสร็จสิ้น')
+        if($this->projectStatus == 'เสร็จสิ้น' && $this->percentFinished < 100)
         {
             $this->setPercentFinished(100);
         }
