@@ -35,7 +35,7 @@ class BaseController extends Controller
             $TimeConsumingHour = 0;
             $TimeConsumingMin = 0;
         }
-        return array($TimeConsumingDay, $TimeConsumingHour, $TimeConsumingMin);;
+        return array($TimeConsumingDay, $TimeConsumingHour, $TimeConsumingMin);
     }
     
     public function percentFinishedCalculation($Time_Min, $esDay, $esHour, $esMin, $finished){
@@ -52,4 +52,5 @@ class BaseController extends Controller
         }    
         return $PercentFinished;
     }
+    
 }

@@ -837,7 +837,7 @@ class Product
      */
     public function updatedPercentFinished()
     {
-        if($this->productStatus == 'เสร็จสิ้น')
+        if($this->productStatus == 'เสร็จสิ้น'  && $this->percentFinished < 100)
         {
             $this->setPercentFinished(100);
         }
