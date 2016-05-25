@@ -274,4 +274,13 @@ class Stock
     {
         $this->setLastMaintDateTime(new \DateTime());
     }
+     /**
+     *  @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function checkDuplicateStock()
+    {
+        
+        
+    }
 }
