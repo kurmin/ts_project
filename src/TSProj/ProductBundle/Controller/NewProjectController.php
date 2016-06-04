@@ -19,6 +19,7 @@ class NewProjectController extends BaseController
         $em = $this->getDoctrine()->getEntityManager();
         $qb = $em->getRepository("TSProjProductBundle:Stock")->createQueryBuilder('st')
         ->where('st.stockProductQuantity > :stockqty')
+        ->andwhere('st.deleteFlag <> 1')        
         ->setParameter('stockqty', '0')
         ->getQuery();
         $stock = $qb->getResult();
