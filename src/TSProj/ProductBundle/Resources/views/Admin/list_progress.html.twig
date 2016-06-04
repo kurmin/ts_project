@@ -13,9 +13,16 @@ file that was distributed with this source code.
 
 {% block field %}
     <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow={{ value }}
-            aria-valuemin="0" aria-valuemax="100" style="width:{{value}}%">
-          {{value}}% Complete (success)
-        </div>
+        {% if value > 100 %}
+            <div class="progress-bar-red progress-bar" role="progressbar" aria-valuenow={{ value }}
+                aria-valuemin="0" aria-valuemax="100" style="width:{{value}}%">
+              {{value}}% Complete (success)
+            </div>
+        {% else %}
+            <div class="progress-bar" role="progressbar" aria-valuenow={{ value }}
+                aria-valuemin="0" aria-valuemax="100" style="width:{{value}}%">
+                {{value}}% Complete (success)
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
