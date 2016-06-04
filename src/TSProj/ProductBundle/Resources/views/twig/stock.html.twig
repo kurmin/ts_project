@@ -96,7 +96,7 @@
 
     </style>
 {% endblock %}
-{% block body %}
+{#{% block body %}
     <div class="row">
         <div class="col-sm-12 col-md-12">
             <h2 class="sub-header">Stock Management</h2>
@@ -159,58 +159,165 @@
             <input type="text" name="pro_barcode" class="form-control"  placeholder="Process ID" />
         </div>
     </div>
-{% endblock %}
+{% endblock %}#}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h4 class="sub-header">งานสต๊อก</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-1 col-md-1"></div>
+        <div class="col-sm-10 col-md-10">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar"  id="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                  0%
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md-1"></div>
+    </div>
+          
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">ข้อมูลชิ้นงาน</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="font-weight: bold;">รหัสชิ้นงาน : </span>
+                    <input type="text" name="productid" id="productid" maxlength="11" class="form-control"  placeholder="รหัสชิ้นงาน" />
+                </div>
+                <div class="col-sm-1 col-md-1">
+                </div>
 
+                <div class="col-sm-3 col-md-3">   
+                    <span style="font-weight: bold;">หมายเลขงาน : </span>
+                    <input type="text"  name="projectid" id="projectid" maxlength="11" class="form-control"  placeholder="หมายเลขงาน" />
+                
+                </div>
+                
+                <div class="col-sm-1 col-md-1"></div>
+                
+                <div class="col-sm-3 col-md-3">
+
+                    <span style="text-align:right;font-weight: bold;">ชื่อโปรเจค : </span>
+                    <input type="text" name="projectname" id="projectname"  class="form-control"  placeholder="ชื่อโปรเจค" />
+                </div>
+            </div>
+            <div class="row">                
+                
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">ชื่อลูกค้า:</span>
+                    <input type="text" name="customername" id="customername" class="form-control"  placeholder="ชื่อลูกค้า" />
+                </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">วันที่เริ่มงาน:</span>
+                    <input type="text" name="productstartdate" id="productstartdate" class="form-control"  placeholder="วันที่เริ่มงาน" />
+                </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">กำหนดส่งมอบ:</span>
+                    <input type="text" name="deliverdate" id="deliverdate" class="form-control"  placeholder="กำหนดส่งมอบ" />
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">สถานะปัจจุบัน:</span>
+                    <input type="text" name="projectpercent" id="projectpercent" class="form-control"  placeholder="เสร็จสิ้น XX %" />
+                </div>
+                <div class="col-sm-1 col-md-1"></div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">จำนวนชิ้นงาน:</span>
+                    <input type="text" name="itemcount" id="itemcount" class="form-control"  placeholder="จำนวนชิ้นงาน" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+   
+    
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">เลือกชิ้นงาน</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">ชิ้นงาน:</span>
+                    <select name="pdstock" id="pdstock"  class="form-control">
+                        {% for item in stock %} 
+                            <option value="{{ item.id }}">
+                        {{ item.stockProductName }} </option>
+                        {% endfor %} 
+                    </select>
+                </div>
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div>
+                <div class="col-sm-3 col-md-3">
+                    <span style="text-align:right;font-weight: bold;">จำนวนชิ้นงาน:</span>
+                    <input type="text" name="pdstocknum" id="pdstocknum" class="form-control"  placeholder="จำนวนชิ้นงาน" />
+                </div>
+                <div class="col-sm-1 col-md-1" style="text-align:right;">
+                </div
+               
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    
+    <div class="row" style="text-align: center;">
+        <div class="col-sm-12 col-md-12 ">
+            <button type="submit" class="btn btn-default btn-lg">บันทึกข้อมูล</button>
+        </div>
+    </div>
+    
+        
+{% endblock %}
 {% block javascripts %}
     <script>
         $(document).ready(function () {
 
             $("#date_picker").datepicker();
         });
-        $(document).on("change","#project_barcode",function(){
-            if($(this).val().length=="11")
+        $(document).on("change","#productid",function(){
+            if($(this).val().length!=0)
             {
-                $("#pg1").removeClass("step-active").addClass("step-done");
-                $("#pg2").addClass("step-active");
+                get_productdetail($(this).val());
             }
-            else
-            {
-                alert("กรุณาระบุรหัสโปรเจกให้ครบ 11 หลัก");
-                $("#pg1").removeClass("step-done").addClass("step-active");
-                $("#pg2").removeClass("step-active");
-                $(this).focus();
-                return;
-            }
-          
         });
+        function get_productdetail(productBarcode)
+        {
+            
+             $.post('{{path('ajax_get_product_detail')}}',
+                    {'productBarcode': productBarcode}, 
+            function(response){
+                    if(response.code == 100 && response.success){//dummy check
+                      $("#projectid").val(response.projectid);
+                      $("#projectname").val(response.projectname);
+                      $("#deliverdate").val(response.expectdate.date);
+                      $("#customername").val(response.clientname);
+                      $("#productstartdate").val(response.productstartdate.date);
+                      $("#projectpercent").val(response.projectpercent);
+                      var percent = response.projectpercent+"%"
+                      $("#progressbar").css("width",percent).text(percent);
+                    }else if(response.code == 300)
+                    {
+                        alert(response.message);
+                    }
+                }, "json");  
+        }
         
-        $(document).on("change","#emp_barcode",function(){
-            if(("#project_barcode").val().length=="11")
-            {
-                if($(this).val().length=="2")
-                {
-                    $("#pg2").removeClass("step-active").addClass("step-done");
-                    $("#pg3").addClass("step-active");
-                }
-                else
-                {
-                    alert("กรุณาระบุรหัสหนักงานให้ครบ 2 ตำแหน่ง");
-                    $("#pg2").removeClass("step-done").addClass("step-active");
-                    $("#pg3").removeClass("step-active");
-                    $(this).focus();
-                    return;
-                }
-            }
-            else
-            {
-                $("#pg1").removeClass("step-done").addClass("step-active");
-                $("#pg2").removeClass("step-active");
-                alert("กรุณาระบุรหัสโปรเจกก่อน");
-                $("#project_barcode").focus();
-                return;
-            }
-          
-        });
+     
     </script>
 
 {% endblock %}

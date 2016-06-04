@@ -275,10 +275,18 @@
             </div>   
         </div>
     </div>
+<<<<<<< HEAD
     <div class="col-sm-3 col-md-3 pull-right" align='right'>
         <button type="button" id="clear_btn" class="btn btn-warning" value="reset">ล้างข้อมูล</button>
         <button type="button" name="insertTable" class="btn btn-primary" id="insertTable" value="submit">ตกลง</button>
 <!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
+=======
+    
+    <div class="row" style="text-align: center;">
+        <div class="col-sm-12 col-md-12 ">
+            <button type="submit" class="btn btn-default btn-lg">บันทึกข้อมูล</button>
+        </div>
+>>>>>>> refs/heads/rit_workingspace
     </div>
         
     </form>
@@ -402,9 +410,16 @@
                       $("#projectname").val(response.projectname);
                       $("#deliverdate").val(response.expectdate.date);
                       $("#customername").val(response.clientname);
+<<<<<<< HEAD
                       $("#productstartdate").val(response.productstartdate);
                       $("#projectpercent").val(response.projectpercent);
                       $("#itemcount").val(response.itemcount);
+=======
+                      $("#productstartdate").val(response.productstartdate.date);
+                      $("#projectpercent").val(response.projectpercent);
+                      var percent = response.projectpercent+"%"
+                      $("#progressbar").css("width",percent).text(percent);
+>>>>>>> refs/heads/rit_workingspace
                     }else if(response.code == 300)
                     {
                         alert(response.message);
