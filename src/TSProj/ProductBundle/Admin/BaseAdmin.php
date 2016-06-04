@@ -35,4 +35,21 @@ class BaseAdmin extends Admin
         
         return $object;
     }
+    
+    public function timeConsumingCalculation($Time_Hour){
+        
+        $TimeConsumingDay = 0;
+        $TimeConsumingHour = 0;
+        
+        if ($Time_Hour < 24)
+        {
+            $TimeConsumingHour = $Time_Hour;
+        }
+        else 
+        {
+            $TimeConsumingDay = floor($Time_Hour/24);
+            $TimeConsumingHour = $Time_Hour - $TimeConsumingDay*24;
+        }
+        return array($TimeConsumingDay, $TimeConsumingHour);
+    }
 }
