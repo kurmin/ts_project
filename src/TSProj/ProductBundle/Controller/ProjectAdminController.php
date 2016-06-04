@@ -328,11 +328,11 @@ class ProjectAdminController extends CRUDController
              {
                 $EstimatedTime = $product[$n]->getEstimatedTimeDay() .'D '.$product[$n]->getEstimatedTimeHour() .'H '. $product[$n]->getEstimatedTimeMin(). 'M';
              }
-             else if (is_null($product[$n]->getEstimatedTimeDay()) && $product[$n]->getEstimatedTimeHour() > 0)
+             else if ($product[$n]->getEstimatedTimeDay()==0 && $product[$n]->getEstimatedTimeHour() > 0)
              {
                  $EstimatedTime = $product[$n]->getEstimatedTimeHour() .'H '. $product[$n]->getEstimatedTimeMin(). 'M';
              }
-             else if (is_null($product[$n]->getEstimatedTimeHour()) && $product[$n]->getEstimatedTimeMin() > 0)
+             else if ($product[$n]->getEstimatedTimeHour()==0 && $product[$n]->getEstimatedTimeMin() > 0)
              {
                  $EstimatedTime = $product[$n]->getEstimatedTimeMin(). 'M';
              }
@@ -343,11 +343,11 @@ class ProjectAdminController extends CRUDController
              {
                 $TimeConsuming =  $product[$n]->getProductTimeConsumingDays() .'D '. $product[$n]->getProductTimeConsumingHours().'H '. $product[$n]->getProductTimeConsumingMins().'M';
              }
-             else if (is_null($product[$n]->getProductTimeConsumingDays()) && $product[$n]->getProductTimeConsumingHours() > 0)
+             else if ($product[$n]->getProductTimeConsumingDays() == 0 && $product[$n]->getProductTimeConsumingHours() > 0)
              {
                  $TimeConsuming = $product[$n]->getProductTimeConsumingHours().'H '. $product[$n]->getProductTimeConsumingMins().'M';
              }
-             else if (is_null($product[$n]->getProductTimeConsumingHours()) && $product[$n]->getProductTimeConsumingMins() > 0)
+             else if ($product[$n]->getProductTimeConsumingHours()==0 && $product[$n]->getProductTimeConsumingMins() > 0)
              {
                  $TimeConsuming = $product[$n]->getProductTimeConsumingMins().'M';
              }
@@ -390,6 +390,10 @@ class ProjectAdminController extends CRUDController
         
         if  ($TotalProjTimeEstimatedDays > 0 ||  $TotalProjTimeEstimatedHours > 0 || $TotalProjTimeEstimatedMins >0)
         {
+            $calculateEstimatedDay = 0;
+            $calculateEstimatedHour = 0;
+            $calculateEstimatedMin = 0;
+                
             $calculateEstimated = ($TotalProjTimeEstimatedDays * 24 * 60) + ($TotalProjTimeEstimatedHours * 60) + $TotalProjTimeEstimatedMins;
             
             if ($calculateEstimated < 60)
@@ -418,11 +422,11 @@ class ProjectAdminController extends CRUDController
             {
                 $TotalProjTimeEstimated =  $calculateEstimatedDay .'D '. $calculateEstimatedHour .'H '. $calculateEstimatedMin .'M';
             }
-            else if ($calculateEstimatedDay = 0 && $calculateEstimatedHour > 0)
+            else if ($calculateEstimatedDay == 0 && $calculateEstimatedHour > 0)
             {
                 $TotalProjTimeEstimated = $calculateEstimatedHour .'H '. $calculateEstimatedMin .'M';
             }
-            else if ($calculateEstimatedHour = 0 && $calculateEstimatedMin > 0)
+            else if ($calculateEstimatedHour == 0 && $calculateEstimatedMin > 0)
             {
                 $TotalProjTimeEstimated = $calculateEstimatedMin .'M';
             }
