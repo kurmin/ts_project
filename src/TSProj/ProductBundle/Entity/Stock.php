@@ -3,6 +3,7 @@
 namespace TSProj\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Stock
@@ -10,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="stock")
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\StockRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"stockProductName", "deleteFlag"},
+ *     errorPath="stockProductName",
+ *     message="This stock name is already existed."
+ * )
  */
 class Stock
 {
@@ -273,14 +279,5 @@ class Stock
     public function updatedTimestamps()
     {
         $this->setLastMaintDateTime(new \DateTime());
-    }
-     /**
-     *  @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function checkDuplicateStock()
-    {
-        
-        
     }
 }

@@ -172,21 +172,21 @@ class Product
      * 
      * @ORM\Column(name="estimated_time_day",type="integer",nullable=true)
      */
-	 private $estimatedTimeDay;     
+	 private $estimatedTimeDay=0;     
          
 	 /**
      * @var integer
      * 
      * @ORM\Column(name="estimated_time_hour",type="integer",nullable=true)
      */
-	 private $estimatedTimeHour;
+	 private $estimatedTimeHour=0;
 	 
 	 /**
      * @var integer
      * 
      * @ORM\Column(name="estimated_time_min",type="integer",nullable=true)
      */
-	 private $estimatedTimeMin;
+	 private $estimatedTimeMin=0;
     
     /**
      * Constructor
