@@ -58,14 +58,14 @@ class ProductProcessTimeAdmin extends Admin
             ->add('employee',null,array('read_only'=>true,'disabled' => true))
             ->add('startDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
             ->add('endDateTime','sonata_type_datetime_picker',array('required'=>false,'format' => 'dd/MM/yyyy HH:mm'))
-            ->add('timeConsuming',null,array('label'=>'Total time spent (minutes)'))
+            ->add('timeConsuming',null,array('required'=>false,'label'=>'Total time spent (minutes)','disabled' => true ))
             ->add('finishedFlag','choice',array( 
                     'choices'  => array(0 => 'No', 1 => 'Yes'), 
                     'expanded'=>true,'multiple'=>false,'required'=>true,
                     'label'=>'Finished?'))
             ;
        
-        //public class keyClass extends EventDispatcher {
+        
         $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
         $object= $this->getSubject($event->getData());
         $form = $event->getForm();
@@ -78,7 +78,8 @@ class ProductProcessTimeAdmin extends Admin
                 ->add('process',null,array('required' => true,'disabled'  => false, 'empty_value' => '----choose process----'))
                 ->add('employee',null,array('required' => true,'disabled'  => false, 'empty_value' => '----choose employee----'));
         }
-        });
+        }
+        );
             
     }
 }
