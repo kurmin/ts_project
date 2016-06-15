@@ -193,10 +193,14 @@ class NewProjectController extends BaseController
                 $newProductProcessTime->setApprovalEmployee(null);
 
                 $product->setCurrentPhase($process);
-
+                
+                $project = $product->getProject();
+                $project->setProjectStartDate($now);
+                        
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($newProductProcessTime);
                 $entityManager->persist($product);
+                $entityManager->persist($project);
                 $entityManager->flush();
                 $code = 100;
             }
@@ -326,16 +330,18 @@ class NewProjectController extends BaseController
         $products = $qb3->getQuery()->getResult();
         $product->setStartDateTime($products[0]->getStartDateTime());
         
-        $qb4 = $em->createQueryBuilder();
-        $qb4->select('p')
-           ->from('TSProjProductBundle:ProductProcessTime','p')
-           ->innerJoin('p.product', 'pd')      
-           ->where('pd.id = :productId')     
-           ->setParameter('productId', $product_id)
-           ->orderBy('p.endDateTime', 'desc');  
-        $products = $qb4->getQuery()->getResult();
-        $product->setEndDateTime($products[0]->getEndDateTime());
-        
+        if($finished == 1)
+        {
+            $qb4 = $em->createQueryBuilder();
+            $qb4->select('p')
+               ->from('TSProjProductBundle:ProductProcessTime','p')
+               ->innerJoin('p.product', 'pd')      
+               ->where('pd.id = :productId')     
+               ->setParameter('productId', $product_id)
+               ->orderBy('p.endDateTime', 'desc');  
+            $products = $qb4->getQuery()->getResult();
+            $product->setEndDateTime($products[0]->getEndDateTime());
+        }
         //Sum project time consuming       
         
         $qb5 = $em->createQueryBuilder();
