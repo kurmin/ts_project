@@ -841,5 +841,13 @@ class Product
         {
             $this->setPercentFinished(100);
         }
+        if (!is_null($this->stock))
+        {
+            $this->setPercentFinished(99);
+            $stockHours = $this->stock->getEstimateTime();
+            $this->setProductTimeConsumingHours($stockHours);
+        }
     }
+
+    
 }
