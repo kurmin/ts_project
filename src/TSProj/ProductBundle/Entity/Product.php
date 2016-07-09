@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="TSProj\ProductBundle\Entity\ProductRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Product
+class Product extends \Symfony\Bundle\FrameworkBundle\Controller\Controller 
 {
     /**
      * @var integer
@@ -46,7 +46,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="drawing_id", type="string", length=255)
+     * @ORM\Column(name="drawing_id", type="string", length=255,nullable=true)
      */
     private $drawingId;
     
@@ -831,8 +831,16 @@ class Product
         $noOfProcess = count($this->process);        
         $this->setNoOfProcess($noOfProcess);
     }
+    
+    private $em;
+
+    public function __contruct($em)
+    {
+        $this->em = $em;
+    }
+    
     /**
-     *  @ORM\PrePersist
+     * @ORM\PrePersist
      * @ORM\PreUpdate
      */
     public function updatedPercentFinished()
@@ -843,9 +851,22 @@ class Product
         }
         if (!is_null($this->stock))
         {
-            $this->setPercentFinished(99);
+            $now = new \DateTime();
             $stockHours = $this->stock->getEstimateTime();
-            $this->setProductTimeConsumingHours($stockHours);
+            $timeDay = floor($stockHours/24);
+            $timeHour = $stockHours - $timeDay*24;
+            
+//            $em = $this->getDoctrine()->getEntityManager();
+//            $status = $em->getRepository("TSProjProductBundle:WorkStatus")->find(4);
+            
+            $this->setStartDateTime($now);
+            $this->setEndDateTime($now);
+            $this->setPercentFinished(100);
+            $this->setEstimatedTimeDay($timeDay);
+            $this->setEstimatedTimeHour($timeHour);
+            $this->setProductTimeConsumingDays($timeDay);
+            $this->setProductTimeConsumingHours($timeHour);
+//            $this->setProductStatus($status);   
         }
     }
 
