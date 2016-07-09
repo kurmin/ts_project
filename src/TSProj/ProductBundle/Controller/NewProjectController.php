@@ -99,9 +99,12 @@ class NewProjectController extends BaseController
         $request = $this->container->get('request');       
         $processBarcode = $request->request->get('process_barcode');
         $em = $this->getDoctrine()->getEntityManager();
-        $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
+        $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);      
         if(count($process)==1){
-            $response = array("code" => 100, "success" => true,"name"=>$process->getProcessName());
+            $response = array("code" => 100, "success" => true,
+                              "name"=>$process->getProcessName(),
+                              "message"=>$productid);
+                              //"processtime"=>$lastppt->getTimeConsuming());
         }
         else
         {
@@ -218,6 +221,10 @@ class NewProjectController extends BaseController
                         $diff = $now->diff($start);
 
                         $timeConsum = $diff->format('%h')*60+$diff->format('%i');
+                        //break time
+                        if($start->format('H') < 12){
+                            $timeConsum = $timeConsum - 60;
+                        }
                         $ProductProcessTime->setTimeConsuming($timeConsum);
                        
                         $em->persist($ProductProcessTime);

@@ -37,6 +37,11 @@ class ProductAdmin extends BaseAdmin
         // Set date to today
         $dateTime = new \DateTime();
         
+        $old_stock_time = 0;
+        $old_product_time = 0;
+        $product_time = 0;
+        $new_product_time = 0;
+        
         if($object->getStock() !== $original['stock']) {
            //get stock id
            //stock layout -> [id] - [stockProductName] | Time: [estimateTime (in hour)]
@@ -47,13 +52,59 @@ class ProductAdmin extends BaseAdmin
                     $stockId .= substr($original['stock'], $pos, 1);
                     $pos++;
                 }
-                $old = $em->getRepository("TSProjProductBundle:Stock")->find($stockId);
-                $old->setStockProductQuantity($old->getStockProductQuantity() + 1);
-                $old->setLastMaintDateTime($dateTime);
-                $object->setProductTimeConsuming($original['productTimeConsuming']-$old->getEstimateTime());
-                $em->persist($old);
+                //update old stock
+                $old_stock = $em->getRepository("TSProjProductBundle:Stock")->find($stockId);
+                $old_stock->setStockProductQuantity($old_stock->getStockProductQuantity() + 1);
+                $old_stock->setLastMaintDateTime($dateTime);
+                
+                //ลบเวลา stock เดิมออกจาก product 
+                $old_stock_time = $old_stock->getEstimateTime();
+                $old_product_time = $object->getProductTimeConsumingDays()*24 + $object->getProductTimeConsumingHours();
+                $product_time = $old_product_time - $old_stock_time;
+                
+                $em->persist($old_stock);
+
            }
-           $this->updateStock($object);
+           
+            $cur_stock = $object->getStock();
+            if($cur_stock){
+                $new_product_time = $product_time + $cur_stock->getEstimateTime();
+                $result = $this->timeConsumingCalculation($new_product_time);
+                
+                //update time from new stock into product
+                $object->setProductTimeConsumingDays($result[0]);
+                $object->setProductTimeConsumingHours($result[1]);
+                $object->setEstimatedTimeDay($result[0]);
+                $object->setEstimatedTimeHour($result[1]);
+                
+                $qbs = $em->getRepository("TSProjProductBundle:WorkStatus")->createQueryBuilder('st')
+                        ->where('st.statusName = :complete')
+                        ->setParameter('complete', 'status_complete')
+                        ->getQuery();
+                $statusFinish= $qbs->getResult();
+                $object->setProductStatus($statusFinish[0]);
+                $object->setPercentFinished(100);
+                
+                $cur_stock->setStockProductQuantity($cur_stock->getStockProductQuantity() - 1);
+                $cur_stock->setLastMaintDateTime($dateTime);
+                
+                $em->persist($cur_stock);
+                
+            }else{
+                $qbs = $em->getRepository("TSProjProductBundle:WorkStatus")->createQueryBuilder('st')
+                        ->where('st.statusName = :notstart')
+                        ->setParameter('notstart', 'status_havent')
+                        ->getQuery();
+                $statusInProgress = $qbs->getResult();
+                //$result2 = $this->timeConsumingCalculation($product_time);
+                $object->setProductStatus($statusInProgress[0]);
+                $object->setPercentFinished(0);
+                //update time from new stock into product
+                $object->setProductTimeConsumingDays(0);
+                $object->setProductTimeConsumingHours(0);
+                $object->setEstimatedTimeDay(0);
+                $object->setEstimatedTimeHour(0);
+            }     
         }
         
         //update last maintenance date time
@@ -73,22 +124,6 @@ class ProductAdmin extends BaseAdmin
         if($endDate < $startDate){
             
         }
-    }
-    
-    private function updateStock($object){
-        /* @var $object \TSProj\ProductBundle\Entity\Product  */
-        $em = $this->getModelManager()->getEntityManager($this->getClass());
-        $new_stock = $object->getStock();
-        $curr = new \DateTime();
-        if($new_stock){
-            $new_stock->setStockProductQuantity($new_stock->getStockProductQuantity() - 1);
-            $new_stock->setLastMaintDateTime($curr);
-            $object->setProductTimeConsuming($object->getProductTimeConsuming() + $new_stock->getEstimateTime());
-            $em->persist($new_stock);
-        }else{
-            $object->setProductTimeConsuming(0);
-        }
-        $em->persist($object);
     }
     
 //    public function validate(ErrorElement $errorElement, $object) {
@@ -148,24 +183,32 @@ class ProductAdmin extends BaseAdmin
         $qb->select('s')
            ->from('TSProjProductBundle:Stock','s')
            ->where('s.deleteFlag=:no')
-           ->setParameter(':no',0);     
+           ->andWhere('s.stockProductQuantity>=:one')     
+           ->setParameter(':no',0)
+           ->setParameter(':one',1); 
+        
+        $qb2 = $this->getModelManager()->getEntityManager('TSProjProductBundle:Project')->createQueryBuilder();
+        $qb2->select('pj')
+            ->from('TSProjProductBundle:Project','pj')
+            ->where('pj.deleteFlag=:no')
+            ->andWhere('pj.projectStatus<>:complete')
+            ->setParameter(':no',0)
+            ->setParameter(':complete',3);    
         
         $formMapper
             ->with('General',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))   
-                    ->add('project',null,array('empty_value'=>"--------- กรุณาเลือกโปรเจ็ค ---------",'required'=>true))     
+                    ->add('project','sonata_type_model',array(
+                                    'query'=>$qb2,
+                                    'empty_value'=>"--------- กรุณาเลือกโปรเจ็ค ---------",
+                                    'required'=>true))     
                     ->add('productBarcode')
                     ->add('productName')
                     ->add('productDescription') 
 					->add('material',null,array('required'=>false))	
                     ->add('productStatus',null,array('expanded'=>true,'multiple'=>false,'empty_value'=>false,'required'=>true))
                     ->add('stock','sonata_type_model',array(
-//                                'class'         =>'TSProj\ProductBundle\Entity\Product',
-//                                'query_builder' =>function(\Doctrine\ORM\EntityRepository $rep){
-//                                    return $rep->createQueryBuilder('s')
-//                                               ->where('s.deleteFlag',0);     
-//                                },
                                 'query'=>$qb,
                                 'required'      =>false,
                                 'empty_value'   =>'------ ไม่ผูกกับ Stock ------',))
@@ -197,7 +240,7 @@ class ProductAdmin extends BaseAdmin
             ->with('Drawing',
                    array('class'       =>  'col-md-6',
                          'box_class'   =>  'box'))    
-                    ->add('drawingId')
+                    ->add('drawingId',null,array('required'=>false))
                     ->add('drawingImage','sonata_media_type', array(
                           'provider' => 'sonata.media.provider.image',
                           'context'  => 'product',
@@ -243,7 +286,7 @@ class ProductAdmin extends BaseAdmin
 			->add('estimatedTimeMin')
             ->add('startDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
             ->add('endDateTime', null, array('format' => 'Y-m-d H:i', 'timezone' => 'Asia/Bangkok'))
-            ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:list_time.html.twig'))         
+            ->add('productTimeConsuming',null,array('required'=>false,'read_only'=>true,'label'=>'Time Consuming','template'=>'TSProjProductBundle:Admin:show_time.html.twig'))         
             ->add('percentFinished','string',array('template'=>'TSProjProductBundle:Admin:show_progress.html.twig','label'=>'Percent Finidhed (%)'));
     }
     

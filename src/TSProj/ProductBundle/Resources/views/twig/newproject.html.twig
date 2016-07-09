@@ -262,7 +262,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">ระยะเวลาการผลิต:</span>
-                    <input type="text" name="pro_barcode" class="form-control"  placeholder="ระยะเวลาการผลิต" />
+                    <input type="text" name="processtime" class="form-control"  placeholder="ระยะเวลาการผลิต" />
                 </div>
             </div>
             <div class="row">
@@ -274,10 +274,10 @@
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
-                <div class="col-sm-3 col-md-3">
+<!--                <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">วันที่สิ้นสุดกระบวนการ:</span>
                     <input type="text" name="processenddate" id="processenddate"  class="form-control"  placeholder="วันที่สิ้นสุดกระบวนการ" />
-                </div>
+                </div>-->
             </div>   
         </div>
     </div>
@@ -429,7 +429,8 @@
         }
         function get_processid(process_barcode)
         {
-            
+            //var data = $("#form1").serialize();
+            //    console.log(data);
              $.post('{{path('ajax_get_process_detail')}}',
                     {'process_barcode': process_barcode}, 
             function(response){
