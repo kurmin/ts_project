@@ -102,8 +102,9 @@ class NewProjectController extends BaseController
         $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);      
         if(count($process)==1){
             $response = array("code" => 100, "success" => true,
-                              "name"=>$process->getProcessName(),
-                              "message"=>$productid);
+                              "name"=>$process->getProcessName()
+//                             ,"message"=>$productid
+                                 );
                               //"processtime"=>$lastppt->getTimeConsuming());
         }
         else
@@ -113,6 +114,52 @@ class NewProjectController extends BaseController
         return new Response(json_encode($response)); 
     }
     
+    
+    /**
+     * @Route("/productprocesstime",name="ajax_get_productprocess_time")
+     */
+    public function ajax_product_process_timeAction()
+    {
+        $request = $this->container->get('request');       
+        $productBarcode = $request->request->get('productBarcode');
+        $emp_barcode = $request->request->get('emp_barcode');
+        $processBarcode = $request->request->get('processBarcode');
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $qb = $em->createQueryBuilder();        
+        $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productBarcode);
+        
+        if(count($product)==1){
+            $product_id= $product->getId();
+        }
+        
+        $process  = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
+        if(count($process)==1){
+            $process_id =  $process->getId();
+        }
+        
+        $employee = $em->getRepository("TSProjPeopleBundle:Employee")->findOneByemployeeBarcode($emp_barcode);
+        if(count($employee)==1){
+            $emp_id = $employee->getId();
+        }
+        $query = $em->createQuery('SELECT COALESCE(min(ppt.startDateTime),CURRENT_TIMESTAMP()) as startDateTime, COALESCE(min(ppt.startDateTime),0) as NULLCHECK  from TSProjProductBundle:ProductProcessTime ppt where ppt.product = :productid and ppt.process = :process_id and ppt.employee = :employeeid and ppt.endDateTime is NULL ');
+        $query->setParameter('productid',$product_id);
+        $query->setParameter('process_id', $process_id);
+        $query->setParameter('employeeid', $emp_id);
+        $ProductProcessTime = $query->getResult();
+
+        if(count($ProductProcessTime)==1){
+            $response = array("code" => 100, "success" => true,
+                              "result"=>$ProductProcessTime,
+                              "message"=>"success"
+                                 );
+        }
+        else
+        {
+            $response = array("code" => 300, "success" => true,"result"=>GetDate(),"message"=>"ไม่พบข้อมูลเวลาเริ่มต้นกระบวนการ");
+        }
+        return new Response(json_encode($response)); 
+    }
     
     /**
      * @Route("/save",name="ajax_save_product_Process_Time")
