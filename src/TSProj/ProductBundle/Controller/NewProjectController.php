@@ -65,6 +65,13 @@ class NewProjectController extends BaseController
 //              ->orderBy('p.startDateTime');  
 //        $productStartDateTemp = $query->getQuery()->getResult();
 //        $productStartDate = date_format($productStartDateTemp[0]->getStartDateTime(), 'Y-m-d');
+        if($product->getProductTimeConsumingDays()== 0 &&
+           $product->getProductTimeConsumingHours() == 0 &&
+           $product->getProductTimeConsumingMins() == 0){
+            $stockflag = false;
+        }else{
+            $stockflag = "disabled";
+        }
         
         if(count($product)==1){
             if($product->getStock()){
@@ -80,6 +87,8 @@ class NewProjectController extends BaseController
                                     "productstartdate"=>date_format($product->getStartDateTime(),'Y-m-d \TH:i:s'),
                                     "projectpercent"=>$product->getProject()->getPercentFinished(),
                                     "itemcount"=>$product->getProject()->getAmount(),
+                                    "stockflag"=>$stockflag,
+                                    "productstatus"=>$product->getProductStatus()->getStatusDescription(),
 
                         );
             }   

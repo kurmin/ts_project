@@ -194,7 +194,7 @@
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">สถานะปัจจุบัน:</span>
-                    <input type="text" name="projectpercent" id="projectpercent" class="form-control"  placeholder="เสร็จสิ้น XX %" />
+                    <input type="text" name="productstatus" id="productstatus" class="form-control"  placeholder="สถานะปัจจุบัน" />
                 </div>
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
@@ -204,7 +204,7 @@
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">สต๊อก:</span>
-                    <select name="stock" id="stock"  class="form-control" >
+                    <select name="stock" id="stock"  class="form-control">
                         <option value="">กรุณาเลือกสินค้าในสต๊อก</option>
                         
                         {% for item in stock %}
@@ -433,6 +433,8 @@
                       $("#productstartdate").val(response.productstartdate);
                       $("#projectpercent").val(response.projectpercent);
                       $("#itemcount").val(response.itemcount);
+                      $("#stock").prop('disabled',"#stockflag");
+                      $("#productstatus").val(response.productstatus);
                       var percent = response.projectpercent+"%"
                       $("#progressbar").css("width",percent).text(percent);
                     }else if(response.code == 300)
@@ -490,7 +492,7 @@
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       $("#processstartdate").val(response.result[0].startDateTime);
-                      if( && response.result[0].NULLCHECK != "0")
+                      if( response.result[0].NULLCHECK != "0")
                       { 
                           $('#myModal').modal('show');
                           //คำนวนระยะเวลาการผลิต
