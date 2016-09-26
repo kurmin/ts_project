@@ -433,7 +433,7 @@
                       $("#productstartdate").val(response.productstartdate);
                       $("#projectpercent").val(response.projectpercent);
                       $("#itemcount").val(response.itemcount);
-                      $("#stock").prop('disabled',"#stockflag");
+                      $("#stock").prop("disabled",response.stockflag);
                       $("#productstatus").val(response.productstatus);
                       var percent = response.projectpercent+"%"
                       $("#progressbar").css("width",percent).text(percent);

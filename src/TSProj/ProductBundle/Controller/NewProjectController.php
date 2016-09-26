@@ -68,9 +68,10 @@ class NewProjectController extends BaseController
         if($product->getProductTimeConsumingDays()== 0 &&
            $product->getProductTimeConsumingHours() == 0 &&
            $product->getProductTimeConsumingMins() == 0){
+            //disable = false
             $stockflag = false;
         }else{
-            $stockflag = "disabled";
+            $stockflag = true;
         }
         
         if(count($product)==1){
