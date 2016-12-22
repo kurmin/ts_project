@@ -194,8 +194,9 @@ class NewProjectController extends BaseController
         $processname= $request->request->get('processname');    
         $pro_barcode= $request->request->get('pro_barcode');    
         $processstartdate= $request->request->get('processstartdate');    
-        $processenddate= $request->request->get('processenddate');    
-       
+        $processenddate= $request->request->get('processenddate');
+        $finishprocess= $request->request->get('finishprocess_value');
+
         $now   = new \DateTime();
         $curr = $now->format("Y-m-d");
         $timeConsum = 0;
@@ -279,11 +280,14 @@ class NewProjectController extends BaseController
 
                         $timeConsum = $diff->format('%h')*60+$diff->format('%i');
                         //break time
-                        if($start->format('H') < 12){
+                        if($start->format('H') < 12 && $now->format('H') > 12){
                             $timeConsum = $timeConsum - 60;
                         }
                         $ProductProcessTime->setTimeConsuming($timeConsum);
-                       
+                        if($finishprocess=="Y"){
+                            $ProductProcessTime->setFinishedFlag(true);
+                        }
+                        
                         $em->persist($ProductProcessTime);
                         $em->flush();
                         $code = 100;

@@ -278,6 +278,7 @@
                  <div class="checkbox" style="padding-top:15px">
                       <label>
                           <input type="checkbox" disabled="disabled" name="finishprocess" id="finishprocess" class="form-contrl">ชิ้นงานเสร็จสมบูรณ์
+                          <input type="hidden" name="finishprocess_value" id="finishprocess_value">
                       </label>
                     </div>
                 </div>
@@ -472,6 +473,7 @@
         
         $(document).on("click","#confirmFinish",function(){
             $('#finishprocess').prop("checked",true);
+            $('#finishprocess_value').val("Y");
             $('#myModal').modal('hide');
         });
         
@@ -517,7 +519,7 @@
         function validation()
         {
             if($("#stock").val()!="" && $("#productid").val()!=""){
-                if(confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?'))
+                if(confirm('ข้อมูลถูกต้องแล้วใช่หรือไม่?'))
                     {
                         return true;
                     }
@@ -540,7 +542,7 @@
                     return false;
                 }else
                 {
-                    if(confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?'))
+                    if(confirm('ข้อมูลถูกต้องแล้วใช่หรือไม่?'))
                     {
                         return true;
                     }
