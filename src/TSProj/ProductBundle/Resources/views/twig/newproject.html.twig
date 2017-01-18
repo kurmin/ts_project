@@ -194,7 +194,7 @@
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">สถานะปัจจุบัน:</span>
-                    <input type="text" name="projectpercent" id="projectpercent" class="form-control"  placeholder="เสร็จสิ้น XX %" />
+                    <input type="text" name="productstatus" id="productstatus" class="form-control"  placeholder="สถานะปัจจุบัน" />
                 </div>
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
@@ -204,7 +204,7 @@
                 <div class="col-sm-1 col-md-1"></div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">สต๊อก:</span>
-                    <select name="stock" id="stock"  class="form-control" >
+                    <select name="stock" id="stock"  class="form-control">
                         <option value="">กรุณาเลือกสินค้าในสต๊อก</option>
                         
                         {% for item in stock %}
@@ -262,7 +262,7 @@
                 </div>
                 <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">ระยะเวลาการผลิต:</span>
-                    <input type="text" name="processtime" class="form-control"  placeholder="ระยะเวลาการผลิต" />
+                    <input type="text" name="processtime" id="processtime" class="form-control"  placeholder="ระยะเวลาการผลิต" />
                 </div>
             </div>
             <div class="row">
@@ -274,6 +274,15 @@
                 </div>
                 <div class="col-sm-1 col-md-1" style="text-align:right;">
                 </div>
+                <div class="col-sm-3 col-md-3 form-class">
+                 <div class="checkbox" style="padding-top:15px">
+                      <label>
+                          <input type="checkbox" disabled="disabled" name="finishprocess" id="finishprocess" class="form-contrl">ชิ้นงานเสร็จสมบูรณ์
+                          <input type="hidden" name="finishprocess_value" id="finishprocess_value">
+                      </label>
+                    </div>
+                </div>
+               
 <!--                <div class="col-sm-3 col-md-3">
                     <span style="text-align:right;font-weight: bold;">วันที่สิ้นสุดกระบวนการ:</span>
                     <input type="text" name="processenddate" id="processenddate"  class="form-control"  placeholder="วันที่สิ้นสุดกระบวนการ" />
@@ -286,18 +295,32 @@
         <button type="button" name="insertTable" class="btn btn-primary btn-lg" id="insertTable" value="submit">ตกลง</button>
 <!--    <input type="button" name="insertTable" class="btn btn-default">ตกลง</input>-->
     </div>
+                    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">กระบวนการทำงาน</h4>
+          </div>
+          <div class="modal-body">
+            กรุณายืนยันว่ากระบวนการ การทำงานของท่านเสร็จสิ้นแล้วหรือไม่
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">ไม่</button>
+            <button type="button" class="btn btn-primary" id="confirmFinish">ใช่</button>
+          </div>
+        </div>
+      </div>
+    </div>
         
     </form>
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        $(document).ready(function () {
-
-            $("#createdate").datepicker();
-            $("#processstartdate").datepicker();
-            $("#processedate").datepicker();
-        });
+        
         $(document).on("change","#productid",function(){
             if($(this).val().length!=0)
             {
@@ -379,7 +402,7 @@
                 $(this).val("");
             });
         });
-        
+                
         // Insert button functionality
 
         
@@ -411,6 +434,8 @@
                       $("#productstartdate").val(response.productstartdate);
                       $("#projectpercent").val(response.projectpercent);
                       $("#itemcount").val(response.itemcount);
+                      $("#stock").prop("disabled",response.stockflag);
+                      $("#productstatus").val(response.productstatus);
                       var percent = response.projectpercent+"%"
                       $("#progressbar").css("width",percent).text(percent);
                     }else if(response.code == 300)
@@ -445,10 +470,56 @@
                 }, "json");  
         }
         
+        
+        $(document).on("click","#confirmFinish",function(){
+            $('#finishprocess').prop("checked",true);
+            $('#finishprocess_value').val("Y");
+            $('#myModal').modal('hide');
+        });
+        
+        $(document).on("change","#productid,#emp_barcode,#process_barcode",function(){
+            if($("#productid").val()!="" && $("#emp_barcode").val()!="" && $("#process_barcode").val()!="")
+            {
+                    get_productprocesstime($("#productid").val(),$("#emp_barcode").val(),$("#process_barcode").val());
+            }
+        });
+        
+         function get_productprocesstime(product,emp,process_barcode)
+        {
+             $.post('{{path('ajax_get_productprocess_time')}}',
+                    {'productBarcode': product,
+                    'emp_barcode': emp,
+                    'processBarcode': process_barcode,
+           }, 
+            function(response){
+                    if(response.code == 100 && response.success){//dummy check
+                      $("#processstartdate").val(response.result[0].startDateTime);
+                      if( response.result[0].NULLCHECK != "0")
+                      { 
+                          $('#myModal').modal('show');
+                          //คำนวนระยะเวลาการผลิต
+                          //$("#processtime").val();
+                          
+                      }
+                      else
+                      {
+                           $("#processtime").val(response.result[0].startDateTime);
+                      }
+                      
+                    }else
+                    {
+                      //alert(response.message);
+                      $("#processstartdate").val(response.result[0].startDateTime);
+                      //$("#processstartdate").val("");
+                    }
+                }, "json");  
+        }
+        
+        
         function validation()
         {
             if($("#stock").val()!="" && $("#productid").val()!=""){
-                if(confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?'))
+                if(confirm('ข้อมูลถูกต้องแล้วใช่หรือไม่?'))
                     {
                         return true;
                     }
@@ -471,7 +542,7 @@
                     return false;
                 }else
                 {
-                    if(confirm('เสร็จสิ้นกระบวนการนี้แล้วใช่หรือไม่?'))
+                    if(confirm('ข้อมูลถูกต้องแล้วใช่หรือไม่?'))
                     {
                         return true;
                     }
