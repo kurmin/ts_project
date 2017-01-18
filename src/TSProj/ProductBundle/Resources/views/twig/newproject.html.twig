@@ -380,12 +380,13 @@
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       //alert(response.empname);
-                        alert("save successful");
+                        alert("บันทึกข้อมูลเรียบร้อย");
                     }else if(response.code == 300)
                     {
                         alert(response.message);
                     }
-                }, "json");  
+                }, "json");
+                $("#form1")[0].reset();
                 return;
             }
         });
@@ -393,7 +394,7 @@
         $(document).on("change","#process_barcode",function(){
              if($(this).val().length!=0)
                 {
-                    get_processid($(this).val());
+                    get_processid($(this).val(),$("#productid").val());
                 }
         });
          
@@ -452,12 +453,13 @@
                     }
                 }, "json");  
         }
-        function get_processid(process_barcode)
+        function get_processid(process_barcode,product)
         {
             //var data = $("#form1").serialize();
             //    console.log(data);
              $.post('{{path('ajax_get_process_detail')}}',
-                    {'process_barcode': process_barcode}, 
+                    {'process_barcode': process_barcode,
+                     'productBarcode': product},
             function(response){
                     if(response.code == 100 && response.success){//dummy check
                       $("#processname").val(response.name);
