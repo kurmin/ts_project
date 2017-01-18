@@ -108,16 +108,22 @@ class NewProjectController extends BaseController
     {
         $request = $this->container->get('request');       
         $processBarcode = $request->request->get('process_barcode');
+        $productBarcode = $request->request->get('productBarcode');
         $em = $this->getDoctrine()->getEntityManager();
-        $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);      
+        $process = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
+        $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productBarcode);
+        
         if(count($process)==1){
-            $response = array("code" => 100, "success" => true,
-                              "name"=>$process->getProcessName()
+            if($product->getProcess()->contains($process)){       
+                $response = array("code" => 100, "success" => true,
+                                  "name"=>$process->getProcessName()
 //                             ,"message"=>$productid
                                  );
                               //"processtime"=>$lastppt->getTimeConsuming());
-        }
-        else
+            }else{
+                $response = array("code" => 300, "success" => true,"message"=>"ข้อมูลกระบวนการที่ท่านกำลังค้นหาไม่ตรงกับรหัสสินค้า");
+            }              
+        }else
         {
             $response = array("code" => 300, "success" => true,"message"=>"ไม่พบข้อมูลกระบวนการที่ท่านกำลังค้นหา");
         }
@@ -158,16 +164,21 @@ class NewProjectController extends BaseController
         $query->setParameter('employeeid', $emp_id);
         $ProductProcessTime = $query->getResult();
 
-        if(count($ProductProcessTime)==1){
-            $response = array("code" => 100, "success" => true,
-                              "result"=>$ProductProcessTime,
-                              "message"=>"success"
-                                 );
-        }
-        else
-        {
-            $response = array("code" => 300, "success" => true,"result"=>GetDate(),"message"=>"ไม่พบข้อมูลเวลาเริ่มต้นกระบวนการ");
-        }
+        if($product->getProcess()->contains($process)){
+            if(count($ProductProcessTime)==1){   
+                $response = array("code" => 100, "success" => true,
+                                  "result"=>$ProductProcessTime,
+                                  "timeconsum"=>30,
+                                  "message"=>"success"
+                                     );
+            }
+            else
+            {
+                $response = array("code" => 300, "success" => true,
+                                  "result"=>GetDate(),
+                                  "message"=>"ไม่พบข้อมูลเวลาเริ่มต้นกระบวนการ");
+            }
+        }    
         return new Response(json_encode($response)); 
     }
     
@@ -286,6 +297,8 @@ class NewProjectController extends BaseController
                         $ProductProcessTime->setTimeConsuming($timeConsum);
                         if($finishprocess=="Y"){
                             $ProductProcessTime->setFinishedFlag(true);
+                            //update all productProcessTime
+                            $this->updateProductProcessTimeStatus($product,$process);
                         }
                         
                         $em->persist($ProductProcessTime);
@@ -494,4 +507,24 @@ class NewProjectController extends BaseController
         }
     }
 
+    public function updateProductProcessTimeStatus($product,$process){
+        $em = $this->getDoctrine()->getEntityManager();
+        //product_process_time
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from('TSProjProductBundle:ProductProcessTime','p')
+           ->innerJoin('p.product','pd')
+           ->innerJoin('p.process','pc')     
+           ->where('pd.id = :productId')  
+           ->andWhere('pc.id = :processId')     
+           ->setParameter('productId',$product->getId())
+           ->setParameter('processId',$process->getId());          
+        $ppts = $qb->getQuery()->getResult();
+                
+        foreach($ppts as $ppt){
+            $ppt->setFinishedFlag(true);
+            $em->persist($ppt);
+        }       
+        $em->flush();
+    }
 }
