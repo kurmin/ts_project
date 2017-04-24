@@ -8,3 +8,6 @@
 #test_index:
 #    path:     /test/{name}
 #    defaults: { _controller: mainTSBundle:Default:index }
+#stock:
+#    path:     /stock
+#    defaults: { _controller: ProductBundle:stocklist:new }

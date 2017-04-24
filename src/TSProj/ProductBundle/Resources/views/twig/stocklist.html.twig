@@ -1,0 +1,40 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Stock Management{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <h4 class="sub-header">รายงานสินค้าในสต๊อค</h4>
+        </div>
+    </div>
+  
+   <div class="row">
+      
+        <div class="col-sm-7 col-md-7">
+            <h2 class="sub-header">จำนวนสินค้าที่มีอยู่ในสต๊อค {{ stockcount }} ชนิด</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ชื่อสินค้า</th>
+                            <th>ชื่คำอธิบาย</th>
+                            <th>เวลาที่ใช้ในการผลิดโดยประมาณ</th>
+                            <th>จำนวน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in stock %}
+                            <tr>
+                                <td>{{ item.stockProductName }}</td>
+                                <td>{{ item.stockProductDescription }}</td>
+                                <td>{{ item.estimateTime }} ชั่วโมง</td>
+                                <td>{{ item.stockProductQuantity }}</td>
+                            </tr>
+                        {% endfor %}    
+                    </tbody>
+                </table>
+            </div> </div>
+    </div>
+        
+{% endblock %}

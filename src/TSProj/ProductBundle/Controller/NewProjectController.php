@@ -31,6 +31,34 @@ class NewProjectController extends BaseController
     }
     
     /**
+     * @Route("/stock",name="stocklist")
+     */
+        public function stockAction()
+    {
+        //return new Response();
+        $em = $this->getDoctrine()->getEntityManager();
+        $qb = $em->getRepository("TSProjProductBundle:Stock")->createQueryBuilder('st')
+        ->where('st.stockProductQuantity > :stockqty')
+        ->andwhere('st.deleteFlag <> 1')        
+        ->setParameter('stockqty', '0')
+        ->getQuery();
+        $stock = $qb->getResult();
+        
+        $qb = $em->createQueryBuilder();
+        $qb->select('count(p.id)')
+           ->from('TSProjProductBundle:Stock','p')   
+           ->where('p.deleteFlag <> 1');
+        
+        $stockcount = $qb->getQuery()->getSingleScalarResult();
+        
+        return $this->render('TSProjProductBundle:twig:stocklist.html.twig',
+                array("stock"=>$stock,
+                      "stockcount"  => $stockcount
+                     ));    
+        
+    }
+    
+    /**
      * @Route("/empdetail",name="ajax_get_employee_detail")
      */
     public function ajax_employee_detailAction()
