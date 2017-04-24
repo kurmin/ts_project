@@ -495,24 +495,22 @@
            }, 
             function(response){
                     if(response.code == 100 && response.success){//dummy check
-                      $("#processstartdate").val(response.result[0].startDateTime);
+                      $("#processstartdate").val(response.startprocessdate);
                       if( response.result[0].NULLCHECK != "0")
                       { 
                           $('#myModal').modal('show');
                           //คำนวนระยะเวลาการผลิต
-                          //$("#processtime").val();
+                          $("#processtime").val(response.timeconsum);
                           
                       }
                       else
                       {
-                           $("#processtime").val(response.result[0].startDateTime);
+                           $("#processtime").val(response.timeconsum);
                       }
                       
                     }else
                     {
-                      //alert(response.message);
-                      $("#processstartdate").val(response.result[0].startDateTime);
-                      //$("#processstartdate").val("");
+                      alert(response.message);
                     }
                 }, "json");  
         }

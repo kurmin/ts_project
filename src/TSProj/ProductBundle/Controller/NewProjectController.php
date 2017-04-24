@@ -170,7 +170,6 @@ class NewProjectController extends BaseController
         $processBarcode = $request->request->get('processBarcode');
         
         $em = $this->getDoctrine()->getEntityManager();
-        $qb = $em->createQueryBuilder();        
         $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productBarcode);
         
         if(count($product)==1){
@@ -186,26 +185,57 @@ class NewProjectController extends BaseController
         if(count($employee)==1){
             $emp_id = $employee->getId();
         }
-        $query = $em->createQuery('SELECT COALESCE(min(ppt.startDateTime),CURRENT_TIMESTAMP()) as startDateTime, COALESCE(min(ppt.startDateTime),0) as NULLCHECK  from TSProjProductBundle:ProductProcessTime ppt where ppt.product = :productid and ppt.process = :process_id and ppt.employee = :employeeid and ppt.endDateTime is NULL ');
+            
+        // get start process date
+        list($date,$timeConsum) = $this->getStartProcessDate($product,$process,$employee);
+        $startProcessDate = $date->format('Y-m-d H:i:s');
+                
+        $query = $em->createQuery('SELECT ppt.id, COALESCE(min(ppt.startDateTime),CURRENT_TIMESTAMP()) as startDateTime, COALESCE(min(ppt.startDateTime),0) as NULLCHECK  from TSProjProductBundle:ProductProcessTime ppt where ppt.product = :productid and ppt.process = :process_id and ppt.employee = :employeeid and ppt.endDateTime is NULL ');
         $query->setParameter('productid',$product_id);
         $query->setParameter('process_id', $process_id);
         $query->setParameter('employeeid', $emp_id);
         $ProductProcessTime = $query->getResult();
 
+        if($ProductProcessTime[0]['id']  != null){
+            $ppt = $ProductProcessTime[0];
+            $now   = new \DateTime();
+            $curr = $now->format("Y-m-d");
+            $ppt_id = $ppt['id'];
+            $ppt2 = $em->getRepository("TSProjProductBundle:ProductProcessTime")->find($ppt_id);
+            $start = $ppt2->getStartDateTime();
+
+            if($start->format("Y-m-d") == $curr){
+                //calculate Time consuming
+                $diff = $now->diff($start);
+                 $timeConsum += $diff->format('%h')*60+$diff->format('%i');
+                //break time
+                if($start->format('H') < 12 && $now->format('H') > 12){
+                    $timeConsum = $timeConsum - 60;
+                }
+            }
+            
+        }    
+                
         if($product->getProcess()->contains($process)){
-            if(count($ProductProcessTime)==1){   
+            if(count($ProductProcessTime)==1){  
+                //case end_process_date is null
                 $response = array("code" => 100, "success" => true,
                                   "result"=>$ProductProcessTime,
-                                  "timeconsum"=>30,
+                                  "timeconsum"=>$timeConsum,
+                                  "startprocessdate"=>$startProcessDate,
                                   "message"=>"success"
                                      );
             }
             else
             {
                 $response = array("code" => 300, "success" => true,
-                                  "result"=>GetDate(),
+                                  "timeconsum"=>$timeConsum,
+                                  "startprocessdate"=>$startProcessDate,
                                   "message"=>"ไม่พบข้อมูลเวลาเริ่มต้นกระบวนการ");
             }
+        }else{
+            $response = array("code" => 300, "success" => true,
+                              "message"=>"ข้อมูลกระบวนการที่ท่านกำลังค้นหาไม่ตรงกับรหัสสินค้า");
         }    
         return new Response(json_encode($response)); 
     }
@@ -235,6 +265,7 @@ class NewProjectController extends BaseController
         $processstartdate= $request->request->get('processstartdate');    
         $processenddate= $request->request->get('processenddate');
         $finishprocess= $request->request->get('finishprocess_value');
+        $processtime= $request->request->get('processtime');
 
         $now   = new \DateTime();
         $curr = $now->format("Y-m-d");
@@ -244,7 +275,7 @@ class NewProjectController extends BaseController
         $qb = $em->createQueryBuilder();
         $product = $em->getRepository("TSProjProductBundle:Product")->findOneByproductBarcode($productid);
         $product_id = $product->getId();
-        
+
         $process  = $em->getRepository("TSProjProductBundle:Process")->findOneByprocessBarcode($processBarcode);
         if(count($process)==1){
             $process_id =  $process->getId();
@@ -260,6 +291,12 @@ class NewProjectController extends BaseController
             $amt = $stock->getStockProductQuantity() - 1;
             $stock->setStockProductQuantity($amt);
             $product->setStock($stock);
+            
+            // set product status to finish
+            $finishStatus = $em->getRepository('TSProjProductBundle:WorkStatus')->find(4);
+            $product->setProductStatus($finishStatus);
+            $product->setPercentFinished(100);
+            
             $em->persist($stock);
             $em->persist($product);
             $em-flush();
@@ -305,7 +342,7 @@ class NewProjectController extends BaseController
                 $code = 100;
             }
             else
-            {    $cnt=count($ProductProcessTime);
+            {   $cnt=count($ProductProcessTime);
                 if($cnt == 1)
                     {
                     $ProductProcessTime = $ProductProcessTime[0];
@@ -316,8 +353,7 @@ class NewProjectController extends BaseController
                         $ProductProcessTime->setLastMaintDateTime($now);
                         //calculate Time consuming
                         $diff = $now->diff($start);
-
-                        $timeConsum = $diff->format('%h')*60+$diff->format('%i');
+                        $timeConsum += $diff->format('%h')*60+$diff->format('%i');
                         //break time
                         if($start->format('H') < 12 && $now->format('H') > 12){
                             $timeConsum = $timeConsum - 60;
@@ -325,9 +361,13 @@ class NewProjectController extends BaseController
                         $ProductProcessTime->setTimeConsuming($timeConsum);
                         if($finishprocess=="Y"){
                             $ProductProcessTime->setFinishedFlag(true);
+
                             //update all productProcessTime
                             $this->updateProductProcessTimeStatus($product,$process);
+                            $this->updateProductStatus($product);
+                            $this->updateProductProject($product_id);
                         }
+                        
                         
                         $em->persist($ProductProcessTime);
                         $em->flush();
@@ -419,8 +459,9 @@ class NewProjectController extends BaseController
         {
             $finished = 1;
             
-            //update product status when all processes are finished
-            $product->setProductStatus('เสร็จสิ้น');
+//            //update product status when all processes are finished >> change to paragraph updateProductStatus
+//            $finishStatus = $em->getRepository('TSProjProductBundle:WorkStatus')->find(4);
+//            $product->setProductStatus($finishStatus);
         }
          
         $resultPercent = $this->percentFinishedCalculation($TimeConsuming, $esDay, $esHour, $esMin, $finished);
@@ -478,9 +519,9 @@ class NewProjectController extends BaseController
                 $Consume_Hour = $item2->getProductTimeConsumingHours();
                 $Consume_Min = $item2->getProductTimeConsumingMins();
                 
-                $projEsDay = $item2->getEstimatedTimeDay();
-                $projEsHour =  $item2->getEstimatedTimeHour();
-                $projEsMin =  $item2->getEstimatedTimeMin();
+                $projEsDay += $item2->getEstimatedTimeDay();
+                $projEsHour +=  $item2->getEstimatedTimeHour();
+                $projEsMin +=  $item2->getEstimatedTimeMin();
                 
                 $projTimeConsuming = $projTimeConsuming + ($Consume_Day * 24 * 60) + ($Consume_Hour * 60) + $Consume_Min;
         }
@@ -524,6 +565,8 @@ class NewProjectController extends BaseController
         if ($noOfFinishedProducts ==  $noOfProducts)
         {
             $projectFinished = 1;
+            $finishStatus = $em->getRepository('TSProjProductBundle:WorkStatus')->find(4);
+            $project->setProjectStatus($finishStatus);
         }
                  
         $projPercent = $this->percentFinishedCalculation($projTimeConsuming, $projEsDay, $projEsHour, $projEsMin, $projectFinished);
@@ -537,7 +580,8 @@ class NewProjectController extends BaseController
 
     public function updateProductProcessTimeStatus($product,$process){
         $em = $this->getDoctrine()->getEntityManager();
-        //product_process_time
+        $now = new \DateTime();
+        //product_process_timeProductProcessTime
         $qb = $em->createQueryBuilder();
         $qb->select('p')
            ->from('TSProjProductBundle:ProductProcessTime','p')
@@ -551,8 +595,80 @@ class NewProjectController extends BaseController
                 
         foreach($ppts as $ppt){
             $ppt->setFinishedFlag(true);
+            $ppt->setLastMaintDateTime($now);
             $em->persist($ppt);
-        }       
+        }         
         $em->flush();
+    }
+    
+    public function updateProductStatus($product){
+        $em = $this->getDoctrine()->getEntityManager();
+//        $qb = $em->createQuery('SELECT pp FROM TSProjProductBundle:ProductProcess pp WHERE pp.product_id = :productId ');
+        $respository = $em->getRepository('TSProjProductBundle:Process');
+        $query = $respository->createQueryBuilder('p')
+                ->innerJoin('p.product','pd')
+                ->where('pd.id = :productId')
+                ->setParameter('productId',$product->getId());
+        $pps = $query->getQuery()->getResult();
+                
+        $repo = $em->getRepository('TSProjProductBundle:ProductProcessTime');
+        $query2 = $repo->createQueryBuilder('ppt')
+                ->select('ppt')
+                ->where('ppt.product = :productId')
+                ->andWhere('ppt.deleteFlag = :deleteFlag') 
+                ->groupBy('ppt.product','ppt.process')
+                ->setParameter('productId',$product->getId())
+                ->setParameter('deleteFlag',0);
+        $ppts = $query2->getQuery()->getResult();
+     
+        $now = new \DateTime();                 
+        
+        if(count($pps) == count($ppts)){
+            $query3 = $repo->createQueryBuilder('ppt')
+                    ->select('ppt')
+                    ->where('ppt.product = :productId')
+                    ->andWhere('ppt.deleteFlag = :deleteFlag') 
+                    ->andWhere('ppt.finishedFlag = :finishedFlag')
+                    ->setParameter('productId',$product->getId())
+                    ->setParameter('deleteFlag',0)
+                    ->setParameter('finishedFlag',0);
+            $ppt_no = $query3->getQuery()->getResult();
+            if(count($ppt_no)==0){
+                $finishStatus = $em->getRepository('TSProjProductBundle:WorkStatus')->find(4);
+                $product->setProductStatus($finishStatus);
+                $product->setLastMaintDateTime($now);
+                $em->persist($product); 
+            }    
+        }      
+        $em->flush();
+    }
+
+
+    public function getStartProcessDate($product,$process,$employee){
+        $em = $this->getDoctrine()->getEntityManager();
+        //product_process_time
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from('TSProjProductBundle:ProductProcessTime','p')
+           ->innerJoin('p.product','pd')
+           ->innerJoin('p.process','pc')     
+           ->innerJoin('p.employee','emp')     
+           ->where('pd.id = :productId')  
+           ->andWhere('pc.id = :processId')  
+           ->andWhere('emp.id = :empId')     
+           ->orderBy('p.startDateTime','ASC')     
+           ->setParameter('productId',$product->getId())
+           ->setParameter('processId',$process->getId())
+           ->setParameter('empId', $employee->getId());          
+        $ppt = $qb->getQuery()->getResult();
+        $timeconsum = 0;
+        $date = new \DateTime();
+        if(count($ppt)>=1){
+            $date = $ppt[0]->getStartDateTime();
+            foreach($ppt as $p){
+                $timeconsum += $p->getTimeConsuming();
+            }
+        }    
+        return array($date,$timeconsum);
     }
 }
