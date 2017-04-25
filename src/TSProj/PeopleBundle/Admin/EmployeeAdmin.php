@@ -68,6 +68,7 @@ class EmployeeAdmin extends \TSProj\ProductBundle\Admin\BaseAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('employeeId')    
             ->add('employeeBarcode')    
             ->add('employeeNationalIdentityId')
             ->add('employee_title','choice',array('choices'=>  \TSProj\PeopleBundle\Entity\Employee::$titleList))
