@@ -93,17 +93,22 @@ class NewProjectController extends BaseController
 //              ->orderBy('p.startDateTime');  
 //        $productStartDateTemp = $query->getQuery()->getResult();
 //        $productStartDate = date_format($productStartDateTemp[0]->getStartDateTime(), 'Y-m-d');
-        if($product->getProductTimeConsumingDays()== 0 &&
-           $product->getProductTimeConsumingHours() == 0 &&
-           $product->getProductTimeConsumingMins() == 0){
-            //disable = false
-            $stockflag = false;
-        }else{
-            $stockflag = true;
-        }
         
         if(count($product)==1){
+            if($product->getProductTimeConsumingDays()== 0 &&
+               $product->getProductTimeConsumingHours() == 0 &&
+               $product->getProductTimeConsumingMins() == 0){
+                //disable = false
+                $stockflag = false;
+            }else{
+                $stockflag = true;
+            }
             if($product->getStock()){
+                if($product->getStartDateTime()==null){
+                    $startDate = new \DateTime();
+                }else{
+                    $startDate = $product->getStartDateTime();
+                }
                 $response = array("code" => 300, "success" => true,"message"=>"ชิ้นงานนี้ผูกกับสต๊อก ".$product->getStock()->getStockProductName()." แล้ว หากต้องการยกเลิกโปรดติดต่อ admin");
             }else{
                 $response = array(  "code" => 100, 
@@ -113,7 +118,7 @@ class NewProjectController extends BaseController
                                     "projectname"=>$product->getProject()->getProjectName(),
                                     "expectdate"=>$product->getProject()->getExpectedDeliveryDate(),
                                     "clientname"=>$product->getProject()->getClient()->getClientName(),
-                                    "productstartdate"=>date_format($product->getStartDateTime(),'Y-m-d \TH:i:s'),
+                                    "productstartdate"=>date_format($startDate,'Y-m-d H:i:s'),
                                     "projectpercent"=>$product->getProject()->getPercentFinished(),
                                     "itemcount"=>$product->getProject()->getAmount(),
                                     "stockflag"=>$stockflag,
