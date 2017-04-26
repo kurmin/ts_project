@@ -228,7 +228,7 @@ class ProductAdmin extends BaseAdmin
                          'box_class'   =>  'box'))
                      ->add('currentPhase',null,array('required'=>false)) 
                                          ->add('estimatedTimeDay',null,array('required'=>false,'label'=>'Estimated Time (Day)'))
-					 ->add('estimatedTimeHour',null,array('required'=>false,'label'=>'Estimated Time (Hour)'))
+					 ->add('estimatedTimeHour',null,array('required'=>true,'label'=>'Estimated Time (Hour)'))
 					 ->add('estimatedTimeMin',null,array('required'=>false,'label'=>'Estimated Time (Minute)'))
                      ->add('productTimeConsumingDays',null,array('required'=>false,'read_only'=>true))
                      ->add('productTimeConsumingHours',null,array('required'=>false,'read_only'=>true))
