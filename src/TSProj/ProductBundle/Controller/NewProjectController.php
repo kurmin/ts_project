@@ -104,13 +104,13 @@ class NewProjectController extends BaseController
                 $stockflag = true;
             }
             if($product->getStock()){
+                $response = array("code" => 300, "success" => true,"message"=>"ชิ้นงานนี้ผูกกับสต๊อก ".$product->getStock()->getStockProductName()." แล้ว หากต้องการยกเลิกโปรดติดต่อ admin");
+            }else{
                 if($product->getStartDateTime()==null){
                     $startDate = new \DateTime();
                 }else{
                     $startDate = $product->getStartDateTime();
                 }
-                $response = array("code" => 300, "success" => true,"message"=>"ชิ้นงานนี้ผูกกับสต๊อก ".$product->getStock()->getStockProductName()." แล้ว หากต้องการยกเลิกโปรดติดต่อ admin");
-            }else{
                 $response = array(  "code" => 100, 
                                     "success" => true,
                                     "productname"=>$product->getProductName(),
@@ -301,10 +301,11 @@ class NewProjectController extends BaseController
             $finishStatus = $em->getRepository('TSProjProductBundle:WorkStatus')->find(4);
             $product->setProductStatus($finishStatus);
             $product->setPercentFinished(100);
+            $code = 100;
             
             $em->persist($stock);
             $em->persist($product);
-            $em-flush();
+            $em->flush();
         }else {   
             // in case scan product to calculate time consuming (not from the stock)
             $qb->select('ppt')
@@ -335,6 +336,8 @@ class NewProjectController extends BaseController
                 $newProductProcessTime->setApprovalEmployee(null);
 
                 $product->setCurrentPhase($process);
+                $onProcessStatus = $em->getRepository('TSProjProductBundle:WorkStatus')->find(3);
+                $product->setProductStatus($onProcessStatus);
                 
                 $project = $product->getProject();
                 $project->setProjectStartDate($now);
