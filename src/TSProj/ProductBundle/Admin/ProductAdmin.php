@@ -8,6 +8,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+//use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+//use Symfony\Component\Form\FormEvent;
+//use Symfony\Component\Form\FormEvents;
 
 class ProductAdmin extends BaseAdmin
 {
@@ -246,8 +249,24 @@ class ProductAdmin extends BaseAdmin
                           'context'  => 'product',
                           'required' => false,
                          ))
-            ->end()    
+            ->end()
         ;
+        
+        $formMapper->getFormBuilder()->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $object= $this->getSubject($event->getData());
+        $form = $event->getForm();
+
+        if ($object->getProductTimeConsumingHours() > 0 || $object->getProductTimeConsumingMins() > 0 || $object->getProductTimeConsumingDays() > 0) 
+        {
+            $form
+                ->add('stock',null,array(
+                      'required'      =>false,
+                      'disabled' => true,
+                      'empty_value'   =>'------ ไม่ผูกกับ Stock ------'));
+        }
+        }
+        );
+  
     }
 
     public function getNewInstance()
