@@ -69,10 +69,15 @@ class ProjectAdminController extends CRUDController
             false
         );
         $pdf->SetAuthor('qweqwe');
-        $pdf->SetTitle('Prueba TCPDF');
+        $pdf->SetTitle('Work order form');
         $pdf->SetSubject('Your client');
         $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
         $pdf->setFontSubsetting(true);
+
+        // set default header data
+        //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 003', PDF_HEADER_STRING);
+        //->setHtmlHeader('<table>...</table>');
+        //$pdf->SetHeaderMargin(10);
         // Remove default header / footer
         $pdf -> setPrintHeader (false);
         $pdf -> setPrintFooter (false);
@@ -212,7 +217,7 @@ class ProjectAdminController extends CRUDController
             false
         );
         $pdf->SetAuthor('qweqwe');
-        $pdf->SetTitle('Prueba TCPDF');
+        $pdf->SetTitle('Project summary report');
         $pdf->SetSubject('Your client');
         $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
         $pdf->setFontSubsetting(true);
